@@ -1,0 +1,285 @@
+category_type,title,verb,feat,topics,description
+essential_category,Essential,compose,an argumentative essay about,"['concept', 'person', 'event', 'device', 'text']","An argumentative essay is generally used to present our own opinions on a topic, although we may back up our points with references to research or authorities. An argument should take a stance, for or against, pro or con. An argument might also indicate a problem or issue and offer a solution."
+essential_category,Essential,compose,a cause and effect essay on,"['concept', 'person', 'event', 'device', 'text']","You use cause and effect as a strategy when you want
+to persuade your audience of the relationship between
+two events. This can be an effective strategy when
+promoting a certain course of action or when contextualizing
+a situation."
+essential_category,Essential,compose,a classification essay on,"['concept', 'person', 'event', 'device', 'text']","Classification is the dividing of topics into different
+categories. This mode can be quite effective when
+dealing with large ideas by breaking them down into
+their parts. Martin Luther King, Jr. utilizes classification
+when he classifies ‘laws’ into ‘just’ and ‘unjust’ in order to
+persuade his audience to disobey ‘unjust’ laws."
+essential_category,Essential,compose,a comparison and contrast essay on,"['concept', 'person', 'event', 'device', 'text']","Comparing and contrasting is the presentation of the
+similarity or differences between two things. Contrast
+might be used in an argument by presenting the pros
+and cons of two economic theories for example. Comparison
+can be an effective means of drawing parallels
+between two seemingly different things to show that
+they are not so different after all."
+essential_category,Essential,compose,a narrative about,"['concept', 'person', 'event']","Narrative writing is simply the telling of a story. This
+is not only the realm of fiction, but also is an effective
+means of persuading an audience of the importance,
+relevance, or urgency of your topic."
+essential_category,Essential,compose,an exemplification essay on,"['concept', 'person', 'event', 'device', 'text']","Exemplification is the communication of ideas by using
+examples. This is a useful strategy in conjunction with
+exposition when a complex idea needs to be clarified."
+essential_category,Essential,compose,an expository essay on,"['concept', 'person', 'event', 'device', 'text']","Expository writing sets out to ‘expose’ an idea
+through description and explanation. Some ideas are
+quite complex and abstract, so exposition is necessary
+to simplify and concretize your message so that your
+audience understands your point."
+essential_category,Essential,compose,a definition of,"['concept', 'person', 'event', 'device']","Definition is the power to give words a meaning
+specific to your own understanding. This is especially
+useful when dealing with terms that are ambiguous such
+as “democracy” and “freedom.”"
+essential_category,Essential,compose,a process analysis essay on,"['concept', 'person', 'event', 'device', 'text']","Process writing simply communicates the process required
+to achieve an outcome. This mode can be useful
+when persuading a reader toward a particular action.
+For example, if you want to encourage someone
+to donate to a charity, you might demonstrate how easy
+the process of doing so actually is."
+essential_category,Essential,compose,a description of,"['concept', 'person', 'event']","Descriptive writing is a textual rendering of a person,
+object, setting, or event. This can be used with great effect
+to persuade a person by appealing to their senses."
+essential_category,Essential,compose,a personal narrative about,"['concept', 'person', 'event']",A personal narrative is a story about the life of the author.
+essential_category,Essential,compose,a persuasive essay about,"['concept', 'person', 'event']",A persuasive essay is a general type of writing that attempts to persuade its audience to have a certain view on a topic or to take some action.
+essential_category,Essential,compose,a research paper on,"['concept', 'person', 'event', 'device', 'text']",A research paper is any essay that includes secondary sources on a primary topic.
+essential_category,Essential,compose,a sentence about,"['concept', 'person', 'event', 'device', 'text']","There are five types of sentences: a declaration which states a fact; a hortative that pleads or begs; an exclamation that presents shock or surprise; an interrogative that asks a question; and an imperative that gives a command,"
+essential_category,Essential,compose,a paragraph about,"['concept', 'person', 'event', 'device', 'text']",A paragraph is an organizational tool that includes a topic sentence and several sentences on that topic.
+essential_category,Essential,compose,an essay on,"['concept', 'person', 'event', 'device', 'text']","An essay is a general term for a piece of writing that includes an introduction, thesis statement, body paragraphs, a conclusion, and a title."
+essential_category,Essential,compose,a thesis statement on,"['concept', 'person', 'event', 'device', 'text']",A thesis statement is a single sentence that presents the topic and argument for an essay.
+essential_category,Essential,compose,a summary of,"['event', 'text']",A summary is a brief overview of the concrete contents of a text absent any analysis or interpretation.
+essential_category,Essential,compose,a textual description of,"['concept', 'person', 'event']","A textual description is a description of an object, person, or event that uses words."
+analytic_category,Analytic,compose,an analytic essay on,['text'],"An analytical essay is a general term for writing a literary or rhetorical analysis of a text. The text should be read closely, annotated, then devices or strategies that the author uses should be discussed to show what purpose the text achieves."
+analytic_category,Analytic,compose,a dialectical essay on,['text'],"A dialectical essay examines two features of a text or an issue and synthesizes them to make an argument. Simply put, a dialectical essay puts forward a thesis, its antithesis, and then attempts locate a compromise between the two."
+analytic_category,Analytic,compose,an exegetical reading of,['text'],"Exegesis focuses on the function of religious symbols
+and imagery."
+analytic_category,Analytic,compose,a feminist reading of,['text'],"Feminism explores the ways in which the characters
+are presented as embodied, be it sexually or racially."
+analytic_category,Analytic,compose,a formalist reading of,['text'],"Formalism is concerned with the text and nothing but
+the text, excluding all considerations of the historical
+context and authorial background."
+analytic_category,Analytic,compose,an historical reading of,['text'],"Historicism considers how the text relates to its
+particular historical moment."
+analytic_category,Analytic,compose,a marxist reading of,['text'],"Marxism investigates the economic or technological
+influences upon a text."
+analytic_category,Analytic,compose,a new historical reading of,['text'],"New historicism considers how the text relates to
+our historical moment."
+analytic_category,Analytic,compose,a psychoanalytic reading of,['text'],"Psychoanalysis focuses on the emotional or psychological
+development of a character."
+analytic_category,Analytic,compose,a queer reading of,['text'],"Queer theory can be understood in several ways, but it might best be viewed as an attempt to deconstruct the binary structures of identity."
+analytic_category,Analytic,compose,a structuralist reading of,['text'],"Structuralism attempts to find the base structure of
+literature itself, be it in the use of archetypes, tropes,
+plot, characterization, or any other aspect of literature
+that appears universal."
+analytic_category,Analytic,compose,an etymological study on,"['device', 'common', 'essential']",Etymology is the study of the roots and developments of words in a language.
+analytic_category,Analytic,compose,a revisionist response to,['event'],A revisionist response generally involves a reevaluation of an historical topic or event to challenge a commonly-held understanding of that topic or event.
+analytic_category,Analytic,compose,an annotated bibliography for,['text'],An annotated bibliography is a list of references for an essay or a research paper followed by a brief explanation of the content of the resource and its value for the research project.
+analytic_category,Analytic,compose,a bibliography for,['text'],A bibliography is a list of references for an essay or research paper.
+analytic_category,Analytic,compose,a translation of,['text'],A translation refers to rewriting a text in a way that is more easily understood by an audience.
+journalism_category,Journalism,compose,an advice column for,['person'],An advice column is usually presented as an informal letter in response to a question from the audience.
+journalism_category,Journalism,compose,an article on,"['person', 'event']","The term “article” applies to a very wide range of
+styles and approaches. Clearly, it carries the notion of a
+journalistic discourse, but the context – which includes
+where it is to be published, and to whom it is to be
+addressed – will have a powerful influence on how it is
+written."
+journalism_category,Journalism,compose,an editorial about,"['person', 'event', 'concept']",An editorial is an opinion piece on a topic of concern that urges for a particular action on a particular issue or situation.
+journalism_category,Journalism,compose,an embedded interview article about,['person'],"There are two common types of ""interviews"": the
+“transcript” and the “embedded interview.” The transcript
+reads like a script, being an accurate transcription
+of the words used, without commentary or description.
+The embedded variety is essentially an article, based
+on description and commentary, with liberal quotation
+(which may be either direct quotation or reported
+speech)."
+journalism_category,Journalism,compose,a caption for,['event'],"A caption is a title or brief explanation appended to
+an article, illustration, cartoon, or poster. The caption
+should add something to the graphic element and not
+simply state what is obvious. In general, captions should
+be informative, accurate and non-judgmental though for
+a satirical or political publication they may serve some
+other purpose."
+journalism_category,Journalism,compose,a magazine article about,"['event', 'person']",Magazine articles are long form essays written for a particular audience on topics of interest to that audience.
+journalism_category,Journalism,compose,a newspaper column on,"['event', 'person']",A newspaper column reports on events in the world in a formal and objective tone.
+journalism_category,Journalism,compose,an opinion piece on,"['event', 'person', 'concept']","An opinion piece is similar to an editorial in that it states an opinion on a topic or situation, but an opinion may not have an explicit call to action."
+journalism_category,Journalism,compose,a review of,['text'],"A review may be written on a book, a movie, a
+restaurant, or a performance. This text type is really a
+journalistic form, which aims to combine objective information
+with subjective opinion. The (dominant) element
+of “opinion” should involve analysis and evaluation –
+while the journalism context usually demands that the
+overall impact should be interesting and entertaining.
+A review is not a “commentary” (which implies an
+academic context)."
+journalism_category,Journalism,compose,a tabloid magazine about,"['event', 'person', 'concept']","A tabloid magazine is similar to a magazine except that it deals in less in facts and information, than in gossip and sensationalism."
+journalism_category,Journalism,compose,a book review on,['text'],A book review is a relatively short evaluation of a text that summarizes the text and gives an opinion on its quality.
+journalism_category,Journalism,compose,a news report about,"['event', 'person']",A news report is similar in purpose to a newspaper column except that a news report is a script intended to be televised or broadcast.
+journalism_category,Journalism,compose,a headline about,"['event', 'person']","A headline is a short, concise, and attention-grabbing title for a newspaper column that informs the audience of a piece of news and attempts to persuade the audience to read the complete column,"
+journalism_category,Journalism,compose,a transcript of an interview with,['person'],A transcript of an interview is the pure dialogue of what was said by the participants in a conversation.
+realworld_category,Real World,create,a cover letter for,['person'],"A cover letter is a formal letter of introduction, usually written when seeking employment. The cover letter should introduce the candidate's strengths, what they can bring to the institution, and what their future goals are. Cover letters are useful to compliment and expand upon information in a résumé or curriculum vitae."
+realworld_category,Real World,create,a curriculum vitae for,['person'],"A curriculum vitae (or CV) is similar to a résumé in that it introduces the background and experience of a candidate for employment. The primary difference is that a CV may include information that is not necessarily related to employment such as travels, hobbies, interests, and other personal information that show the candidate is well-rounded or unique in some way. "
+realworld_category,Real World,create,a series of diary entries about,"['event', 'concept', 'person', 'text']","A diary entry is written by an author as a means for recording the events of the day and the author's personal feelings and thoughts about the day. The primary difference between a journal and a diary is that a journal may or may not share the author's feelings or thoughts, but only the events of the day."
+realworld_category,Real World,create,a series of journal entries about,"['event', 'concept', 'person', 'text']","A journal entry is written by an author as a means for recording the events of the day. The primary difference between a journal and a diary is that a journal may or may not share the author's feelings or thoughts, but only the events of the day."
+realworld_category,Real World,create,an email to,['person'],An email is similar to a letter in electronic form though emails tend to be less formal and are generally short and to the point.
+realworld_category,Real World,create,a formal letter to,['person'],"This group of text types involve writing directly to a
+specific reader – as opposed to the other text types,
+which all involve writing for a generalized or notional
+audience. The fundamental distinction between ‘formal
+and ‘informal’ correspondence is that in the formal type
+the purpose of the letter is more important than the
+relationship with the reader, whereas in the informal
+type, the relationship between writer and reader is at
+least as important as the purpose."
+realworld_category,Real World,create,an informal letter to,['person'],"This group of text types involve writing directly to a
+specific reader – as opposed to the other text types,
+which all involve writing for a generalized or notional
+audience. The fundamental distinction between ‘formal
+and ‘informal’ correspondence is that in the formal type
+the purpose of the letter is more important than the
+relationship with the reader, whereas in the informal
+type, the relationship between writer and reader is at
+least as important as the purpose."
+realworld_category,Real World,create,a letter of complaint to,['person'],Letters of complaint are generally sent by a consumer to a company to present a problem with a product or a service in hopes that the company will recompense the consumer or make some change in their product or service.
+realworld_category,Real World,create,a letter of congratulations to,['person'],Letters of congratulations are generally sent between friends to celebrate or acknowledge some event of importance.
+realworld_category,Real World,create,a letter of sympathy to,['person'],Letters of sympathy are generally sent between friends to acknowledge and offer condolences for some unhappy event.
+realworld_category,Real World,create,a letter of recommendation for,['person'],Letters of recommendation are written by colleagues or superiors to inform an institution of a person's ability and appropriateness for an occupation or program.
+realworld_category,Real World,create,a love letter to,['person'],Love letters are private correspondence exchanged between romantic partners.
+realworld_category,Real World,create,a résumé for,['person'],"A résumé or curriculum vitae (CV) is a summary
+of your education and work experience to distinguish
+yourself as a candidate for employment. It may include
+additional information such as awards or recognitions,
+community service, language or technical skills, and certifications,
+among other notable strengths or achievements."
+realworld_category,Real World,create,a speech about,"['event', 'person', 'concept']","This text type involves the written form of a discourse to be presented orally. The task may emphasize clear explanation (talk, presentation), or convincing argumentation (introduction to debate, speech)."
+realworld_category,Real World,create,a presentation on,"['event', 'person', 'concept', 'event', 'device']",A presentation is a general term for an orally and visually presenting information on a particular topic to an audience.
+realworld_category,Real World,create,a formal report about,"['event', 'person', 'concept', 'event', 'device']","The essence of this text type is the ability to present
+a clear explanation of a given subject – which involves
+(i) analysis, (ii) summary and (iii) organization. Control
+of organization is a fundamental skill required for this
+text type. Explanations should be logical and the tone
+should be objective."
+realworld_category,Real World,create,a guidebook for,"['event', 'text', 'device']",A guidebook is a informational booklet that explains the highlights of a particular area so that the audience can discover the aspects of the location that they are seeking.
+realworld_category,Real World,create,a list of,,A list is a number of interrelated items concerned with a particular topic or purpose.
+realworld_category,Real World,create,an instruction manual for,"['event', 'person']","Instructions give concrete explanations in a precise sequence, whereas guidelines give general
+ explanations, which may or may not involve precise 
+sequence."
+realworld_category,Real World,create,a taxonomy of,"['event', 'person', 'concept']",A taxonomy is a textual or visual classification of the various entities in a group by their similarities and differences.
+realworld_category,Real World,create,a template for,,"Templates are often used by institutions to gather
+information or to assess performance. Common
+templates that you’ll encounter are application forms,
+surveys, and standardized tests."
+realworld_category,Real World,create,a glossary of terms for,"['event', 'concept', 'text']",A glossary of terms is a set up words with definitions.
+realworld_category,Real World,create,a table of contents for,"['event', 'concept']",A table of contents is an outline of the contents for an essay or a book.
+realworld_category,Real World,create,an outline for,['type'],An outline is a plan for an essay or some other project that lays out the argument and supporting evidence in short form.
+realworld_category,Real World,create,a timeline for,['event'],A timeline is a graphic organizer that lays out the times and dates for the chronology of some event.
+realworld_category,Real World,create,a debate on,"['concept', 'event']",A debate is a discussion between two individuals or two groups where each side takes a stance on a topic and presents evidence to support that stance.
+creative_category,Creative,craft,an internal monologue from the perspective of,['person'],An internal monologue is the speech of a single person as it occurs inside of their minds and is unheard by others.
+creative_category,Creative,craft,a non-linear narrative about,"['person', 'concept', 'event']",A non-linear narrative is a story where the plot or action is not presented chronologically.
+creative_category,Creative,craft,a parable about,"['person', 'concept', 'event']","A parable is a short story that presents a moral lesson. What distinguishes a parable from a moral fable is that a fable uses animals as the characters, but a parable does not."
+creative_category,Creative,craft,a card deck for,"['concept', 'event', 'text']",A card deck is can be used to classify a particular problem or be used as a study device by creating individual cards for different topics. A card deck could also be used to create a game.
+creative_category,Creative,craft,a dance routine about,"['concept', 'event', 'text']",A dance routine is a series of choreographed movements set to music.
+creative_category,Creative,craft,a monologue from the perspective of,"['person', 'event']",A monologue is the speech of a single person that may or may not be heard by others.
+creative_category,Creative,craft,a linear narrative about,"['person', 'concept', 'event']",A linear narrative is a narrative in which the plot or action is presented chronologically.
+creative_category,Creative,craft,a movie script about,"['person', 'concept', 'event']",A movie script is the stage directions and dialogue of the actors for a movie.
+creative_category,Creative,craft,a television script about,"['person', 'concept', 'event']",A television script is the stage directions and the dialogue for the actors on a television program.
+creative_category,Creative,craft,a dramatic performance about,"['person', 'concept', 'event']",A dramatic performance is a live-action portrayal of an historical or fictional event.
+creative_category,Creative,craft,a dialogue between,"['person', 'concept', 'event']",A dialogue is a conversation between two or more people.
+creative_category,Creative,craft,a re-enactment of,['event'],"A re-enactment is a dramatization of the action of a historical or fictional event, much like a dramatic performance with a script, stage directions, and actors."
+creative_category,Creative,craft,an examination or assessment on,"['concept', 'device', 'event', 'person', 'text']",An examination or assessment is a means for ascertaining whether a student has mastered a particular subject or topic.
+creative_category,Creative,craft,a rewrite of,['text'],A rewrite takes an already written text and changes some aspect of that text.
+creative_category,Creative,craft,an origin myth about,['person'],An origin myth is a story that presents how something or someone came to be what it is or who they are.
+creative_category,Creative,craft,a pamphlet for,"['concept', 'device', 'event', 'person', 'text']",A pamphlet is a short essay on a situation or issue that is intended to inform the public and call for action.
+creative_category,Creative,craft,guidelines for,"['event', 'concept']","Instructions give concrete explanations in a precise sequence, whereas guidelines give general
+ explanations, which may or may not involve precise 
+sequence."
+creative_category,Creative,craft,a recipe for,"['event', 'concept']",A recipe is a set of instructions on how to reach a particular outcome.
+creative_category,Creative,craft,a serial comic about,"['concept', 'device', 'event', 'person', 'text']",A serial comic is a comic composed of multiple panels.
+creative_category,Creative,craft,a syllabus on the topic of,"['concept', 'device', 'event', 'person', 'text']",A syllabus is a plan for a group of lessons to an audience of students on a particular topic and usually contains learning goals and an assessment activity.
+creative_category,Creative,craft,a lesson plan about,"['concept', 'device', 'event', 'person', 'text']",A lesson plan is an outline of a lesson for an audience of students on a particular topic and usually contains learning goals and an assessment activity.
+creative_category,Creative,craft,a crossword puzzle about,"['concept', 'device', 'event', 'person', 'text']",A crossword puzzle is a grid of horizontal and vertical blank squares with clues as to which words are to be entered into the blank squares.
+creative_category,Creative,craft,a word search about,"['concept', 'device', 'event', 'person', 'text']",A word search is a grid of letters containing words on a particular topic.
+creative_category,Creative,craft,a script for,"['event', 'text']","A script is the dialogue and stage directions for a play, movie, or television show."
+creative_category,Creative,craft,a one-act play about,"['person', 'event', 'concept', 'text']",A one-act play is a script of the dialogue and stage directions for a single act of drama that presents and completes the action of the play.
+creative_category,Creative,craft,a motto for,['concept'],A motto is generally a one-sentence rule or guide for the actions of an individual or institution.
+creative_category,Creative,craft,a maxim about,['concept'],A maxim is generally a one-sentence rule or guide for action in an individual's life.
+creative_category,Creative,craft,an aphorism about,['concept'],An aphorism is a wise-saying that presents some general truth about the human condition.
+creative_category,Creative,craft,an eye-witness account of,['event'],An eye-witness account narrates an event from the perspective of a person who witnessed the event.
+creative_category,Creative,craft,a Socratic dialogue between,"['person', 'concept', 'event']",A Socratic dialogue is a conversation between two or more people where one of the people poses questions that drive the conversation and allow for a deeper understanding of the topic.
+internet_category,Internet,create,a blog about,"['person', 'event', 'concept', 'text']","A blog is a public statement and may feature a diary-type commentary and links to articles on other websites. The blog should make clear statements on a topic with some personal conclusions, should acknowledge the audience (which may include regular readers) and may also refer to previous posts."
+internet_category,Internet,create,a social media post about,"['person', 'event', 'concept', 'text']","Social media is not merely a place for friends to
+communicate, but is widely used by professionals and
+corporations. Social media posts may have a variety of
+platforms and purposes, but generally they seek to be
+shared among different users so that your message
+spreads."
+internet_category,Internet,create,a website design for,"['person', 'event', 'concept', 'text']",A website design is a plan for the contents of a home page and related sub pages.
+internet_category,Internet,create,a podcast about,"['person', 'event', 'concept', 'text']","A podcast is an audio recording of one or more people presenting on a topic in order to inform, persuade, or entertain."
+internet_category,Internet,create,a hyperlinked narrative about,"['event', 'concept']","A hyperlinked narrative is a story that contains hyperlinks to other sections of the story, resources, or relevant information."
+visual_category,Visual,create,a diagram of,"['event', 'concept', 'text', 'person']","Diagrams can take various forms, but their purpose is to function as a visual explanation of a complex idea or process."
+visual_category,Visual,create,a caricature of,['person'],A caricature is a image of a subject depicted in an overly simplified or exaggerated way to highlight defining features of the subject.
+visual_category,Visual,create,a collage of,"['event', 'person', 'concept']",A collage is an art form created by cutting images out from their backgrounds and pasting them together to form a new tableau.
+visual_category,Visual,create,a metaphor map of ,['device'],Metaphor maps are brainstorming diagrams composed of interconnected bubbles to aid in understanding the potential function of a symbol or metaphor in a text.
+visual_category,Visual,create,a map of,"['concept', 'text', 'event']",Maps are generally geographical diagrams that lay out the physical surrounding of a location so that a user can find their way to their destination.
+visual_category,Visual,create,a painting of,"['concept', 'text', 'person', 'event']","A painting is a general term for a visual work of art that uses some form of paint, such as water colors, acrylics, or oil paint."
+visual_category,Visual,create,a photograph of,"['event', 'concept', 'person']",A photograph is an image created by a camera.
+visual_category,Visual,create,a schematic for,"['event', 'concept', 'text', 'device']",A schematic is a simplified visual or diagram that breaks down a complex idea.
+visual_category,Visual,create,a pie chart for,"['concept', 'text', 'device']",A piece chart is a type of graph in which a circle is divided into sectors that each represent a part of the whole and is intended to visually organize qualitative or quantitative data.
+visual_category,Visual,create,a graph of,['concept'],Graphs take various forms but their purpose is to display quantitative data in an accessible format.
+visual_category,Visual,create,a Venn diagram comparing,"['person', 'device', 'concept', 'event']",A Venn diagram is a visual organizers that shows relationships between entities using circles. Where the circles overlap shows a shared relationship between elements.
+visual_category,Visual,create,a video about,"['person', 'text', 'device', 'event', 'concept']",A video is a general term for creating a videon on a topic to inform or entertain an audience.
+visual_category,Visual,create,a visual description of,"['person', 'text', 'device', 'event', 'concept']",A visual description is a description carried out through visual elements instead of written description.
+visual_category,Visual,create,a word cloud about,"['person', 'text', 'device', 'event', 'concept']","A word cloud is a brainstorming device for ideas about the relationship between words, characters, or concepts on a topic or a text."
+visual_category,Visual,create,a treasure map for,"['text', 'event', 'concept']",A treasure map is a map of a geographical location that leads the audience to a desired goal through the use of riddles.
+visual_category,Visual,create,a poster about,"['person', 'text', 'device', 'event', 'concept']",A poster is a large advertisement composed of visual and textual elements to inform an audience about a particular topic.
+visual_category,Visual,create,a slideshow about,"['person', 'text', 'device', 'event', 'concept']",A slideshow is a visual and textual presentation of information to an audience.
+poetry_category,Poetry,craft,an epic poem about,"['person', 'device', 'text', 'event']",An epic poem is generally written in verse with a set meter and describes some heroic action using exaggeration and archaic diction.
+poetry_category,Poetry,craft,a free verse poem about,"['person', 'device', 'text', 'event']","A free verse poem can take any form, but is generally short, relies heavily on imagery, and does not rhyme."
+poetry_category,Poetry,craft,a villanelle about,"['person', 'device', 'text', 'event']","A villanelle is a complex form composed of five three-line stanzas and a final quatrain, with the first and third lines of the first stanza repeating alternately as the final line in the following stanzas. The two refrain lines form the final couplet in the quatrain of the final stanza."
+poetry_category,Poetry,craft,a pantoum about,"['person', 'device', 'text', 'event']","A pantoum is a complex form composed of a series of quatrains, with the second and fourth lines of each quatrain repeated as the first and third lines of the next. The second and fourth lines of the final stanza repeat the first and third lines of the first stanza. A pantoum can be of any length."
+poetry_category,Poetry,craft,a poem about,"['person', 'device', 'text', 'event']","A poem can take many forms but is generally a short piece of writing written in verse, divided into stanzas, with a rhyme scheme and a set meter."
+poetry_category,Poetry,craft,a slam poem about,"['person', 'device', 'text', 'event']",A slam poem is generally told from the perspective of the speaker and has a braggodocious tone as it relates the superior qualities of the speaker.
+poetry_category,Poetry,craft,a sestina about,"['person', 'device', 'text', 'event']","A sestina is a complex form composed of six stanzas of six lines each with a final triplet, where all of stanzas end with the same six words to follow a fixed pattern, with all of the six words appearing in the closing three-line stanza. The pattern for the six words at the end of each line is: Stanza One: 1 2 3 4 5 6 Stanza Two: 6 1 5 2 4 3 Stanza Three: 3 6 4 1 2 5 Stanza Four: 5 3 2 6 1 4 Stanza Five: 4 5 1 3 6 2 Stanza Six: 2 4 6 5 3 1 Final Triplet: (6 2) (1 4) (5 3)"
+poetry_category,Poetry,craft,an Elizabethan sonnet about,"['person', 'device', 'text', 'event']","A sonnet is a 14-line poem in iambic pentameter composed of two quatrains, a volta, and a final couplet, with the rhyme scheme of ABABCDCDEFEFGG."
+business_category,Business and Technical,create,an advertisement for,"['person', 'device', 'text', 'event', 'concept']","The purpose of this text type is to ‘sell’ a concrete
+idea (rather than to “win” an abstract argument, as in
+a debate or an essay). This will usually involve suggesting
+specific practical changes to a given situation; and
+the notion of “selling” will involve address to a specific
+target audience."
+business_category,Business and Technical,create,a blurb about,"['person', 'device', 'text', 'event', 'concept']","A blurb is a form of promotional writing that is
+commonly found on the back of books. Blurbs generally
+introduce the basic situation of the book, its central
+conflict, and hint of a surprise, if only you read the book.
+Blurbs also tend toward hyperbole with phrases such as
+“a non-stop thrill ride” or “a tale that will haunt you for
+years to come.”"
+business_category,Business and Technical,create,a calendar for,"['event', 'concept']","A calendar is an organizational time table set up by days, months, and weeks."
+business_category,Business and Technical,create,a bar chart for,"['concept', 'text', 'device']",A bar chart presents data with rectangular bars with heights or lengths that relate to the values that they represent. 
+business_category,Business and Technical,create,a book cover for,['text'],A book cover includes the title and author of the book and some visual element that reveals the book's topic or content in order to persuade an audience to purchase the book.
+business_category,Business and Technical,create,a brochure for,"['person', 'device', 'text', 'event', 'concept']","These formats were designed to quickly and concisely
+disseminate information. The goal may be to inform
+(e.g. a flyer highlighting an upcoming political rally) or to
+promote (e.g. a publicity brochure for a beauty spa)."
+business_category,Business and Technical,create,a campaign proposal for,"['person', 'event', 'concept']","A campaign proposal is similar to a business proposal in that it seeks funding from an individual or group, but a campaign is more likely for a non-profit venture rather than one for profit, such as a new community art center or a food bank."
+business_category,Business and Technical,create,a business proposal,"['concept', 'event']",A business proposal is a formal written presentation of a plan for a business that attempts to persuade a group or individual to invest in the project.
+business_category,Business and Technical,create,a flyer for,"['person', 'device', 'text', 'event', 'concept']","A flyer is a single-page advertisement that is generally handed out on the street or placed in conspicuous locations to raise awareness, announce an event, or sell a product."
+business_category,Business and Technical,create,a press release for,"['event', 'person', 'concept']","A press release is essentially a news article that promotes
+a company. The relevant information concerning
+the company (e.g. release of a new product) should
+be presented succinctly and clearly. A successful press
+release may be published and provide free publicity."
+business_category,Business and Technical,create,a proposal for,"['concept', 'event']",A proposal is a general format for presenting an idea for a project or a product in order to seek its approval and support from an individual or group.
+business_category,Business and Technical,create,an informational video about,"['person', 'device', 'text', 'event', 'concept']",Informational videos are generally used as public service announcements to advise on a situation of need or concern in a particular society.
+business_category,Business and Technical,create,a promotional video for,"['person', 'device', 'text', 'event', 'concept']",A promotional video is a form of visual advertising that promotes a product or service. The difference between a promotional video and a television advertisement is that promotional videos tend to be longer.
+business_category,Business and Technical,create,a poll about,"['person', 'device', 'text', 'event', 'concept']",A poll asks a group of people a question on a single topic in order to discover the percentage of approval or disapproval for an individual or policy decision. The primary difference between a poll and a survey is that a poll is a single question and a survey asks multiple questions.
+business_category,Business and Technical,create,a survey about,"['person', 'device', 'text', 'event', 'concept']",A survey asks a group of people multiple questions about a topic in order to discover the approval or disapproval for an individual or policy decision or to ascertain preferences. The primary difference between a poll and a survey is that a poll is a single question and a survey asks multiple questions.
+business_category,Business and Technical,create,a logo for,"['person', 'device', 'text', 'event', 'concept']","A logo is a visual representation of a company, organization, or institution."
+business_category,Business and Technical,create,an advertising campaign for,"['person', 'device', 'text', 'event', 'concept']",An advertising campaign is a series of advertisements providing promotion for or information on a product or service.
+business_category,Business and Technical,create,a marketing campaign for,"['person', 'device', 'text', 'event', 'concept']","A marketing campaign includes not only a series of advertisements, but the various forms of advertising to be used such as television, print, or radio, as well as the locations for the campaign, the partnerships within the campaign, the expected outcomes, and a budget for the campaign."
+business_category,Business and Technical,create,a budget for,"['event', 'person']","A budget is a list of expenses categorized by type for a company, institution, or individual."
+business_category,Business and Technical,create,a tagline for,"['person', 'device', 'text', 'event', 'concept']","A tagline is a short, punchy, and memorable series of words to advertise a product or service."
+business_category,Business and Technical,create,a slogan for,"['person', 'device', 'text', 'event', 'concept']",A slogan is composed of only a few words and serves as the primary advertising hook for a company or institution.
+business_category,Business and Technical,create,a testimonial about,"['person', 'device', 'text', 'event', 'concept']","A testimonial is a statement from a user or consumer of some product or service intended to promote that product or service,"

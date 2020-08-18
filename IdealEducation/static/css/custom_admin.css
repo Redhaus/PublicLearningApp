@@ -1,0 +1,71 @@
+.line {
+    border-bottom: #d9d9d9 1px solid;
+    margin-bottom: 15px;
+    /*margin-top: 10px;*/
+}
+
+.line-top > div {
+    border-top: #d9d9d9 1px solid;
+    padding-top: 20px;
+    /*margin-top: 10px;*/
+}
+
+.actions{
+    padding-top: 10px;
+}
+
+.title {
+    font-size: 1.2em;
+    /*font-weight: 600;*/
+}
+
+
+
+/*COLORS////////////////////////////////*/
+
+
+:root {
+  --main-bg-color: #343F4C;
+  --primary-color: #1C86BA;
+  --secondary-color: #36A3D9;
+}
+/*header {*/
+/*  background-color: var(--main-bg-color);*/
+/*}*/
+/*a {*/
+/*  color: var(--primary-color);*/
+/*}*/
+/*a:hover {*/
+/*  color: var(--secondary-color);*/
+/*}*/
+/*.button,*/
+/*header .button {*/
+/*  background-color: var(--primary-color);*/
+/*  border-color: var(--main-bg-color);*/
+/*}*/
+/*.button:hover,*/
+/*.replace-file-input:hover button {*/
+/*  background-color: var(--primary-color) !important;*/
+/*}*/
+/*.button-secondary {*/
+/*  color: var(--main-bg-color);*/
+/*}*/
+
+/*.dropdown .dropdown-toggle {*/
+
+/*    background-color: var(--primary-color);*/
+
+/*}*/
+
+/*edit header bar*/
+.object>.title-wrapper {
+    background: #eee !important;
+}
+
+/*edit header down arrow bar*/
+.object>.title-wrapper:before {
+    background-color: #ccc !important;
+}
+
+
+
