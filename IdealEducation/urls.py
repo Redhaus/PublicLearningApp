@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.urls import include, path
+from django.urls import include, path, re_path
 from django.conf.urls import url
 from django.contrib import admin
 
@@ -11,6 +11,8 @@ from ideal_users.views import AcceptInviteView
 
 from search import views as search_views
 
+# import index template view for vuejs
+from home.views import IndexTemplateView
 
 
 
@@ -82,6 +84,9 @@ urlpatterns = [
     # all auth urls needs to be placed last so they handle any incoming confirmation
     # allauth urls creates browser urls like yourwebsite.com/login/ /logout/ /signup/
     url(r'', include('allauth.urls')),
+
+    # catch all for any url to direct to index
+    url(r'^.*$', IndexTemplateView.as_view(), name="entry-point")
 
 ]
 

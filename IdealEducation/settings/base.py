@@ -100,6 +100,9 @@ INSTALLED_APPS = [
     # content migration
     'content_migration',
 
+    # vue frontend loader
+    'webpack_loader',
+
     # postgres backend search
     # 'wagtail.contrib.postgres_search',
 
@@ -251,3 +254,11 @@ ACCOUNT_SESSION_REMEMBER = True
 ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
 ACCOUNT_USERNAME_BLACKLIST = ["admin", "god"]
 ACCOUNT_USERNAME_MIN_LENGTH = 2
+
+
+WEBPACK_LOADER = {
+    'DEFAULT': {
+        'BUNDLE_DIR_NAME': 'dist/',
+        'STATS_FILE': os.path.join(BASE_DIR, 'frontend', 'webpack-stats.json'),
+    }
+}
