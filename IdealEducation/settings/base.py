@@ -91,6 +91,9 @@ INSTALLED_APPS = [
     # api
     'ideal_api',
 
+    # api filters
+    'django_filters',
+
     # admin display and style
     'ideal_admin',
 
@@ -261,4 +264,9 @@ WEBPACK_LOADER = {
         'BUNDLE_DIR_NAME': 'dist/',
         'STATS_FILE': os.path.join(BASE_DIR, 'frontend', 'webpack-stats.json'),
     }
+}
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
 }

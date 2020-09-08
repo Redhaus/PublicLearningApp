@@ -1,23 +1,78 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
+import Lexis from "../views/Lexis.vue";
+import Events from "../views/Events.vue";
+import Readings from "../views/Readings.vue";
+import Explorations from "../views/Explorations";
+import Extensions from "../views/Extensions";
+import Performances from "../views/Performances";
+import Questions from "../views/Questions";
+import Goals from "../views/Goals";
+
 
 Vue.use(VueRouter);
 
 const routes = [
   {
     path: "/",
-    name: "Home",
+    name: "Dashboard",
     component: Home
   },
+
   {
-    path: "/about",
-    name: "About",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/About.vue")
+    path: "/events",
+    name: "Events",
+    component: Events
+  },
+  // {
+  //   path: "/events",
+  //   name: "Events",
+  //   // route level code-splitting
+  //   // this generates a separate chunk (about.[hash].js) for this route
+  //   // which is lazy-loaded when the route is visited.
+  //   component: () =>
+  //     import(/* webpackChunkName: "about" */ "../views/Events.vue")
+  // },
+  {
+    path: "/readings",
+    name: "Readings",
+    component: Readings
+  },
+
+  {
+    path: "/explorations",
+    name: "Explorations",
+    component: Explorations
+  },
+  {
+    path: "/lexis",
+    name: "Lexis",
+    component: Lexis
+  },
+
+  {
+    path: "/questions",
+    name: "Questions",
+    component: Questions
+  },
+
+  {
+    path: "/performances",
+    name: "Performances",
+    component: Performances
+  },
+
+  {
+    path: "/extensions",
+    name: "Extensions",
+    component: Extensions
+  },
+
+      {
+    path: "/goals",
+    name: "Goals",
+    component: Goals
   }
 ];
 
