@@ -41,9 +41,10 @@
             <masonry :cols="4" :gutter="20">
                 <div v-for="question in questions_list" :key="question.id" class="bottom-padding">
                     <q-card
-                            :class="{ active: question_id_list.includes(question.id) }"
+                            :class="{ active: selected_list.includes(question.id) }"
                             bordered
                             @click="eventAction(question.id)"
+                            class="cardHandle"
                     >
                         <q-card-section>
                             <div v-html="question.question"></div>
@@ -71,7 +72,7 @@
             return {
                 lorem:
                     "Lorem ipsum dolor sit amet, sale audiam viderer ei cum, munere labitur expetenda sed ad, mea albucius prodesset no. Ne interesset referrentur qui, simul nusquam ne eam, id est appetere legendos. Cu usu cibo legere ullamcorper, ut decore assueverit qui, his iusto lucilius singulis id. Mazim noster usu ei. Sonet voluptua eu mea.",
-                question_id_list: [],
+                // question_id_list: [],
                 search: ""
             };
         },
@@ -80,23 +81,24 @@
             // this.$store.dispatch('fetchEvents', {endpoint: this.slug});
             // this.$store.dispatch('fetchEvents');
             this.$store.dispatch("fetchQuestions");
-            this.question_id_list = this.$store.getters["getSelectedQuestions"];
+            // this.question_id_list = this.$store.getters["getSelectedQuestions"];
         },
 
         computed: {
 
+            selected_list(){
+                return this.$store.getters["getSelectedQuestions"];
+            },
+
             // this makes sure there is selected event before content is displayed
             selected_event() {
-
-                let selectedEvent = this.$store.getters["getSelectedEvent"];
-                console.log('SELECTED_EVENT, :', selectedEvent);
-                return selectedEvent
+                return this.$store.getters["getSelectedEvent"];
             },
 
             questions_list() {
                 let questions = this.$store.getters["getQuestions"];
 
-                console.log(this.search);
+                // console.log(this.search);
 
                 if (this.search.length > 0) {
                     // arr.filter(obj => obj.term.toLowerCase().includes(searchStr.toLowerCase()))
@@ -128,16 +130,20 @@
             },
 
             eventAction(event) {
-                if (this.question_id_list.includes(event)) {
-                    this.$store.dispatch("setSelectedQuestions", event);
 
-                    this.question_id_list = this.question_id_list.filter(function (item) {
-                        return item !== event;
-                    });
-                } else {
-                    this.$store.dispatch("setSelectedQuestions", event);
-                    this.question_id_list.push(event);
-                }
+                this.$store.dispatch("setSelectedQuestions", event);
+
+
+                // if (this.question_id_list.includes(event)) {
+                //     this.$store.dispatch("setSelectedQuestions", event);
+                //
+                //     this.question_id_list = this.question_id_list.filter(function (item) {
+                //         return item !== event;
+                //     });
+                // } else {
+                //     this.$store.dispatch("setSelectedQuestions", event);
+                //     this.question_id_list.push(event);
+                // }
             }
         }
     };

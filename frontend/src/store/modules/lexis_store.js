@@ -18,20 +18,21 @@ const actions = {
 
     fetchLexis({commit, rootState}) {
         // console.log('STATE: ', state);
-        console.log('ROOTSTATE: ', rootState);
+        // console.log('ROOTSTATE: ', rootState);
 
+            //http://127.0.0.1:8000/api/lexis/?term=&event_collection=&related_events__event_link=2
 
+        // /cars/color:blue/type:sedan/doors:4
 
+// http://127.0.0.1:8000/api/lexis/event_collection:1/related_events__event_link:1
+// http://127.0.0.1:8000/api/lexis/?term=&event_collection=1&related_events__event_link=1
 
-
-
-             console.log('LEXIS EMPTY');
-
+            // rootState
             let event_filter = rootState.lesson_store.lesson.selected_event;
-            console.log('EVENT FILTER: ', event_filter);
-            // let endpoint = 'http://127.0.0.1:8000/api/lexis/';
+        // let event_filter = rootState.lesson.selected_event;
+
             let endpoint = `http://127.0.0.1:8000/api/lexis/?term=&event_collection=${event_filter}`;
-            console.log('FETCH LEXIS ENDPOINT : ', endpoint);
+            // console.log('FETCH LEXIS ENDPOINT : ', endpoint);
 
             // if (event_filter) {
 
@@ -39,7 +40,7 @@ const actions = {
             apiService(endpoint)
                 .then(data => {
                     // console.log('results: ', data.results);
-                    console.log('DATA: ', data);
+                    // console.log('DATA: ', data);
                     commit('setLexis', data);
                 })
                 .catch((err) => {

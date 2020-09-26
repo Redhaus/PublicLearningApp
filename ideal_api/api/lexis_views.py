@@ -21,6 +21,8 @@ from django_filters import rest_framework as filters
 
 # AssignmentType Filter
 class LexisFilter(filters.FilterSet):
+
+
     # single filter
     # topics = filters.CharFilter(lookup_expr='icontains')
 
@@ -32,10 +34,16 @@ class LexisFilter(filters.FilterSet):
         ('concept', 'concept'),
         ('person', 'person'),
     )
-
+    #
+    # EVENT_LIST = (
+    #     ('aswl_e1', 'aswl_e1'),
+    #     ('aswl_e2', 'aswl_e2'),
+    #     ('aswl_e3', 'aswl_e3'),
+    # )
+    #
     term = filters.CharFilter(lookup_expr='icontains')
-
-    # multiple choice filter
+    #
+    # # multiple choice filter
     icon_list__icons = filters.MultipleChoiceFilter(
         field_name="icon_list__icons",
         lookup_expr='contains',
@@ -43,10 +51,22 @@ class LexisFilter(filters.FilterSet):
         choices=TOPIC_LIST
     )
 
+    # def getEvents(self):
+
+
+    # test = filters.MultipleChoiceFilter(
+    #     field_name="related_events",
+    #     lookup_expr='contains',
+    #     conjoined=True,  # uses AND instead of OR
+    #     choices=EVENT_LIST
+    # )
+
+
     # assign model and field terms
     class Meta:
         model = Lexis
-        fields = ('term', 'event_collection', 'icon_list__icons')
+        fields = ('term', 'event_collection', 'icon_list__icons', 'related_events__event_link')
+        # fields = ('event_collection', 'related_events__event_link')
 
 
 
@@ -76,7 +96,11 @@ class LexisViewSet(viewsets.ModelViewSet):
     serializer_class = LexisSerializer
     # permission_classes = [permissions.IsAuthenticated]
     # filter_backends = [DjangoFilterBackend]
-    # filterset_fields = ['event_collection']
+
+
+
+
+    # filterset_fields = ['event_collection', 'related_events__event_link']
 
     # uses django filters
     # filterset_fields = ['event_collection', 'term', 'icon_list__icons[]']

@@ -2,6 +2,7 @@ import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
+// import clip from "text-clipper";
 
 import VueMasonry from 'vue-masonry-css'
 
@@ -21,8 +22,18 @@ Vue.use(Quasar, {
   }
 });
 
+
+// new Vue({
+//   store,
+//   el: '#app',
+//
+// });
+
 new Vue({
   router,
   store,
+    created () {
+    console.log('STATE STORE: ', this.$store.state);
+  },
   render: h => h(App)
 }).$mount("#app");

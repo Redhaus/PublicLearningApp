@@ -7,7 +7,7 @@ from wagtail.admin import urls as wagtailadmin_urls
 from wagtail.core import urls as wagtail_urls
 from wagtail.documents import urls as wagtaildocs_urls
 from ideal_users.serializers import TeacherRegistrationView, SchoolRegistrationView, EditorRegistrationView
-from ideal_users.views import AcceptInviteView
+from ideal_users.views import AcceptInviteView, LoginCustomView
 
 from search import views as search_views
 
@@ -30,6 +30,9 @@ from ideal_api.api.keyquestions_views import KeyQuestionsViewSet
 from ideal_api.api.performances_views import PerformancesViewSet
 from ideal_api.api.readings_views import PrimaryFocusViewSet, FurtherExplorationsViewSet
 from ideal_api.api.assignment_types_views import AssignmentTypeViewSet
+from ideal_api.api.category_views import ReadingCategoryViewSet, ExCommandTypeViewSet, GoalStandardTypeViewSet
+from ideal_api.api.lesson_views import LessonViewSet
+
 
 
 # api router
@@ -45,6 +48,13 @@ router.register(r'performances', PerformancesViewSet)
 router.register(r'primary_focus', PrimaryFocusViewSet)
 router.register(r'further_explorations', FurtherExplorationsViewSet)
 router.register(r'assignment_types', AssignmentTypeViewSet)
+router.register(r'reading_categories', ReadingCategoryViewSet)
+router.register(r'extension_categories', ExCommandTypeViewSet)
+router.register(r'goal_categories', GoalStandardTypeViewSet)
+router.register(r'user_lessons', LessonViewSet)
+
+
+
 
 
 
@@ -56,6 +66,8 @@ router.register(r'assignment_types', AssignmentTypeViewSet)
 
 urlpatterns = [
 
+    url(r'^rest-auth/login/', LoginCustomView.as_view()),
+
     # API ROUTER ENDPOINTS
     url(r'^api/', include((router.urls, 'ideal_api'))),
 
@@ -66,6 +78,7 @@ urlpatterns = [
 
     # DRF REST BROWSER URL /login/  /logout/
     url(r'^drf/', include('rest_framework.urls')),
+
 
     # REST-AUTH ENDPOINT  rest_auth urls
     url(r'^rest-auth/', include('rest_auth.urls')),

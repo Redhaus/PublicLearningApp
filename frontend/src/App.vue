@@ -84,7 +84,13 @@
             }
         },
         created() {
-            this.fabYoutube = fabYoutube
+            this.fabYoutube = fabYoutube;
+            this.$store.dispatch("fetchCategories");
+            this.$store.dispatch("fetchLessons");
+            this.$store.dispatch("fetchLexis");
+
+
+
         },
 
         methods: {

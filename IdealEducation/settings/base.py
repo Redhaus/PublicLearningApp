@@ -106,6 +106,8 @@ INSTALLED_APPS = [
     # vue frontend loader
     'webpack_loader',
 
+    'teacher_lessons',
+
     # postgres backend search
     # 'wagtail.contrib.postgres_search',
 
@@ -268,5 +270,15 @@ WEBPACK_LOADER = {
 
 
 REST_FRAMEWORK = {
-    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ]
 }
+
+#
+# REST_FRAMEWORK = {
+#     'DEFAULT_AUTHENTICATION_CLASSES': [
+#         'rest_framework.authentication.TokenAuthentication',
+#     ]
+# }

@@ -42,16 +42,24 @@
                 <masonry :cols="3" :gutter="20">
                     <div v-for="book in reading_list" :key="book.id" class="bottom-padding">
                         <q-card
-                                 :class="{ active: book_id_list === book.id }"
+                                class="cardHandle"
+                                :class="{ active: selected_item === book.id }"
                                 bordered
                                 @click="eventAction(book.id)"
                         >
                             <q-card-section>
-                                <h4>{{ book.title_major }}</h4>
+                                <div class="text-title">{{ book.title_major }}</div>
+                                <div class="ability">{{ book.level_ability }}</div>
+                            </q-card-section>
 
-                                <p>Author: {{book.author_first_name}} </p>
-                                <p>Level: {{book.level_ability}} </p>
-                                <p>Type: {{book.reading_category.category_name}} | Pages: {{book.page_count}}</p>
+                            <q-separator/>
+
+                            <q-card-section>
+
+                                <div v-html="short_overview(book.synopsis)"></div>
+<!--                                <p>Author: {{book.author_first_name}} </p>-->
+<!--                                <p>Level: {{book.level_ability}} </p>-->
+<!--                                <p>Type: {{book.reading_category.category_name}} | Pages: {{book.page_count}}</p>-->
 
                             </q-card-section>
                         </q-card>
@@ -73,6 +81,8 @@
 
 
 <script>
+    import clip from "text-clipper";
+
     export default {
         data() {
             return {
@@ -93,11 +103,15 @@
 
         computed: {
 
+            selected_item(){
+                return this.$store.getters["getSelectedReading"];
+            },
+
             // this makes sure there is selected event before content is displayed
             selected_event() {
 
                 let selectedEvent = this.$store.getters["getSelectedEvent"];
-                console.log('SELECTED_EVENT, :', selectedEvent);
+                // console.log('SELECTED_EVENT, :', selectedEvent);
                 return selectedEvent
             },
 
@@ -105,7 +119,7 @@
             reading_list() {
                 let readings = this.$store.getters["getReadings"];
 
-                console.log('SEARCH', this.search);
+                // console.log('SEARCH', this.search);
 
                 if (this.search.length > 0) {
                     // arr.filter(obj => obj.term.toLowerCase().includes(searchStr.toLowerCase()))
@@ -122,19 +136,32 @@
         },
 
         methods: {
+
+            short_overview(html){
+
+                const clippedHtml = clip(html, 100, { html: true, maxLines: 5 });
+
+                // const clippedString = clip(string, 80);
+
+                // console.log('HTMLTRIM', clippedHtml);
+                return clippedHtml
+            },
+
             clearSearch() {
                 this.search = "";
             },
 
             eventAction(event) {
 
-                  if (this.book_id_list === event) {
-                    this.$store.dispatch("setSelectedReading", event);
-                    this.book_id_list = '';
-                } else {
-                    this.$store.dispatch("setSelectedReading", event);
-                    this.book_id_list = event;
-                }
+                this.$store.dispatch("setSelectedReading", event);
+
+                //   if (this.book_id_list === event) {
+                //     this.$store.dispatch("setSelectedReading", event);
+                //     this.book_id_list = '';
+                // } else {
+                //     this.$store.dispatch("setSelectedReading", event);
+                //     this.book_id_list = event;
+                // }
 
 
 
@@ -152,6 +179,10 @@
 </script>
 
 <style lang="scss" scoped>
+
+    .ability{
+        font-size: .7rem;
+    }
 
        .active {
         background-color: #cccccc;

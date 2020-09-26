@@ -14,6 +14,34 @@ from invitations.signals import invite_accepted
 
 from allauth.account.signals import user_signed_up
 from allauth.account.models import EmailAddress
+from rest_auth.views import LoginView
+
+from django.contrib.auth.models import User
+
+
+# REST AUTH IMPORTS
+from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.authtoken.models import Token
+from rest_framework.response import Response
+
+
+
+# Custom RestAuth Return to get Token and user data in response.data
+class LoginCustomView(ObtainAuthToken, LoginView):
+    def post(self, request, *args, **kwargs):
+        self.request = request
+        self.serializer = self.get_serializer(data=self.request.data,
+                                              context={'request': request})
+        self.serializer.is_valid(raise_exception=True)
+        self.login()
+        # return self.get_response()
+
+        print('AUTH CALLED')
+        response = super(LoginCustomView, self).post(request, *args, **kwargs)
+        token = Token.objects.get(key=response.data['token'])
+        user = User.objects.get(id=token.user_id)
+        return Response({'token': token.key, 'id': token.user_id, 'user': user.username})
+
 
 # this view overwrites invite view that allows link to be clicked twice
 class AcceptInviteView(AcceptInvite):

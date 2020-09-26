@@ -1,4 +1,4 @@
-import {CSRF_TOKEN} from "./csrf";
+// import {CSRF_TOKEN} from "./csrf";
 import axios from 'axios';
 
 import {
@@ -21,7 +21,7 @@ function handleResponse(response) {
         Loading.hide();
         return null;
     } else {
-        console.log('RESPONSETIME: ', response.data);
+        // console.log('RESPONSETIME: ', response.data);
         Loading.hide();
         return response.data;
     }
@@ -38,6 +38,9 @@ function handleResponse(response) {
 // the method and the data if any
 const apiService = function (endpoint, method, data) {
 
+
+    // console.log("METHOD", method);
+
     // default options
 // Loading.show()
 
@@ -53,7 +56,7 @@ const apiService = function (endpoint, method, data) {
     // if method not set assume get request
     // if data is supplied stringify it, else set body to null
     // set up header with csrf token and content type
-    console.log('TOKEN: ', CSRF_TOKEN);
+    // console.log('TOKEN: ', CSRF_TOKEN);
     // const config = {
     //     method: method || "GET",
     //     body: data !== undefined ? JSON.stringify(data) : null,
@@ -63,15 +66,24 @@ const apiService = function (endpoint, method, data) {
     //     }
     // };
 
+    // grab the user token from local storage
+    let token = window.localStorage.getItem('access_token');
+
     const config = {
         method: method || "GET",
         url: endpoint,
         data: data,
         headers: {
             "content-type": "application/json",
-            "X-CSRFTOKEN": CSRF_TOKEN
+            // "X-CSRFTOKEN": CSRF_TOKEN,
+            "Authorization": "Token " + token
         }
     };
+
+
+
+        // console.log('CONFIG: ', config);
+
 
     // set up fetch functon to user config
     // return fetch(endpoint, config)

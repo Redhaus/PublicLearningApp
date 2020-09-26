@@ -3,6 +3,7 @@ const state = {
     lesson: {
         selected_event: '',
         selected_reading: '',
+        selected_related_events: [],
         selected_exploration: [],
         selected_lexis: [],
         selected_questions: [],
@@ -18,26 +19,27 @@ const mutations = {
     setSelectedEvent(state, payload) {
         // state.lesson.selected_event = payload
 
-          if (state.lesson.selected_event === payload) {
+        if (state.lesson.selected_event === payload) {
 
-                    state.lesson.selected_event = '';
-                } else {
-                    state.lesson.selected_event = payload
-                }
+            state.lesson.selected_event = '';
+        } else {
+            state.lesson.selected_event = payload
+        }
 
     },
 
     setSelectedReading(state, payload) {
 
-                  if ( state.lesson.selected_reading === payload) {
-                     state.lesson.selected_reading = '';
-                } else {
-                     state.lesson.selected_reading = payload
-                }
+        if (state.lesson.selected_reading === payload) {
+            state.lesson.selected_reading = '';
+        } else {
+            state.lesson.selected_reading = payload
+        }
 
     },
 
     setSelectedLexis(state, payload) {
+    // setSelectedLexis() {
 
         // if event is already in array, then remove it with filter
         // otherwise push it to the array
@@ -67,7 +69,7 @@ const mutations = {
         // state.lesson.selected_lexis = payload
     },
 
-     setSelectedQuestions(state, payload) {
+    setSelectedQuestions(state, payload) {
 
         // if event is already in array, then remove it with filter
         // otherwise push it to the array
@@ -194,6 +196,11 @@ const getters = {
 
     getSelectedGoals(state) {
         return state.lesson.selected_goals;
+    },
+
+    getSelections(state) {
+        console.log('GETTER SELECTIONS', state.lesson);
+        return state.lesson
     },
 
 };

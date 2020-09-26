@@ -10,7 +10,7 @@
       :key="link.text"
       v-ripple
       clickable
-      :active="links === link.style"
+    :active="$route.path === link.link"
       active-class="my-menu-link"
       @click="navSwitch(link.link, link.style)"
     >
@@ -152,6 +152,13 @@ export default {
           text: "Continual Goals",
           link: "/goals",
           style: "goals"
+        },
+
+         {
+          icon: fabYoutube,
+          text: "Review Lesson",
+          link: "/review",
+          style: "lessons"
         }
       ]
       // links2: [

@@ -2,7 +2,7 @@ from django.contrib.auth.models import User, Group
 from rest_framework import serializers
 # from lexis.models import Lexis, IconList, LexisEventCollection, LexisLink
 from events.models import CategoryEventCollection
-from lexis.models import Lexis, LexisEventCollection, LexisLink, IconList
+from lexis.models import Lexis, LexisEventCollection, LexisLink, IconList, Derivations
 
 
 
@@ -114,12 +114,25 @@ class HighlightField(serializers.RelatedField):
 
 # READ ONLY to Display custom format data
 # reformat data presentation of blocks to get id and value
-class DerivationField(serializers.RelatedField):
+# class DerivationField(serializers.RelatedField):
+#     def to_representation(self, value):
+#         return {
+#             "id": value.id,
+#             "value": value.value,
+#         }
+#
+class DerivationSerializer(serializers.ModelSerializer):
     def to_representation(self, value):
         return {
             "id": value.id,
             "value": value.value,
         }
+    # derivations = DerivationField(many=True, read_only=True)
+    # derivations = serializers.RelatedField(many=True)
+    #
+    # class Meta:
+    #     model = Derivations
+    #     fields = ['derivations']
 
 # READ ONLY to Display custom format data
 # reformat data presentation of blocks to get id and value
@@ -156,7 +169,11 @@ class LexisSerializer(serializers.HyperlinkedModelSerializer):
     # Stream blocks
     exploration = ExplorationField(many=True, read_only=True)
     application = ApplicationField(many=True, read_only=True)
-    derivations = DerivationField(many=True, read_only=True)
+    # derivations = DerivationField(many=True, read_only=True)
+    # derivations = DerivationField(many=True)
+    derivations = DerivationSerializer(many=True)
+
+
     lexis_root = LexisRootField(many=True, read_only=True)
     highlight = HighlightField(many=True, read_only=True)
 

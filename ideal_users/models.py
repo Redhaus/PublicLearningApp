@@ -3,6 +3,7 @@ from django.contrib.auth.models import Group
 
 # listen for signup allauth signal
 from allauth.account.signals import user_signed_up
+from django.contrib.auth.signals import user_logged_in
 
 # get reciever to dispatch signal
 from django.dispatch import receiver
@@ -12,7 +13,37 @@ from teacher_profile.models import TeacherProfile
 from school_profile.models import SchoolProfile
 from invitations.models import Invitation
 
+from rest_framework.authtoken.models import Token
 
+
+
+# def create_login_token(token_model, user, serializer):
+#     token, created = token_model.objects.get_or_create(user=user)
+#     if created:
+#         print("USER_LOGIN: ", user)
+#
+#     return token
+
+
+
+
+# User Login Signal if needed
+@receiver(user_logged_in)
+def signin_store_user(request, user,  **kwargs):
+
+    token = Token.objects.get(user_id = user.id)
+    print("TOKEN: ", token)
+
+    # driver.execute_script("window.localStorage.setItem('key','value');");
+
+#     print("USER_LOGIN: ", user.__dict__)
+#     print("USER_LOGIN: ", user.id)
+#     print('REQUEST', request.data)
+    # print('KWARGS', **kwargs)
+
+
+    # print("REQUEST: ", request.__dict__)
+    # print("TOKEN: ", request.token)
 
 # Signals fired once user signed up
 @receiver(user_signed_up)
@@ -90,5 +121,7 @@ def add_token(request, user,  **kwargs):
 
         group = Group.objects.get(name='Editors')
         user.groups.add(group)
+
+
 
 

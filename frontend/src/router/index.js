@@ -9,16 +9,22 @@ import Extensions from "../views/Extensions";
 import Performances from "../views/Performances";
 import Questions from "../views/Questions";
 import Goals from "../views/Goals";
+import Lessons from "../views/Lesson";
+import Signin from "../views/Signin";
+
+
 
 
 Vue.use(VueRouter);
 
 const routes = [
-  {
+    {
     path: "/",
     name: "Dashboard",
     component: Home
   },
+
+
 
   {
     path: "/events",
@@ -69,10 +75,23 @@ const routes = [
     component: Extensions
   },
 
-      {
+  {
     path: "/goals",
     name: "Goals",
     component: Goals
+  },
+
+      {
+    path: "/review",
+    name: "Lesson",
+    component: Lessons
+  },
+
+
+      {
+    path: "/signin",
+    name: "Signin",
+    component: Signin
   }
 ];
 

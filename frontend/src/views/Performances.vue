@@ -45,14 +45,22 @@
                 <masonry :cols="4" :gutter="20">
                     <div v-for="performance in performances_list" :key="performance.id" class="bottom-padding">
                         <q-card
-                                :class="{ active: performance_id_list.includes(performance.id) }"
+                                class="cardHandle"
+                                :class="{ active: selected_list.includes(performance.id) }"
                                 bordered
                                 @click="eventAction(performance.id)"
                         >
                             <q-card-section>
-                                <h4>{{ performance.performance_title }}</h4>
-                                <div v-html="performance.performance_description"></div>
+                                <div class="text-title">{{ performance.performance_title }}</div>
                             </q-card-section>
+
+                                <q-separator/>
+                            <q-card-section>
+                                 <div v-html="short_overview(performance.performance_overview)"></div>
+                            </q-card-section>
+
+
+
                         </q-card>
                     </div>
                 </masonry>
@@ -89,12 +97,15 @@
     </div>
 </template>
 <script>
+
+    import clip from "text-clipper";
+
     export default {
         data() {
             return {
                 lorem:
                     "Lorem ipsum dolor sit amet, sale audiam viderer ei cum, munere labitur expetenda sed ad, mea albucius prodesset no. Ne interesset referrentur qui, simul nusquam ne eam, id est appetere legendos. Cu usu cibo legere ullamcorper, ut decore assueverit qui, his iusto lucilius singulis id. Mazim noster usu ei. Sonet voluptua eu mea.",
-                performance_id_list: [],
+                // performance_id_list: [],
                 search: ""
             };
         },
@@ -103,24 +114,28 @@
             // this.$store.dispatch('fetchEvents', {endpoint: this.slug});
             // this.$store.dispatch('fetchEvents');
             this.$store.dispatch("fetchPerformances");
-            this.performance_id_list = this.$store.getters["getSelectedPerformances"];
+            // this.performance_id_list = this.$store.getters["getSelectedPerformances"];
 
         },
 
         computed: {
 
+            selected_list(){
+                return this.$store.getters["getSelectedPerformances"];
+            },
+
+
             // this makes sure there is selected event before content is displayed
             selected_event() {
 
-                let selectedEvent = this.$store.getters["getSelectedEvent"];
-                console.log('SELECTED_EVENT, :', selectedEvent);
-                return selectedEvent
+                return this.$store.getters["getSelectedEvent"];
+                // console.log('SELECTED_EVENT, :', selectedEvent);
             },
 
             performances_list() {
                 let performances = this.$store.getters["getPerformances"];
 
-                console.log(this.search);
+                // console.log(this.search);
 
                 if (this.search.length > 0) {
                     // arr.filter(obj => obj.term.toLowerCase().includes(searchStr.toLowerCase()))
@@ -145,22 +160,34 @@
         },
 
         methods: {
+
+            short_overview(html){
+
+                const clippedHtml = clip(html, 140, { html: true, maxLines: 5 });
+
+                // console.log('HTMLTRIM', clippedHtml);
+                return clippedHtml
+            },
+
             clearSearch() {
                 this.search = "";
             },
 
             eventAction(event) {
-                if (this.performance_id_list.includes(event)) {
-                                        this.$store.dispatch("setSelectedPerformances", event);
 
-                    this.performance_id_list = this.performance_id_list.filter(function (item) {
-                        return item !== event;
-                    });
-                } else {
-                                        this.$store.dispatch("setSelectedPerformances", event);
+                this.$store.dispatch("setSelectedPerformances", event);
 
-                    this.performance_id_list.push(event);
-                }
+                // if (this.performance_id_list.includes(event)) {
+                //                         this.$store.dispatch("setSelectedPerformances", event);
+                //
+                //     this.performance_id_list = this.performance_id_list.filter(function (item) {
+                //         return item !== event;
+                //     });
+                // } else {
+                //                         this.$store.dispatch("setSelectedPerformances", event);
+                //
+                //     this.performance_id_list.push(event);
+                // }
             }
         }
     };

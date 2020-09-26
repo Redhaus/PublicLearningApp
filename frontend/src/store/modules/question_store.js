@@ -29,13 +29,13 @@ const actions = {
         // console.log('EVENT FILTER: ', event_filter);
         // let endpoint = 'http://127.0.0.1:8000/api/questions/';
         let endpoint = `http://127.0.0.1:8000/api/questions/?event_collection=${event_filter}`;
-        console.log('FETCH LEXIS ENDPOINT : ', endpoint);
+        // console.log('FETCH LEXIS ENDPOINT : ', endpoint);
 
 
         apiService(endpoint)
             .then(data => {
                 // console.log('results: ', data.results);
-                console.log('DATA: ', data);
+                // console.log('DATA: ', data);
                 commit('setQuestions', data);
             })
             .catch((err) => {

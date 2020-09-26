@@ -42,13 +42,19 @@
                 <masonry :cols="4" :gutter="20">
                     <div v-for="ex in extensions_list" :key="ex.id" class="bottom-padding">
                         <q-card
-                                :class="{ active: extensions_id_list.includes(ex.id) }"
+                                class="cardHandle"
+                                :class="{ active: selected_list.includes(ex.id) }"
                                 bordered
                                 @click="eventAction(ex.id)"
                         >
                             <q-card-section>
-                                <h4>{{ ex.action }}</h4>
-                                <div v-html="ex.explanation"></div>
+                                <div class="text-title">{{ ex.action }}</div>
+                                 </q-card-section>
+                                                <q-separator/>
+
+                               <q-card-section>
+
+                                <div v-html="short_overview(ex.explanation)"></div>
                             </q-card-section>
                         </q-card>
                     </div>
@@ -82,12 +88,14 @@
     </div>
 </template>
 <script>
+    import clip from "text-clipper";
+
     export default {
         data() {
             return {
                 lorem:
                     "Lorem ipsum dolor sit amet, sale audiam viderer ei cum, munere labitur expetenda sed ad, mea albucius prodesset no. Ne interesset referrentur qui, simul nusquam ne eam, id est appetere legendos. Cu usu cibo legere ullamcorper, ut decore assueverit qui, his iusto lucilius singulis id. Mazim noster usu ei. Sonet voluptua eu mea.",
-                extensions_id_list: [],
+                // extensions_id_list: [],
                 search: ""
             };
         },
@@ -96,17 +104,22 @@
             // this.$store.dispatch('fetchEvents', {endpoint: this.slug});
             // this.$store.dispatch('fetchEvents');
             this.$store.dispatch("fetchExtensions");
-            this.extensions_id_list = this.$store.getters["getSelectedExtensions"];
+            // this.extensions_id_list = this.$store.getters["getSelectedExtensions"];
 
         },
 
         computed: {
 
+            // this tracks the selected items from the store and highlights accordingly
+            selected_list(){
+                return this.$store.getters["getSelectedExtensions"];
+            },
+
             // this makes sure there is selected event before content is displayed
             selected_event() {
 
                 let selectedEvent = this.$store.getters["getSelectedEvent"];
-                console.log('SELECTED_EVENT, :', selectedEvent);
+                // console.log('SELECTED_EVENT, :', selectedEvent);
                 return selectedEvent
             },
 
@@ -114,7 +127,7 @@
             extensions_list() {
                 let extensions = this.$store.getters["getExtensions"];
 
-                console.log(this.search);
+                // console.log(this.search);
 
                 if (this.search.length > 0) {
                     // arr.filter(obj => obj.term.toLowerCase().includes(searchStr.toLowerCase()))
@@ -139,20 +152,32 @@
         },
 
         methods: {
+
+              short_overview(html){
+
+                const clippedHtml = clip(html, 100, { html: true, maxLines: 5 });
+
+                // console.log('HTMLTRIM', clippedHtml);
+                return clippedHtml
+            },
+
             clearSearch() {
                 this.search = "";
             },
 
             eventAction(event) {
-                if (this.extensions_id_list.includes(event)) {
-                    this.$store.dispatch("setSelectedExtensions", event);
-                    this.extensions_id_list = this.extensions_id_list.filter(function (item) {
-                        return item !== event;
-                    });
-                } else {
-                      this.$store.dispatch("setSelectedExtensions", event);
-                    this.extensions_id_list.push(event);
-                }
+
+                this.$store.dispatch("setSelectedExtensions", event);
+
+                // if (this.extensions_id_list.includes(event)) {
+                //     this.$store.dispatch("setSelectedExtensions", event);
+                //     this.extensions_id_list = this.extensions_id_list.filter(function (item) {
+                //         return item !== event;
+                //     });
+                // } else {
+                //       this.$store.dispatch("setSelectedExtensions", event);
+                //     this.extensions_id_list.push(event);
+                // }
             }
         }
     };
