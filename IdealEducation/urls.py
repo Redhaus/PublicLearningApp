@@ -31,7 +31,7 @@ from ideal_api.api.performances_views import PerformancesViewSet
 from ideal_api.api.readings_views import PrimaryFocusViewSet, FurtherExplorationsViewSet
 from ideal_api.api.assignment_types_views import AssignmentTypeViewSet
 from ideal_api.api.category_views import ReadingCategoryViewSet, ExCommandTypeViewSet, GoalStandardTypeViewSet
-from ideal_api.api.lesson_views import LessonViewSet
+from ideal_api.api.lesson_views import LessonViewSet, ClassNameViewSet
 
 
 
@@ -52,6 +52,7 @@ router.register(r'reading_categories', ReadingCategoryViewSet)
 router.register(r'extension_categories', ExCommandTypeViewSet)
 router.register(r'goal_categories', GoalStandardTypeViewSet)
 router.register(r'user_lessons', LessonViewSet)
+router.register(r'class_name', ClassNameViewSet)
 
 
 

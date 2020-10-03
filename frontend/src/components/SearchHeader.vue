@@ -8,7 +8,7 @@
             </div>
 
             <div class="col-4" tabindex="0">
-                <q-input v-model="search" @input="searchTerm" label="Search Lexis" class="q-ml-md">
+                <q-input v-model="search" @input="searchTerm" :label="searchName" class="q-ml-md">
                     <template v-slot:append>
                         <q-icon v-if="search === ''" name="search"/>
                         <q-icon
@@ -41,19 +41,26 @@
             }
         },
 
+        computed:{
+            searchName(){
+                return "Search " + this.name
+            }
+        },
+
         methods: {
 
             searchTerm() {
-                // this.name = 'Max';
 
                 // pass emit event to parent component and pass data changed
                 this.$emit('searchTerm', this.search);
+
 
             },
 
             // this clears search field
             clearSearch() {
                 this.search = "";
+                this.$emit('searchTerm', this.search);
             },
 
         }

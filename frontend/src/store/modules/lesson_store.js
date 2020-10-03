@@ -9,7 +9,9 @@ const state = {
         selected_questions: [],
         selected_performances: [],
         selected_extensions: [],
-        selected_goals: []
+        selected_goals: [],
+        user_questions: []
+
     }
 };
 
@@ -114,6 +116,7 @@ const mutations = {
 
     setSelectedGoals(state, payload) {
 
+
         // if event is already in array, then remove it with filter
         // otherwise push it to the array
         if (state.lesson.selected_goals.includes(payload)) {
@@ -125,6 +128,19 @@ const mutations = {
         }
 
     },
+
+    setUserQuestions(state, payload){
+        state.lesson.user_questions.push(payload);
+    },
+
+    deleteUserQuestion(state, payload){
+        console.log('MUTATION DELEYE', payload);
+        state.lesson.user_questions = state.lesson.user_questions.filter(function (item) {
+                    console.log('MUTATION DELEYE ID', item);
+
+                return item.id !== payload;
+            });
+    }
 
 
 };
@@ -162,6 +178,15 @@ const actions = {
     setSelectedGoals({commit}, payload) {
         commit('setSelectedGoals', payload);
     },
+
+    setUserQuestions({commit}, payload) {
+        commit('setUserQuestions', payload);
+    },
+    deleteUserQuestion({commit}, payload) {
+        commit('deleteUserQuestion', payload);
+    }
+
+
 };
 
 // create getters
@@ -201,6 +226,11 @@ const getters = {
     getSelections(state) {
         console.log('GETTER SELECTIONS', state.lesson);
         return state.lesson
+    },
+
+    getUserQuestions(state) {
+        // console.log('GETTER SELECTIONS', state.lesson);
+        return state.lesson.user_questions
     },
 
 };

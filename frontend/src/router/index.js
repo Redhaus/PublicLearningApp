@@ -11,6 +11,7 @@ import Questions from "../views/Questions";
 import Goals from "../views/Goals";
 import Lessons from "../views/Lesson";
 import Signin from "../views/Signin";
+import Classes from "../views/Classes";
 
 
 
@@ -22,6 +23,12 @@ const routes = [
     path: "/",
     name: "Dashboard",
     component: Home
+  },
+
+    {
+    path: "/classes",
+    name: "Classes",
+    component: Classes
   },
 
 

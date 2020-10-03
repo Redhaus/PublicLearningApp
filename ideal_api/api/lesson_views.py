@@ -4,10 +4,10 @@ from django.shortcuts import render
 from rest_framework import viewsets
 from rest_framework import permissions
 
-from teacher_lessons.models import UserLesson
+from teacher_lessons.models import UserLesson, ClassSubject
 
 
-from .lesson_serializers import UserLessonSerializer
+from .lesson_serializers import UserLessonSerializer, ClassNameSerializer
 
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -98,6 +98,7 @@ class LessonViewSet(viewsets.ModelViewSet):
     serializer_class = UserLessonSerializer
     # permission_classes = [permissions.IsAuthenticated]
     # filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['instructor', 'class_link']
 
 
 
@@ -135,7 +136,7 @@ class LessonViewSet(viewsets.ModelViewSet):
         return (UserLesson.objects
                 # .select_related('event_collection',)
                 .select_related('instructor', )
-                # .select_related('class_name', )
+                # .select_related('class_link', )
 
                 # .prefetch_related('explorations')
                 # .prefetch_related('lexis')
@@ -158,3 +159,37 @@ class LessonViewSet(viewsets.ModelViewSet):
     # performances = PerformancesSerializer(many=True)
     # extensions = ExtensionsSerializer(many=True)
     # goals = GoalsSerializer(many=True)
+
+
+
+
+
+
+
+
+class ClassNameViewSet(viewsets.ModelViewSet):
+
+    # This shows how many queries
+    def dispatch(self, *args, **kwargs):
+        response = super().dispatch(*args, **kwargs)
+        print('Queries Counted: {}'.format(len(connection.queries)))
+        return response
+
+
+    # fetch all lexis items to setup queryset
+    queryset = ClassSubject.objects.all()
+
+    # set serializer class
+    serializer_class = ClassNameSerializer
+    filterset_fields = ['instructor']
+    # permission_classes = [permissions.IsAuthenticated]
+    # filter_backends = [DjangoFilterBackend]
+
+    # filter api in viewset in this case 10 = aswl1_e1
+    # select_related fetches indivdual FK
+    # prefetch_related fetches multiple FK items
+    def get_queryset(self):
+        return (ClassSubject.objects
+                .select_related('instructor', )
+                # .all().order_by('-created')
+                )

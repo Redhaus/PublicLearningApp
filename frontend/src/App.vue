@@ -34,7 +34,7 @@
                 :mini="!drawer || miniState"
                 content-class="bg-grey-2"
                 :width="240">
-              <q-scroll-area class="fill-window" >
+            <q-scroll-area class="fill-window">
                 <SideNav @miniToggle="miniState = $event"/>
             </q-scroll-area>
 
@@ -42,24 +42,24 @@
 
         <q-page-container>
 
-<!--             <div class="col q-ma-md">-->
-<!--          <div class="column full-height">-->
-<!--            <q-scroll-area class="col q-pa-sm" visible>-->
+            <!--             <div class="col q-ma-md">-->
+            <!--          <div class="column full-height">-->
+            <!--            <q-scroll-area class="col q-pa-sm" visible>-->
 
-<!--              <router-view />-->
+            <!--              <router-view />-->
 
-<!--            </q-scroll-area>-->
-<!--          </div>-->
-<!--        </div>-->
+            <!--            </q-scroll-area>-->
+            <!--          </div>-->
+            <!--        </div>-->
 
 
-  <q-scroll-area class="fill-window" :visible="false" >
+            <q-scroll-area class="fill-window" :visible="false">
 
-          <transition name="slide" mode="out-in">
-            <router-view/>
-                  </transition>
+                <transition name="slide" mode="out-in">
+                    <router-view/>
+                </transition>
 
-       </q-scroll-area>
+            </q-scroll-area>
         </q-page-container>
 
     </q-layout>
@@ -84,11 +84,15 @@
             }
         },
         created() {
+            let id = window.localStorage.getItem('instructor_id');
+            console.log('ID', id);
+
             this.fabYoutube = fabYoutube;
             this.$store.dispatch("fetchCategories");
-            this.$store.dispatch("fetchLessons");
             this.$store.dispatch("fetchLexis");
 
+            this.$store.dispatch("fetchLessons", id);
+            this.$store.dispatch("fetchClasses", id);
 
 
         },
@@ -111,11 +115,11 @@
 
 <style lang="scss">
 
-      /*css animation*/
+    /*css animation*/
 
 
     .slide-enter {
-         opacity: 0;
+        opacity: 0;
     }
 
     /*slide in in second, set ease, set forwards so it stays there*/
@@ -157,17 +161,17 @@
     /*endTransition*/
 
 
-
-    .fill-window{
+    .fill-window {
         height: calc(100vh + 20px);
         /*height: 5500px*/
-      }
+    }
 
-    .YL{
-        &__toolbar-input-container{
+    .YL {
+        &__toolbar-input-container {
             min-width: 100px;
             width: 55%;
-}
+        }
+
         &__toolbar-input-btn {
             border-radius: 0;
             border-style: solid;
@@ -189,5 +193,98 @@
         }
 
     }
+
+
+    /* LEXIS STYLES */
+
+
+    .indent {
+        padding-left: 20px;
+    }
+
+    .cardHandle {
+        transition: all .15s ease-in-out;
+
+        &:hover {
+            background-color: #EEEEEE;
+            /*transform: scale(.96);*/
+        }
+    }
+
+    .q-tab--active {
+        color: #000000 !important;
+    }
+
+    .bottom-padding {
+        padding-bottom: 20px;
+    }
+
+    .flex-break {
+        flex: 1 0 100% !important;
+        width: 0 !important;
+    }
+
+    .active {
+        background-color: #cccccc !important;
+        transform: scale(.96);
+    }
+
+    .subtitle {
+        font-size: .8rem !important;
+        font-weight: bold;
+    }
+
+    .subtitleEtymology {
+        padding-top: 10px;
+        font-size: .8rem !important;
+        font-weight: bold;
+    }
+
+    .test {
+        padding-top: 20px;
+        padding-left: 20px;
+    }
+
+    .page-bar {
+        background-color: #ffffff;
+    }
+
+    .title {
+        font-size: 1.15rem !important;
+        margin: auto;
+
+        &:focus {
+            outline: none;
+        }
+    }
+
+    .full-width-banner {
+        width: 100%;
+        padding-bottom: 20px;
+    }
+
+    .banner-margin {
+        margin-left: 15px;
+    }
+
+    .pos {
+        float: right;
+        font-weight: normal;
+    }
+
+    .q-dialog__inner--minimized > div {
+        /*max-width: none !important;*/
+    }
+
+    .dialog-top {
+        padding-top: 10px;
+    }
+
+    .lex-card {
+        max-width: 70% !important;
+        padding: 20px;
+    }
+
+
 </style>
 

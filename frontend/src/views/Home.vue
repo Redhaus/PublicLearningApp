@@ -1,183 +1,178 @@
 <template>
-    <div
-            class="test fit row wrap justify-start items-start content-start q-col-gutter-md "
-    >
+    <div class="test fit row wrap justify-start items-start content-start q-col-gutter-md ">
 
         <div class="col-12">
-            <q-banner elevated rounded inline-actions class="page-bar shadow-3">
-                <div class="row">
-
-                    <div class="col-8 title" tabindex="0">
-                        <div>Lessons</div>
-                    </div>
-
-                    <div class="col-4" tabindex="0">
-
-
-                        <q-input v-model="search" label="Search Events" class="q-ml-md">
-                            <template v-slot:append>
-                                <q-icon v-if="search === ''" name="search"/>
-                                <q-icon
-                                        v-else
-                                        name="clear"
-                                        class="cursor-pointer"
-                                        @click="clearSearch"
-                                />
-                            </template>
-                        </q-input>
-
-                    </div>
-                </div>
-            </q-banner>
-
-<!--            <q-tabs-->
-<!--                    v-model="tab"-->
-<!--                    dense-->
-<!--                    inline-label-->
-<!--                    class="text-grey"-->
-<!--                    no-caps-->
-<!--            >-->
-<!--                <q-tab @click="filterEvent('')" name="all" label="All"/>-->
-
-<!--                <q-tab @click="filterEvent('A Survey in Western Literature I')" name="aswl1"-->
-<!--                       label="Western Literature I"/>-->
-<!--                <q-tab @click="filterEvent('A Survey in Western Literature II')" name="aswl2"-->
-<!--                       label="Western Literature II"/>-->
-<!--                <q-tab @click="filterEvent('A Survey in European Literature I')" name="asel1"-->
-<!--                       label="European Literature I"/>-->
-<!--                <q-tab @click="filterEvent('A Survey in American Literature I')" name="asal1"-->
-<!--                       label="American Literature I"/>-->
-
-<!--            </q-tabs>-->
-
+            <LessonSearchHeader
+                    :class_options_filter=class_options_filter
+                    @searchTerm="search = $event"
+                    @classFilter="class_selection_filter = $event"/>
         </div>
 
         <div style="width: 100%">
-        <div v-if="lesson_list.length > 0">
+            <div v-if="lesson_list.length > 0">
 
-               <masonry :cols="4" :gutter="20">
-<!--<i class="fas fa-plus"></i>-->
-                   <div>
+                <masonry :cols="4" :gutter="20">
+                    <!--  Add Card Button-->
+                    <div class="bottom-padding">
                         <q-card
-
-                         class="cardHandle addLesson row justify-center items-center"
-                        bordered
-                         @click="addLesson">
-                            <q-card-section >
-                                                        <q-icon class="plusIcon" name="fas fa-plus"></q-icon>
-
+                                class="cardHandle addLesson row justify-center items-center"
+                                bordered
+                                @click="newLessonDialogPopup">
+                            <q-card-section>
+                                <q-icon class="plusIcon" name="fas fa-plus"></q-icon>
                             </q-card-section>
                         </q-card>
-                   </div>
+                    </div>
 
-            <div v-for="lesson in lesson_list" :key="lesson.id">
-                <q-card
-                         class="cardHandle addLesson"
-                        :class="{ active: lesson_id_list === lesson.id }"
-                        bordered
-                        @click="eventAction(lesson.id)">
-                    <q-card-section>
-                         <strong>{{lesson.lesson_title}}</strong>
-                        <div v-for="(lex, index) in lesson.lexis" :key="index">
-                            {{getLexis(lex)}}
-                        </div>
-<!--                        {{lexList(lesson.selections)}}-->
+                    <!-- Lesson Cards-->
+                    <div v-for="lesson in lesson_list" :key="lesson.id" class="bottom-padding">
+                        <q-card
+                                class="cardHandle addLesson"
+                                :class="{ active: lesson_id_list === lesson.id }"
+                                bordered
+                                @click="eventAction(lesson.id)">
+                            <q-card-section>
+                                <strong>{{lesson.lesson_title}}</strong>
+                                <div v-for="(lex, index) in lesson.lexis" :key="index">
+                                    {{getLexis(lex)}}
+                                </div>
+                            </q-card-section>
+                        </q-card>
+                    </div>
 
-<!--                        <div class="text-title" v-for="(lex, index) in lexList(lesson.lesson_selections)" :key="index"> {{ getLexis(lex) }}</div>-->
-                    </q-card-section>
-<!--                    <q-separator/>-->
-<!--                    <q-card-section>-->
-<!--                        <p>{{ event.event_descriptor }}</p>-->
-<!--                    </q-card-section>-->
+                </masonry>
 
-                </q-card>
+                <q-separator/>
+
+                <div>
+                    <q-btn @click="newClassDialogPopup" color="primary" label="Create Class"/>
+                </div>
+
+
+                <!-- CREATE NEW LESSON DIALOG -->
+
+                <CreateLessonDialog ref="newLessonDialog"
+                                   :class_options=class_options
+                                   @lessonTitleEvent="new_lesson_title = $event"
+                                   @classSelectionEvent="class_selection = $event"
+                                   @lessonDescriptionEvent="lesson_description = $event"
+                                   :createNewLessonHandler="createNewLesson"/>
+
+
+                <!-- CREATE NEW CLASS DIALOG -->
+                <CreateClassDialog ref="newClassDialog"
+                                   :grade_options=grade_options
+                                   @classNameEvent="class_name = $event"
+                                   @classDescriptionEvent="class_description = $event"
+                                   @gradeLevelEvent="grade_level = $event"
+                                   :createClassHandler="createClass"/>
+
             </div>
 
-               </masonry>
 
-<!--            <button @click="saveLesson">Save</button>-->
-
-
-
-              <!-- DIALOG -->
-
-                    <q-dialog v-model="icon" >
-                        <q-card class="lex-card dialog_container" >
-
-                            <div class="row">
-                                  <q-card-section class="col-12 ">
-                                       <div class="text-h6">Create a new lesson</div>
-                                  </q-card-section>
-                                <q-card-section class="col-6 ">
-
-                                     <q-input v-model="new_lesson_title" label="Lesson Title" />
-
-                                </q-card-section>
-
-                                 <q-btn @click="createNewLesson" color="primary" label="Create New Lesson" />
-<!--           <q-card-section class="col-6 ">-->
-
-<!--               <q-btn icon="event" round color="primary">-->
-<!--      <q-popup-proxy @before-show="updateProxy" transition-show="scale" transition-hide="scale">-->
-<!--        <q-date v-model="date">-->
-<!--          <div class="row items-center justify-end q-gutter-sm">-->
-<!--            <q-btn label="Cancel" color="primary" flat v-close-popup />-->
-<!--            <q-btn label="OK" color="primary" flat @click="save" v-close-popup />-->
-<!--          </div>-->
-<!--        </q-date>-->
-<!--      </q-popup-proxy>-->
-<!--    </q-btn>-->
-<!--                                               </q-card-section>-->
-
-                            </div>
-
-                        </q-card>
-                    </q-dialog>
-
-
+            <div v-else>No Lesson Available</div>
 
         </div>
 
+        <div>
+            <q-btn color="primary" @click="saveLesson" label="Save"/>
+        </div>
 
-        <div v-else>No Lesson Available</div>
-
-             </div>
-        <button @click="saveLesson">Save</button>
-<!--            <button @click="saveLesson">Save</button>-->
 
     </div>
 </template>
 <script>
+    import LessonSearchHeader from "../components/lessons/LessonSearchHeader";
+    import CreateClassDialog from "../components/lessons/CreateClassDialog";
+    import CreateLessonDialog from "../components/lessons/CreateLessonDialog";
+
     export default {
+
+        components: {
+            LessonSearchHeader,
+            CreateClassDialog,
+            CreateLessonDialog
+        },
         data() {
             return {
-      //           date: new Date(),
-      // proxyDate: new Date(),
-                new_lesson_title: '',
-                lesson_id_list: 0,
+
+                // Filters
+                class_selection_filter: {
+                    label: 'All',
+                    value: 'all'
+                },
                 search: '',
                 filter: '',
+
+                // LESSON CONTENT
+                new_lesson_title: '',
+                class_selection: null,
+                lesson_description: '',
+
+                // CLASS CONTENT
+                class_name: '',
+                grade_level: null,
+                class_description: '',
+                grade_options: [
+                    6, 7, 8, 9, 10, 11, 12
+                ],
+
+                // CONTENT DISPLAY
+                lesson_id_list: '',
                 lexis: [],
                 selections: {},
-                icon: false,
 
             };
         },
 
         methods: {
 
-            createNewLesson(){
+            newLessonDialogPopup(){
+                this.$refs.newLessonDialog.popupContent();
+            },
 
-               this.$store.dispatch("postLessonTitle", this.new_lesson_title);
-                // this.newlessondialog = true;
-                this.$router.push({ name: 'Events' });
+            // calls popup for create class
+            newClassDialogPopup() {
+                this.$refs.newClassDialog.popupContent();
+            },
+
+            createClass() {
+
+                let data = {
+                    "class_name": this.class_name,
+                    "grade_level": this.grade_level,
+                    "class_description": this.class_description
+                };
+
+                this.$store.dispatch('postNewClass', data);
+
+                // CLEAR FIELDS AFTER CREATE
+                this.class_name = '';
+                this.grade_level = null;
+                this.class_description = '';
+
+            },
+
+            createNewLesson() {
+
+                let lessonData = {
+                    title: this.new_lesson_title,
+                    description: this.lesson_description,
+                    class_id: this.class_selection.value
+                };
+
+                this.$store.dispatch("postLessonTitle", lessonData);
+
+                // FORWARD TO EVENTS SECTION
+                this.$router.push({name: 'Events'});
+
 
             },
 
 
-            addLesson(){
+            addLesson() {
                 console.log('Add Lesson');
-                this.icon = true;
+                this.create_new_lesson = true;
             },
 
             // lexList(data){
@@ -197,32 +192,32 @@
             //
             // },
 
-            saveLesson(){
+            saveLesson() {
 
                 console.log('SAVE LESSON CALLED');
-                console.log('GET RETURN OF SELECTIONS',this.$store.getters["getSelections"] );
+                console.log('GET RETURN OF SELECTIONS', this.$store.getters["getSelections"]);
 
                 // bypass getters
-                console.log('DATA SELECTIONS',this.$store.state.lesson_store.lesson );
+                console.log('DATA SELECTIONS', this.$store.state.lesson_store.lesson);
 
 
                 // let payload = ;
-                 this.$store.dispatch("postLesson", this.selections);
+                this.$store.dispatch("postLesson", this.selections);
 
             },
 
             // this fetches the words based on id passed
-             getLexis(id){
+            getLexis(id) {
 
                 console.log('GETLEXIS', id);
 
-                 // console.log('ID', id);
-                 // loop through items and return the item with the matching id
-                 let lex = this.$store.state.lexis_store.lexis.find(item => item.id === id);
-                                 // console.log('LEX', lex.term);
+                // console.log('ID', id);
+                // loop through items and return the item with the matching id
+                let lex = this.$store.state.lexis_store.lexis.find(item => item.id === id);
+                // console.log('LEX', lex.term);
 
-                 // return lex.term;
-                if(lex){
+                // return lex.term;
+                if (lex) {
                     console.log('LEX', lex.term);
                     return lex.term
                 }
@@ -237,6 +232,7 @@
             clearSearch() {
                 this.search = "";
             },
+
             eventAction(event) {
 
 
@@ -269,6 +265,12 @@
         },
 
         created() {
+
+            // fetchClasses(){
+            //
+            // },
+
+
             // this.$store.dispatch('fetchEvents', {endpoint: this.slug});
             // this.$store.dispatch("fetchEvents");
             // this.lexis_id_list = this.$store.getters["getSelectedEvent"];
@@ -290,11 +292,72 @@
 
         },
 
+        // if (this.class_selection_filter.value === 'all') {
+        //     this.class_selection_filter = null;
+        //     return
+        // }
+
+        // watch: {
+        //     class_selection_filter: {
+        //         handler: function (val, oldVal) {
+        //             if(val && val.value === 'all')
+        //             console.log('ALL', val.value);
+        //             // this.class_selection_filter = [];
+        //         },
+        //         // deep: true
+        //     }
+        // },
 
 
         computed: {
 
 
+            // class options for filtered lessons by class with added 'all'
+            class_options_filter() {
+
+                let class_list = [];
+                let classes = this.$store.getters['getUserClasses'];
+                classes.forEach(element => {
+
+                    let data = {
+                        label: element.class_name,
+                        value: element.id
+                    };
+
+                    class_list.push(data)
+
+                });
+
+                // adding all filter
+                let clear = {
+                    label: 'All',
+                    value: 'all'
+                };
+                class_list.unshift(clear);
+
+                return class_list
+            },
+
+
+            // class options for creating lesson
+
+            class_options() {
+
+                let class_list = [];
+                let classes = this.$store.getters['getUserClasses'];
+                classes.forEach(element => {
+
+                    let data = {
+                        label: element.class_name,
+                        value: element.id
+                    };
+
+                    class_list.push(data)
+
+                });
+
+                return class_list
+            },
 
 
             lesson_list() {
@@ -303,50 +366,68 @@
                 // console.log(this.search);
 
 
-                // if (this.filter) {
-                //
-                //     // create empty array to hold filtered values
-                //     let filteredList = [];
-                //
-                //     // loop through each lex item to get to their icon_list
-                //     events.forEach((item) => {
-                //
-                //         // collection_name
-                //         if (item.collection_name.toLowerCase() === this.filter.toLowerCase()) {
-                //             filteredList.push(item)
-                //         }
-                //
-                //     });
-                //
-                //     // if there is also a search value and filter value check search against filteredList array
-                //     // arr.filter(obj => obj.term.toLowerCase().includes(searchStr.toLowerCase()))
-                //     if (this.search.length > 0) {
-                //
-                //         // check if items term include search values
-                //         return filteredList.filter(obj => {
-                //             return obj.event_title.toLowerCase().includes(this.search.toLowerCase());
-                //         });
-                //         // return filterSearch;
-                //     }
-                //
-                //     // return filteredList if no search value
-                //     return filteredList
-                //
-                //
-                // }
-                //
-                //
-                // if (this.search.length > 0) {
-                //     // arr.filter(obj => obj.term.toLowerCase().includes(searchStr.toLowerCase()))
-                //
-                //     var result = events.filter(obj => {
-                //         // return obj.term === this.search
-                //         return obj.event_title.toLowerCase().includes(this.search.toLowerCase());
-                //     });
-                //
-                //     // let newLex = lexis.find(x => x.term === this.search);
-                //     return result;
-                // }
+                // if all is selected and sets .value to null make class_selection_filter null
+
+
+                if (this.class_selection_filter.value !== 'all') {
+
+                    // create empty array to hold filtered values
+                    let filteredList = [];
+
+
+                    lessons.forEach((item) => {
+
+                        console.log('ITEM', item);
+
+
+                        // if (this.class_selection_filter.value === 'all') {
+                        //     this.class_selection_filter = null;
+                        //     return
+                        // }
+
+
+                        // if there is no class link id on lesson do nothing
+                        if (item.class_link === null) {
+                            return
+                        }
+
+                        // if lesson item class link id = selected id add to array
+                        if (item.class_link === this.class_selection_filter.value) {
+                            filteredList.push(item)
+                        }
+
+
+                    });
+
+                    // if there is also a search value and filter value check search against filteredList array
+                    // arr.filter(obj => obj.term.toLowerCase().includes(searchStr.toLowerCase()))
+                    if (this.search.length > 0) {
+
+                        // check if items term include search values
+                        return filteredList.filter(obj => {
+                            return obj.lesson_title.toLowerCase().includes(this.search.toLowerCase());
+                        });
+                        // return filterSearch;
+                    }
+
+                    // return filteredList if no search value
+                    return filteredList
+
+
+                }
+
+
+                if (this.search.length > 0) {
+                    // arr.filter(obj => obj.term.toLowerCase().includes(searchStr.toLowerCase()))
+
+                    var result = lessons.filter(obj => {
+                        // return obj.term === this.search
+                        return obj.lesson_title.toLowerCase().includes(this.search.toLowerCase());
+                    });
+
+                    // let newLex = lexis.find(x => x.term === this.search);
+                    return result;
+                }
 
                 return lessons
 
@@ -356,28 +437,26 @@
     };
 </script>
 
-<style lang="scss" >
+<style lang="scss">
 
-    .dialog_container{
+    .dialog_container {
         width: 70% !important;
     }
 
     .text-title {
-    font-size: 1rem;
-    font-weight: 500;
-    letter-spacing: 0.0125em;
-}
+        font-size: 1rem;
+        font-weight: 500;
+        letter-spacing: 0.0125em;
+    }
 
-    .addLesson{
+    .addLesson {
         min-height: 250px;
     }
 
-    .plusIcon{
+    .plusIcon {
         font-size: 34px !important;
         color: #cccccc;
     }
 
 
-
 </style>
-

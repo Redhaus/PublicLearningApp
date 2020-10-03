@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User, Group
 from rest_framework import serializers
 # from lexis.models import Lexis, IconList, LexisEventCollection, LexisLink
-from events.models import CategoryEventCollection
+# from events.models import CategoryEventCollection
 from teacher_lessons.models import ClassSubject, UserLesson
 from teacher_profile.models import TeacherProfile
 # from readings.FurtherExplorations import FurtherExplorations
@@ -24,11 +24,55 @@ class InstructorSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+
 class ClassNameSerializer(serializers.ModelSerializer):
+
+    # instructor = InstructorSerializer(many=False)
+
+
+
+    def create(self, validated_data):
+
+        print('VALIDATED DATA', validated_data)
+
+        # get the user object of the teacher logged in creating the lesson
+
+        # for api
+        user = self.context['request'].user
+        teacher = TeacherProfile.objects.get(user_id=user.id)
+
+        # for browesr
+        # teacher = TeacherProfile.objects.get(id=validated_data['instructor'])
+
+
+        # instructor = teacher
+        grade_level = validated_data["grade_level"]
+        class_name = validated_data["class_name"]
+        class_description = validated_data["class_description"]
+
+
+        # print('LESSON', lesson)
+        instance = ClassSubject.objects.create(
+
+            instructor=teacher,
+            grade_level=grade_level,
+            class_name=class_name,
+            class_description=class_description
+        )
+
+        return instance
+
+
+
     class Meta:
         model = ClassSubject
-        fields = '__all__'
-
+        fields = ['id',
+                  'instructor',
+                  'class_name',
+                  'grade_level',
+                  'class_description',
+                  ]
+        lookup_field = 'id'
 
 # class ExplorationsSerializer(serializers.ModelSerializer):
 #     class Meta:
@@ -153,14 +197,31 @@ class ClassNameSerializer(serializers.ModelSerializer):
 # ////////////////////////////////////
 
 
+# class ClassLinkField(serializers.RelatedField):
+#     def to_representation(self, value):
+#         return {
+#             "class_link": value.id,
+#         }
+
+
+# class ClassLinkSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = ClassSubject
+#         fields = '__all__'
+
+
 # MAIN SERIALIZER
 class UserLessonSerializer(serializers.HyperlinkedModelSerializer):
     # display string of event term belongs to
     # event_collection = serializers.StringRelatedField(many=False)
     # event_collection = EventCollectionSerializer(many=False)
-    instructor = InstructorSerializer(many=False)
 
     print('LESSONO SERIALIER CALLED')
+
+    instructor = InstructorSerializer(many=False)
+    # class_link = ClassLinkSerializer(many=False)
+
+    # class_link = ClassLinkField(many=False, read_only=True)
 
     def create(self, validated_data):
 
@@ -169,6 +230,21 @@ class UserLessonSerializer(serializers.HyperlinkedModelSerializer):
         # get the user object of the teacher logged in creating the lesson
         user = self.context['request'].user
         teacher = TeacherProfile.objects.get(user_id=user.id)
+        class_id = validated_data["class_link"]
+        #
+        # tuple_list = list(class_id.items())
+        #
+        # print('LIST', tuple_list)
+        # key_value = tuple_list[0]
+        #
+        # # print(key_value)
+        #
+        print('CLASSID', class_id)
+
+
+
+
+        # class_subject = ClassSubject.objects.get(id=class_id)
 
         # get diction data["field_title"]
         # instance = Equipment.objects.create(**validated_data)
@@ -177,6 +253,9 @@ class UserLessonSerializer(serializers.HyperlinkedModelSerializer):
         # lesson = json.dumps(validated_data["lesson_selections"])
         lesson = validated_data["lesson_selections"]
         title = validated_data["lesson_title"]
+        description = validated_data["lesson_description"]
+        class_link = validated_data["class_link"]
+
 
 
         print('LESSON', lesson)
@@ -185,10 +264,29 @@ class UserLessonSerializer(serializers.HyperlinkedModelSerializer):
 
             instructor=teacher,
             lesson_title=title,
-            lesson_selections=lesson
+            lesson_selections=lesson,
+            class_link=class_link,
+            lesson_description=description
         )
 
         return instance
+
+
+
+
+    class Meta:
+        model = UserLesson
+        fields = ['id',
+                  'instructor',
+                  'class_link',
+                  'lesson_title',
+                  'lesson_selections',
+                  'lesson_description',
+                  'created',
+                  'updated',
+                  ]
+
+
 
 
     # class_name = ClassNameSerializer(many=False)
@@ -227,22 +325,7 @@ class UserLessonSerializer(serializers.HyperlinkedModelSerializer):
     # extensions = ExtensionsSerializer(many=True)
     # goals = GoalsSerializer(many=True)
 
-    class Meta:
-        model = UserLesson
-        fields = ['id',
-                  'instructor',
-                  # 'class_name',
-                  'lesson_title',
-                  'lesson_selections',
-                  # 'explorations',
-                  # 'lexis',
-                  # 'questions',
-                  # 'performances',
-                  # 'extensions',
-                  # 'goals',
-                  'created',
-                  'updated',
-                  ]
+
 
 #
 # {

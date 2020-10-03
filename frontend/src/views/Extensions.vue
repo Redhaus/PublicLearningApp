@@ -5,62 +5,38 @@
             class="test fit row wrap justify-start items-start content-start q-col-gutter-md "
     >
         <div class="col-12">
-            <q-banner elevated rounded inline-actions class="page-bar shadow-3">
-                <div class="row">
-                    <div class="col-8 title" tabindex="0">
-                        <div>Extensions</div>
-                    </div>
+            <SearchHeader name="Extensions" @searchTerm="search = $event"/>
 
-                    <div class="col-4" tabindex="0">
-                        <q-input v-model="search" label="Search Extensions" class="q-ml-md">
-                            <template v-slot:append>
-                                <q-icon v-if="search === ''" name="search"/>
-                                <q-icon
-                                        v-else
-                                        name="clear"
-                                        class="cursor-pointer"
-                                        @click="clearSearch"
-                                />
-                            </template>
-                        </q-input>
-                        <!--                        <q-input filled bottom-slots v-model="search"  label="Search Lexis"  class="q-ml-md">-->
-                        <!--                            <template v-slot:append>-->
-                        <!--                                <q-icon v-if="search === ''" name="search"/>-->
-                        <!--                                <q-icon v-else name="clear" class="cursor-pointer" @click="clearSearch"/>-->
-                        <!--                            </template>-->
-                        <!--                        </q-input>-->
-                    </div>
-                </div>
-            </q-banner>
+
         </div>
 
         <div style="width: 100%">
 
             <div v-if="selected_event">
 
-              <div v-if="extensions_list.length > 0">
-                <masonry :cols="4" :gutter="20">
-                    <div v-for="ex in extensions_list" :key="ex.id" class="bottom-padding">
-                        <q-card
-                                class="cardHandle"
-                                :class="{ active: selected_list.includes(ex.id) }"
-                                bordered
-                                @click="eventAction(ex.id)"
-                        >
-                            <q-card-section>
-                                <div class="text-title">{{ ex.action }}</div>
-                                 </q-card-section>
-                                                <q-separator/>
+                <div v-if="extensions_list.length > 0">
+                    <masonry :cols="4" :gutter="20">
+                        <div v-for="ex in extensions_list" :key="ex.id" class="bottom-padding">
+                            <q-card
+                                    class="cardHandle"
+                                    :class="{ active: selected_list.includes(ex.id) }"
+                                    bordered
+                                    @click="eventAction(ex.id)"
+                            >
+                                <q-card-section>
+                                    <div class="text-title">{{ ex.action }}</div>
+                                </q-card-section>
+                                <q-separator/>
 
-                               <q-card-section>
+                                <q-card-section>
 
-                                <div v-html="short_overview(ex.explanation)"></div>
-                            </q-card-section>
-                        </q-card>
-                    </div>
-                </masonry>
-                  </div>
-                    <div v-else>No Extensions Available</div>
+                                    <div v-html="short_overview(ex.explanation)"></div>
+                                </q-card-section>
+                            </q-card>
+                        </div>
+                    </masonry>
+                </div>
+                <div v-else>No Extensions Available</div>
 
             </div>
 
@@ -90,7 +66,12 @@
 <script>
     import clip from "text-clipper";
 
+    import SearchHeader from "../components/SearchHeader";
+
     export default {
+        components: {
+            SearchHeader,
+        },
         data() {
             return {
                 lorem:
@@ -111,7 +92,7 @@
         computed: {
 
             // this tracks the selected items from the store and highlights accordingly
-            selected_list(){
+            selected_list() {
                 return this.$store.getters["getSelectedExtensions"];
             },
 
@@ -153,9 +134,9 @@
 
         methods: {
 
-              short_overview(html){
+            short_overview(html) {
 
-                const clippedHtml = clip(html, 100, { html: true, maxLines: 5 });
+                const clippedHtml = clip(html, 100, {html: true, maxLines: 5});
 
                 // console.log('HTMLTRIM', clippedHtml);
                 return clippedHtml

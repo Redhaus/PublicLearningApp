@@ -5,68 +5,45 @@
             class="test fit row wrap justify-start items-start content-start q-col-gutter-md "
     >
         <div class="col-12">
-            <q-banner elevated rounded inline-actions class="page-bar shadow-3">
-                <div class="row">
-                    <div class="col-8 title" tabindex="0">
-                        <div>Readings</div>
-                    </div>
 
-                    <div class="col-4" tabindex="0">
-                        <q-input v-model="search" label="Search Readings" class="q-ml-md">
-                            <template v-slot:append>
-                                <q-icon v-if="search === ''" name="search"/>
-                                <q-icon
-                                        v-else
-                                        name="clear"
-                                        class="cursor-pointer"
-                                        @click="clearSearch"
-                                />
-                            </template>
-                        </q-input>
-                        <!--                        <q-input filled bottom-slots v-model="search"  label="Search Lexis"  class="q-ml-md">-->
-                        <!--                            <template v-slot:append>-->
-                        <!--                                <q-icon v-if="search === ''" name="search"/>-->
-                        <!--                                <q-icon v-else name="clear" class="cursor-pointer" @click="clearSearch"/>-->
-                        <!--                            </template>-->
-                        <!--                        </q-input>-->
-                    </div>
-                </div>
-            </q-banner>
+            <SearchHeader name="Readings" @searchTerm="search = $event"/>
+
+
         </div>
         <div style="width: 100%">
 
             <div v-if="selected_event">
 
-               <div v-if="reading_list.length > 0">
+                <div v-if="reading_list.length > 0">
 
-                <masonry :cols="3" :gutter="20">
-                    <div v-for="book in reading_list" :key="book.id" class="bottom-padding">
-                        <q-card
-                                class="cardHandle"
-                                :class="{ active: selected_item === book.id }"
-                                bordered
-                                @click="eventAction(book.id)"
-                        >
-                            <q-card-section>
-                                <div class="text-title">{{ book.title_major }}</div>
-                                <div class="ability">{{ book.level_ability }}</div>
-                            </q-card-section>
+                    <masonry :cols="3" :gutter="20">
+                        <div v-for="book in reading_list" :key="book.id" class="bottom-padding">
+                            <q-card
+                                    class="cardHandle"
+                                    :class="{ active: selected_item === book.id }"
+                                    bordered
+                                    @click="eventAction(book.id)"
+                            >
+                                <q-card-section>
+                                    <div class="text-title">{{ book.title_major }}</div>
+                                    <div class="ability">{{ book.level_ability }}</div>
+                                </q-card-section>
 
-                            <q-separator/>
+                                <q-separator/>
 
-                            <q-card-section>
+                                <q-card-section>
 
-                                <div v-html="short_overview(book.synopsis)"></div>
-<!--                                <p>Author: {{book.author_first_name}} </p>-->
-<!--                                <p>Level: {{book.level_ability}} </p>-->
-<!--                                <p>Type: {{book.reading_category.category_name}} | Pages: {{book.page_count}}</p>-->
+                                    <div v-html="short_overview(book.synopsis)"></div>
+                                    <!--                                <p>Author: {{book.author_first_name}} </p>-->
+                                    <!--                                <p>Level: {{book.level_ability}} </p>-->
+                                    <!--                                <p>Type: {{book.reading_category.category_name}} | Pages: {{book.page_count}}</p>-->
 
-                            </q-card-section>
-                        </q-card>
-                    </div>
-                </masonry>
-                   </div>
-                    <div v-else>No Readings Available</div>
+                                </q-card-section>
+                            </q-card>
+                        </div>
+                    </masonry>
+                </div>
+                <div v-else>No Readings Available</div>
 
             </div>
 
@@ -83,7 +60,12 @@
 <script>
     import clip from "text-clipper";
 
+    import SearchHeader from "../components/SearchHeader";
+
     export default {
+        components: {
+            SearchHeader,
+        },
         data() {
             return {
                 lorem:
@@ -103,7 +85,7 @@
 
         computed: {
 
-            selected_item(){
+            selected_item() {
                 return this.$store.getters["getSelectedReading"];
             },
 
@@ -137,9 +119,9 @@
 
         methods: {
 
-            short_overview(html){
+            short_overview(html) {
 
-                const clippedHtml = clip(html, 100, { html: true, maxLines: 5 });
+                const clippedHtml = clip(html, 100, {html: true, maxLines: 5});
 
                 // const clippedString = clip(string, 80);
 
@@ -164,8 +146,6 @@
                 // }
 
 
-
-
                 // if (this.book_id_list.includes(event)) {
                 //     this.book_id_list = this.book_id_list.filter(function (item) {
                 //         return item !== event;
@@ -180,14 +160,13 @@
 
 <style lang="scss" scoped>
 
-    .ability{
+    .ability {
         font-size: .7rem;
     }
 
-       .active {
+    .active {
         background-color: #cccccc;
     }
-
 
 
 </style>

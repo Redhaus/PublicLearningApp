@@ -5,60 +5,159 @@
             class="test fit row wrap justify-start items-start content-start q-col-gutter-md "
     >
         <div class="col-12">
-            <q-banner elevated rounded inline-actions class="page-bar shadow-3">
-                <div class="row">
-                    <div class="col-8 title" tabindex="0">
-                        <div>Questions</div>
-                    </div>
 
-                    <div class="col-4" tabindex="0">
-                        <q-input v-model="search" label="Search Questions" class="q-ml-md">
-                            <template v-slot:append>
-                                <q-icon v-if="search === ''" name="search"/>
-                                <q-icon
-                                        v-else
-                                        name="clear"
-                                        class="cursor-pointer"
-                                        @click="clearSearch"
-                                />
-                            </template>
-                        </q-input>
-                        <!--                        <q-input filled bottom-slots v-model="search"  label="Search Lexis"  class="q-ml-md">-->
-                        <!--                            <template v-slot:append>-->
-                        <!--                                <q-icon v-if="search === ''" name="search"/>-->
-                        <!--                                <q-icon v-else name="clear" class="cursor-pointer" @click="clearSearch"/>-->
-                        <!--                            </template>-->
-                        <!--                        </q-input>-->
-                    </div>
-                </div>
-            </q-banner>
+            <SearchHeader name="Questions" @searchTerm="search = $event"/>
+
+
         </div>
 
         <div style="width: 100%">
 
-           <div v-if="selected_event">
-               <div v-if="questions_list.length > 0">
-            <masonry :cols="4" :gutter="20">
-                <div v-for="question in questions_list" :key="question.id" class="bottom-padding">
-                    <q-card
-                            :class="{ active: selected_list.includes(question.id) }"
-                            bordered
-                            @click="eventAction(question.id)"
-                            class="cardHandle"
-                    >
-                        <q-card-section>
-                            <div v-html="question.question"></div>
-                        </q-card-section>
-                    </q-card>
+            <div v-if="selected_event">
+                <div v-if="questions_list.length > 0">
+                    <masonry :cols="4" :gutter="20">
+                        <div v-for="question in questions_list" :key="question.id" class="bottom-padding">
+                            <q-card
+                                    :class="{ active: selected_list.includes(question.id) }"
+                                    bordered
+                                    @click="eventAction(question.id)"
+                                    class="cardHandle"
+                            >
+                                <q-card-section>
+                                    <div v-html="question.question"></div>
+                                </q-card-section>
+                            </q-card>
+                        </div>
+
+                    </masonry>
+
+
+                    <!-- separate user questions-->
+
+
+                    <div v-if="user_question_list.length > 0">
+                        <q-separator/>
+
+                        <!--                        <masonry :cols="4" :gutter="20">-->
+                        <div style="padding-top: 15px">
+                            <div v-for="user_question in user_question_list" :key="user_question.id"
+                                 class="bottom-padding row" style="width: 100%">
+                                <q-card
+
+                                        bordered
+                                        class="cardHandle active-user-question col-12"
+                                >
+                                    <q-card-section class="bottom-padding row items-center">
+                                        <div class="col-10">{{user_question.user_question}}
+
+<!--                                             <q-popup-edit v-model="label">-->
+<!--        <q-input v-model="label" dense autofocus counter />-->
+<!--      </q-popup-edit>-->
+
+
+<!--                                            <q-popup-edit  >-->
+<!--                                                <template-->
+<!--                                                        v-slot="{  emitValue, set }">-->
+<!--                                                    <q-input-->
+<!--                                                            autofocus-->
+<!--                                                            dense-->
+<!--                                                            :value="user_question.user_question"-->
+<!--                                                            hint="Edit your question"-->
+<!--                                                            @input="emitValue"-->
+<!--                                                    >-->
+<!--                                                        <template v-slot:after>-->
+<!--&lt;!&ndash;                                                            <q-btn flat dense color="negative" icon="cancel"&ndash;&gt;-->
+<!--&lt;!&ndash;                                                                   @click.stop="cancel"/>&ndash;&gt;-->
+<!--                                                            <q-btn flat dense color="positive" icon="check_circle"-->
+<!--                                                                   @click.stop="set(this.user_question)"-->
+<!--                                                                  />-->
+<!--                                                        </template>-->
+<!--                                                    </q-input>-->
+<!--                                                </template>-->
+<!--                                            </q-popup-edit>-->
+
+
+                                        </div>
+                                        <div class="col-2">
+
+                                            <q-btn @click="deleteConfirmation(user_question)" class="deleteBtn" flat
+                                                   round icon="close"/>
+                                            <q-btn @click="editQuestion(user_question)" class="deleteBtn" flat
+                                                   round icon="edit"/>
+                                        </div>
+                                    </q-card-section>
+
+
+                                </q-card>
+
+                            </div>
+                        </div>
+                        <!--                        </masonry>-->
+
+
+                    </div>
+
+
+                    <q-page-container>
+                        <q-page padding>
+
+                            <q-page-sticky expand position="bottom">
+                                <div class="col-12">
+                                    <q-banner elevated rounded inline-actions class="page-bar shadow-3">
+
+                                        <q-input v-on:keyup.enter="save_user_question" bottom-slots
+                                                 v-model="user_question_input" label="Additional Question">
+                                            <!--        <template v-slot:before>-->
+                                            <!--          <q-icon name="event" />-->
+                                            <!--        </template>-->
+
+                                            <template v-slot:hint>
+                                                Add any additional question you would like associated with this lesson.
+                                            </template>
+
+                                            <template v-slot:append>
+                                                <q-btn @click="save_user_question" round dense flat icon="add"/>
+                                            </template>
+                                        </q-input>
+
+
+                                        <!--                                <q-toolbar class="">-->
+                                        <!--&lt;!&ndash;                                    <q-avatar>&ndash;&gt;-->
+                                        <!--&lt;!&ndash;                                    </q-avatar>&ndash;&gt;-->
+                                        <!--                                    <q-toolbar-title>-->
+                                        <!--                                        <q-input v-model="user_question_input" label="Additional Question"/>-->
+
+                                        <!--                                    </q-toolbar-title>-->
+                                        <!--                                </q-toolbar>-->
+                                    </q-banner>
+                                </div>
+                            </q-page-sticky>
+                        </q-page>
+
+
+                    </q-page-container>
+
+
+                    <!--                         <q-footer reveal elevated>-->
+                    <!--        <q-toolbar>-->
+                    <!--&lt;!&ndash;          <q-btn flat round dense icon="menu" @click="drawerLeft = !drawerLeft" />&ndash;&gt;-->
+
+                    <!--          <q-toolbar-title>-->
+                    <!--            <strong>Question</strong>-->
+                    <!--          </q-toolbar-title>-->
+
+                    <!--&lt;!&ndash;          <q-btn flat round dense icon="menu" @click="drawerRight = !drawerRight" />&ndash;&gt;-->
+                    <!--        </q-toolbar>-->
+                    <!--      </q-footer>-->
+
+
                 </div>
-            </masonry>
-                     </div>
-                    <div v-else>No Questions Available</div>
+                <div v-else>No Questions Available</div>
 
 
-              </div>
+            </div>
 
-        <div v-else>Please select an Event</div>
+            <div v-else>Please select an Event</div>
 
         </div>
 
@@ -67,13 +166,21 @@
     </div>
 </template>
 <script>
+    import {v4 as uuidv4} from 'uuid';
+    import SearchHeader from "../components/SearchHeader";
+
     export default {
+        components: {
+            SearchHeader,
+        },
         data() {
             return {
                 lorem:
                     "Lorem ipsum dolor sit amet, sale audiam viderer ei cum, munere labitur expetenda sed ad, mea albucius prodesset no. Ne interesset referrentur qui, simul nusquam ne eam, id est appetere legendos. Cu usu cibo legere ullamcorper, ut decore assueverit qui, his iusto lucilius singulis id. Mazim noster usu ei. Sonet voluptua eu mea.",
                 // question_id_list: [],
-                search: ""
+                search: "",
+                user_question_input: '',
+                // user_question: {}
             };
         },
 
@@ -86,7 +193,7 @@
 
         computed: {
 
-            selected_list(){
+            selected_list() {
                 return this.$store.getters["getSelectedQuestions"];
             },
 
@@ -119,10 +226,72 @@
                 // }
 
                 return questions;
+            },
+
+            // displays list of user_questions if any
+            user_question_list() {
+                // fetches latest list from lesson store
+                var array = this.$store.getters['getUserQuestions'];
+
+                return array.reverse()
             }
         },
 
         methods: {
+
+            set(question){
+                console.log('QUESTOPM', question)
+            },
+
+            editQuestion(question) {
+                this.user_question_input = question.user_question;
+                this.deleteQuestion(question.id)
+            },
+
+            deleteQuestion(id) {
+                this.$store.dispatch('deleteUserQuestion', id)
+
+            },
+
+            // confirms delete of question
+            deleteConfirmation(question) {
+
+                this.$q.dialog({
+                    title: 'Confirm Delete',
+                    message: question.user_question,
+                    cancel: true,
+                    persistent: true,
+                    ok: {
+                        label: 'Delete',
+                        flat: true,
+                        textColor: 'red'
+                    }
+                }).onOk(() => {
+                    console.log('QUESTIONID', question.id);
+                    this.deleteQuestion(question.id)
+
+                }).onOk(() => {
+                    // console.log('>>>> second OK catcher')
+                }).onCancel(() => {
+                    // console.log('>>>> Cancel')
+                }).onDismiss(() => {
+                    // console.log('I am triggered on both OK and Cancel')
+                })
+
+            },
+
+            save_user_question() {
+
+
+                let data = {
+                    'id': uuidv4(),
+                    'user_question': this.user_question_input
+                };
+                this.$store.dispatch('setUserQuestions', data);
+                this.user_question_input = '';
+
+
+            },
 
 
             clearSearch() {
@@ -151,44 +320,52 @@
 
 <style lang="scss" scoped>
 
+    .deleteBtn {
+        float: right;
+    }
 
     .active {
         background-color: #cccccc;
     }
 
-/*    .bottom-padding*/
-/*        padding-bottom: 20px*/
+    .active-user-question {
 
-/*    .flex-break*/
-/*        flex: 1 0 100% !important*/
-/*        width: 0 !important*/
+        background-color: #cccccc
+    }
 
-/*    .active*/
-/*        background-color: #cccccc*/
+    /*    .bottom-padding*/
+    /*        padding-bottom: 20px*/
 
-/*    .test*/
-/*        padding-top: 20px*/
-/*        padding-left: 20px*/
+    /*    .flex-break*/
+    /*        flex: 1 0 100% !important*/
+    /*        width: 0 !important*/
 
-/*    .page-bar*/
-/*        background-color: #ffffff*/
+    /*    .active*/
+    /*        background-color: #cccccc*/
 
-/*    .title*/
-/*        font-size: 1.15rem !important*/
-/*        margin: auto*/
+    /*    .test*/
+    /*        padding-top: 20px*/
+    /*        padding-left: 20px*/
 
-/*        &:focus*/
-/*            outline: none*/
+    /*    .page-bar*/
+    /*        background-color: #ffffff*/
 
-/*    .full-width-banner*/
-/*        width: 100%*/
-/*        padding-bottom: 20px*/
+    /*    .title*/
+    /*        font-size: 1.15rem !important*/
+    /*        margin: auto*/
 
-/*    .text-white*/
-/*        min-height: 320px*/
+    /*        &:focus*/
+    /*            outline: none*/
 
-/*    .banner-margin*/
-/*        margin-left: 15px*/
+    /*    .full-width-banner*/
+    /*        width: 100%*/
+    /*        padding-bottom: 20px*/
+
+    /*    .text-white*/
+    /*        min-height: 320px*/
+
+    /*    .banner-margin*/
+    /*        margin-left: 15px*/
     /*.my-card*/
-        /*width: 48%*/
+    /*width: 48%*/
 </style>

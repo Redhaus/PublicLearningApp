@@ -5,69 +5,47 @@
             class="test fit row wrap justify-start items-start content-start q-col-gutter-md "
     >
         <div class="col-12">
-            <q-banner elevated rounded inline-actions class="page-bar shadow-3">
-                <div class="row">
-                    <div class="col-8 title" tabindex="0">
-                        <div>Exploration</div>
-                    </div>
-
-                    <div class="col-4" tabindex="0">
-                        <q-input v-model="search" label="Search Lexis" class="q-ml-md">
-                            <template v-slot:append>
-                                <q-icon v-if="search === ''" name="search"/>
-                                <q-icon
-                                        v-else
-                                        name="clear"
-                                        class="cursor-pointer"
-                                        @click="clearSearch"
-                                />
-                            </template>
-                        </q-input>
-
-                    </div>
-                </div>
-            </q-banner>
+            <SearchHeader name="Explorations" @searchTerm="search = $event"/>
 
 
             <div v-if="selected_event">
 
 
-            <div class="exploration shadow-3 rounded-borders">
-                <q-splitter
-                        v-model="splitterModel"
-                >
+                <div class="exploration shadow-3 rounded-borders">
+                    <q-splitter
+                            v-model="splitterModel"
+                    >
 
-                    <template v-slot:before>
-                        <q-tabs
-                                v-model="tab"
-                                vertical
-                                no-caps
-                        >
-                            <q-tab content-class="content-right" v-for="cat in reading_categories" :key="cat.id"
-                                   :name="cat.category_name" :label="cat.category_name"
-                                   @click="filterLexis(cat.category_name)"/>
+                        <template v-slot:before>
+                            <q-tabs
+                                    v-model="tab"
+                                    vertical
+                                    no-caps
+                            >
+                                <q-tab content-class="content-right" v-for="cat in reading_categories" :key="cat.id"
+                                       :name="cat.category_name" :label="cat.category_name"
+                                       @click="filterLexis(cat.category_name)"/>
 
-                        </q-tabs>
-                    </template>
+                            </q-tabs>
+                        </template>
 
-                    <template v-slot:after>
+                        <template v-slot:after>
 
 
+                            <q-tab-panels
+                                    v-model="tab"
+                                    animated
+                                    swipeable
+                                    vertical
+                                    transition-prev="jump-up"
+                                    transition-next="jump-up"
+                            >
+                                <q-tab-panel v-for="cat in reading_categories" :key="cat.id" :name="cat.category_name">
+                                    <div class="text-h4 q-mb-md">{{cat.category_name}}</div>
 
-                        <q-tab-panels
-                                v-model="tab"
-                                animated
-                                swipeable
-                                vertical
-                                transition-prev="jump-up"
-                                transition-next="jump-up"
-                        >
-                            <q-tab-panel v-for="cat in reading_categories" :key="cat.id" :name="cat.category_name">
-                                <div class="text-h4 q-mb-md">{{cat.category_name}}</div>
+                                    <div style="width: 100%">
 
-                                <div style="width: 100%">
-
-<!--                                    <div v-if="selected_event">-->
+                                        <!--                                    <div v-if="selected_event">-->
 
                                         <div v-if="exploration_list.length > 0">
 
@@ -95,23 +73,21 @@
                                         <div v-else>No {{filter}} Explorations Available</div>
 
 
-
-                                </div>
-                            </q-tab-panel>
-
-
-                        </q-tab-panels>
+                                    </div>
+                                </q-tab-panel>
 
 
+                            </q-tab-panels>
 
-                    </template>
 
-                </q-splitter>
+                        </template>
+
+                    </q-splitter>
+                </div>
+
             </div>
 
-                           </div>
-
-                                    <div v-else>Please select an Event</div>
+            <div v-else>Please select an Event</div>
 
         </div>
 
@@ -124,7 +100,12 @@
     import clip from "text-clipper";
 
 
+    import SearchHeader from "../components/SearchHeader";
+
     export default {
+        components: {
+            SearchHeader,
+        },
         data() {
             return {
                 lorem:

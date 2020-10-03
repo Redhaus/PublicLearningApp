@@ -22,13 +22,17 @@ export default new Vuex.Store({
         extension_categories: [],
         reading_categories: [],
         lessons: [],
-        new_lesson_title: ''
+        user_classes: [],
+        new_lesson_description: '',
+        new_lesson_class_id: '',
+        new_lesson_title: '',
 
 
     },
 
 
     mutations: {
+
 
         setEvents(state, payload) {
             state.events = payload
@@ -41,10 +45,6 @@ export default new Vuex.Store({
         setExplorations(state, payload) {
             state.explorations = payload
         },
-
-        // setQuestions(state, payload) {
-        //     state.questions = payload
-        // },
 
         setPerformances(state, payload) {
             state.performances = payload
@@ -71,43 +71,49 @@ export default new Vuex.Store({
         },
 
         // saves new lesson to lesson list in vuex store
-        saveLesson(state,payload){
-            console.log('SAVE LESSON PAYLOAD' , payload);
+        saveLesson(state, payload) {
+            console.log('SAVE LESSON PAYLOAD', payload);
 
             var title = payload.lesson_title;
 
-                var lesson = JSON.parse(payload.lesson_selections);
+            var lesson = JSON.parse(payload.lesson_selections);
 
-                var lexis = lesson.selected_lexis;
-                var event = lesson.selected_event;
-                var explorations = lesson.selected_exploration;
-                var extensions = lesson.selected_extensions;
-                var goals = lesson.selected_goals;
-                var performances = lesson.selected_performances;
-                var questions = lesson.selected_questions;
-                var readings = lesson.selected_reading;
-
-
-                let data = {
-                    'id': payload.id,
-                    'lesson_title' : title,
-                    'lexis' : lexis,
-                    'event': event,
-                    'explorations': explorations,
-                    'extensions': extensions,
-                    'goals': goals,
-                    'performances': performances,
-                    'questions': questions,
-                    'readings': readings,
-                };
+            var lexis = lesson.selected_lexis;
+            var event = lesson.selected_event;
+            var explorations = lesson.selected_exploration;
+            var extensions = lesson.selected_extensions;
+            var goals = lesson.selected_goals;
+            var performances = lesson.selected_performances;
+            var questions = lesson.selected_questions;
+            var readings = lesson.selected_reading;
+            var user_questions = lesson.selected_reading;
 
 
-                state.lessons.unshift(data)
+            let data = {
+                'id': payload.id,
+                'lesson_title': title,
+                'lexis': lexis,
+                'event': event,
+                'explorations': explorations,
+                'extensions': extensions,
+                'goals': goals,
+                'performances': performances,
+                'questions': questions,
+                'readings': readings,
+                'user_questions': user_questions
+            };
+
+
+            state.lessons.unshift(data)
 
         },
 
         setLessonTitle(state, payload) {
-            state.new_lesson_title = payload;
+
+            state.new_lesson_title = payload.title;
+            state.new_lesson_description = payload.description;
+            state.new_lesson_class_id = payload.class_id;
+
         },
 
         // sets all lessons on initial load
@@ -124,8 +130,13 @@ export default new Vuex.Store({
 
                 console.log("PAYLOADELEMENT ", element);
                 var title = element.lesson_title;
+                var description = element.lesson_description;
+                var class_link = element.class_link;
+
 
                 var lesson = JSON.parse(element.lesson_selections);
+
+                console.log("LESSON", lesson);
 
                 var lexis = lesson.selected_lexis;
                 var event = lesson.selected_event;
@@ -135,12 +146,15 @@ export default new Vuex.Store({
                 var performances = lesson.selected_performances;
                 var questions = lesson.selected_questions;
                 var readings = lesson.selected_reading;
+                var user_questions = lesson.user_questions;
 
 
                 let data = {
                     'id': element.id,
-                    'lesson_title' : title,
-                    'lexis' : lexis,
+                    'lesson_title': title,
+                    'lesson_description': description,
+                    'class_link': class_link,
+                    'lexis': lexis,
                     'event': event,
                     'explorations': explorations,
                     'extensions': extensions,
@@ -148,6 +162,7 @@ export default new Vuex.Store({
                     'performances': performances,
                     'questions': questions,
                     'readings': readings,
+                    'user_questions': user_questions,
                 };
 
                 // console.log("DATA ", data);
@@ -160,7 +175,22 @@ export default new Vuex.Store({
             // state.lessons = payload
         },
 
+        saveClass(state, payload) {
+            state.user_classes.push(payload)
+        },
 
+        setClasses(state, payload) {
+            state.user_classes = payload;
+        },
+
+        deleteUserClass(state, payload) {
+            console.log('MUTATION DELETE', payload);
+            state.user_classes = state.user_classes.filter(function (item) {
+                console.log('MUTATION DELEYE ID', item);
+
+                return item.id !== payload;
+            });
+        }
 
 
     },
@@ -352,9 +382,11 @@ export default new Vuex.Store({
         },
 
 
-        fetchLessons({commit}) {
+        fetchLessons({commit}, id) {
 
-            let lesson_endpoint = "http://127.0.0.1:8000/api/user_lessons/";
+             // let class_endpoint = `http://127.0.0.1:8000/api/class_name/?instructor=${id}`;
+            // let lesson_endpoint = "http://127.0.0.1:8000/api/user_lessons/";
+            let lesson_endpoint = `http://127.0.0.1:8000/api/user_lessons/?instructor=${id}`;
 
 
             apiService(lesson_endpoint)
@@ -369,11 +401,45 @@ export default new Vuex.Store({
 
         },
 
-        postLessonTitle({commit}, payload){
+        postLessonTitle({commit}, payload) {
             commit('setLessonTitle', payload);
         },
 
+        postNewClass({commit, state}, payload) {
+
+                        // instructor is being added via serializer from user logged in
+
+            let class_endpoint = "http://127.0.0.1:8000/api/class_name/";
+
+                        console.log('DATAPAYLOAD: ', payload);
+
+            let classData = {
+                    "class_name": payload.class_name,
+                    "grade_level": payload.grade_level,
+                    "class_description": payload.class_description
+                };
+
+            console.log('DATAPAYLOAD: ', classData);
+
+
+
+            apiService(class_endpoint, "POST", classData)
+                .then(data => {
+                    // console.log('results: ', data.results);
+                    console.log('DATA: ', data);
+                    // commit('postLesson', data);
+                    commit('saveClass', data);
+                })
+                .catch((err) => {
+                    console.log(err)
+                });
+        },
+
+
         postLesson({commit, state}) {
+
+
+            // instructor is being added via serializer from user logged in
 
             let lesson_endpoint = "http://127.0.0.1:8000/api/user_lessons/";
 
@@ -382,9 +448,9 @@ export default new Vuex.Store({
             let lessonData = {
                 "instructor": {},
                 "lesson_title": state.new_lesson_title,
-                "lesson_selections": JSON.stringify(state.lesson_store.lesson)
-                // "lesson_selections": payload.state.lesson_store.lesson
-
+                "lesson_selections": JSON.stringify(state.lesson_store.lesson),
+                "class_link": state.new_lesson_class_id,
+                "lesson_description": state.new_lesson_description
             };
 
             console.log('POST STRING', lessonData.lesson_selections);
@@ -395,7 +461,7 @@ export default new Vuex.Store({
                     // console.log('results: ', data.results);
                     console.log('DATA: ', data);
                     // commit('postLesson', data);
-                     commit('saveLesson', data);
+                    commit('saveLesson', data);
                 })
                 .catch((err) => {
                     console.log(err)
@@ -430,7 +496,7 @@ export default new Vuex.Store({
                     window.localStorage.setItem('access_token', data.token);
                     window.localStorage.setItem('user', data.user);
                     window.localStorage.setItem('user_id', data.id);
-
+                    window.localStorage.setItem('instructor_id', data.instructor_id);
 
 
                     // commit('postLesson', data);
@@ -441,7 +507,51 @@ export default new Vuex.Store({
 
         },
 
+        fetchClasses({commit}, id) {
 
+            // let id =
+            // let event_filter = state.lesson_store.lesson.selected_event;
+            // console.log('EVENT FILTER: ', event_filter);
+
+            // console.log('EVENT FILTER: ', event_filter);
+            // let endpoint = 'http://127.0.0.1:8000/api/questions/';
+            // let endpoint = `http://127.0.0.1:8000/api/extensions/?event_collection=${event_filter}`;
+            // console.log('FETCH LEXIS ENDPOINT : ', endpoint);
+
+
+            let class_endpoint = `http://127.0.0.1:8000/api/class_name/?instructor=${id}`;
+
+
+            apiService(class_endpoint)
+                .then(data => {
+                    // console.log('results: ', data.results);
+                    // console.log('DATA: ', data);
+                    commit('setClasses', data);
+                })
+                .catch((err) => {
+                    console.log(err)
+                });
+
+        },
+
+        deleteUserClass({commit}, payload) {
+
+            let class_endpoint = `http://127.0.0.1:8000/api/class_name/${payload}/`;
+
+            apiService(class_endpoint, "DELETE")
+                .then(data => {
+
+                    // console.log('results: ', data.results);
+                    console.log('DATA: ', data);
+
+                    // commit('postLesson', data);
+                })
+                .catch((err) => {
+                    console.log(err)
+                });
+
+            commit('deleteUserClass', payload);
+        }
 
 
     },
@@ -490,7 +600,9 @@ export default new Vuex.Store({
             return state.lessons
         },
 
-
+        getUserClasses(state) {
+            return state.user_classes
+        },
 
 
     },

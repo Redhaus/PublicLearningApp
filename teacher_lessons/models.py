@@ -13,6 +13,9 @@ from wagtail.search import index
 
 class ClassSubject(index.Indexed, ClusterableModel):
 
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+
+
     instructor = models.ForeignKey(TeacherProfile, blank=True, null=True, related_name="teacher_profile",
                                    on_delete=models.CASCADE,
                                    help_text="Select user who is the teacher connected to this profile."
@@ -76,10 +79,25 @@ class UserLesson(index.Indexed, ClusterableModel):
         help_text="Enter the lesson title."
     )
 
-    # class_name = models.ForeignKey(ClassSubject, blank=True, null=True, related_name="class_name_lesson",
+    class_link = models.CharField(
+        max_length=500,
+        blank=True,
+        null=True,
+        help_text="Enter the lesson title."
+    )
+
+
+
+    # class_link = models.ForeignKey(ClassSubject, blank=True, null=True, related_name="class_name_lesson",
     #                                on_delete=models.SET_NULL,
     #                                help_text="Select class to this profile."
     #                                )
+
+    lesson_description = models.TextField(
+        blank=True,
+        null=True,
+        help_text="Enter the lesson description"
+    )
 
     # teacher profile fields
     instructor = models.ForeignKey(TeacherProfile, blank=True, null=True, related_name="teacher_profile_lesson",
@@ -104,7 +122,9 @@ class UserLesson(index.Indexed, ClusterableModel):
 
         FieldPanel("instructor"),
         FieldPanel("lesson_title"),
+        FieldPanel("class_link"),
         FieldPanel("lesson_selections"),
+        FieldPanel("lesson_description"),
 
     ]
 

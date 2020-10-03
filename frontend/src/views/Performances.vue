@@ -5,69 +5,38 @@
             class="test fit row wrap justify-start items-start content-start q-col-gutter-md "
     >
         <div class="col-12">
-            <q-banner elevated rounded inline-actions class="page-bar shadow-3">
-                <div class="row">
-                    <div class="col-8 title" tabindex="0">
-                        <div>Performances</div>
-                    </div>
+            <SearchHeader name="Performances" @searchTerm="search = $event"/>
 
-                    <div class="col-4" tabindex="0">
-                        <q-input
-                                v-model="search"
-                                label="Search Performances"
-                                class="q-ml-md"
-                        >
-                            <template v-slot:append>
-                                <q-icon v-if="search === ''" name="search"/>
-                                <q-icon
-                                        v-else
-                                        name="clear"
-                                        class="cursor-pointer"
-                                        @click="clearSearch"
-                                />
-                            </template>
-                        </q-input>
-                        <!--                        <q-input filled bottom-slots v-model="search"  label="Search Lexis"  class="q-ml-md">-->
-                        <!--                            <template v-slot:append>-->
-                        <!--                                <q-icon v-if="search === ''" name="search"/>-->
-                        <!--                                <q-icon v-else name="clear" class="cursor-pointer" @click="clearSearch"/>-->
-                        <!--                            </template>-->
-                        <!--                        </q-input>-->
-                    </div>
-                </div>
-            </q-banner>
         </div>
         <div style="width: 100%">
 
             <div v-if="selected_event">
 
-                    <div v-if="performances_list.length > 0">
-                <masonry :cols="4" :gutter="20">
-                    <div v-for="performance in performances_list" :key="performance.id" class="bottom-padding">
-                        <q-card
-                                class="cardHandle"
-                                :class="{ active: selected_list.includes(performance.id) }"
-                                bordered
-                                @click="eventAction(performance.id)"
-                        >
-                            <q-card-section>
-                                <div class="text-title">{{ performance.performance_title }}</div>
-                            </q-card-section>
+                <div v-if="performances_list.length > 0">
+                    <masonry :cols="4" :gutter="20">
+                        <div v-for="performance in performances_list" :key="performance.id" class="bottom-padding">
+                            <q-card
+                                    class="cardHandle"
+                                    :class="{ active: selected_list.includes(performance.id) }"
+                                    bordered
+                                    @click="eventAction(performance.id)"
+                            >
+                                <q-card-section>
+                                    <div class="text-title">{{ performance.performance_title }}</div>
+                                </q-card-section>
 
                                 <q-separator/>
-                            <q-card-section>
-                                 <div v-html="short_overview(performance.performance_overview)"></div>
-                            </q-card-section>
+                                <q-card-section>
+                                    <div v-html="short_overview(performance.performance_overview)"></div>
+                                </q-card-section>
 
 
+                            </q-card>
+                        </div>
+                    </masonry>
 
-                        </q-card>
-                    </div>
-                </masonry>
-
-                          </div>
-                    <div v-else>No Performances Available</div>
-
+                </div>
+                <div v-else>No Performances Available</div>
 
 
             </div>
@@ -100,7 +69,12 @@
 
     import clip from "text-clipper";
 
+    import SearchHeader from "../components/SearchHeader";
+
     export default {
+        components: {
+            SearchHeader,
+        },
         data() {
             return {
                 lorem:
@@ -120,7 +94,7 @@
 
         computed: {
 
-            selected_list(){
+            selected_list() {
                 return this.$store.getters["getSelectedPerformances"];
             },
 
@@ -161,9 +135,9 @@
 
         methods: {
 
-            short_overview(html){
+            short_overview(html) {
 
-                const clippedHtml = clip(html, 140, { html: true, maxLines: 5 });
+                const clippedHtml = clip(html, 140, {html: true, maxLines: 5});
 
                 // console.log('HTMLTRIM', clippedHtml);
                 return clippedHtml
@@ -195,43 +169,43 @@
 
 <style lang="scss" scoped>
 
-      .active {
+    .active {
         background-color: #cccccc;
     }
 
-/*    .bottom-padding*/
-/*        padding-bottom: 20px*/
+    /*    .bottom-padding*/
+    /*        padding-bottom: 20px*/
 
-/*        .flex-break*/
-/*            flex: 1 0 100% !important*/
-/*            width: 0 !important*/
+    /*        .flex-break*/
+    /*            flex: 1 0 100% !important*/
+    /*            width: 0 !important*/
 
-/*        .active*/
-/*            background-color: #cccccc*/
+    /*        .active*/
+    /*            background-color: #cccccc*/
 
-/*        .test*/
-/*            padding-top: 20px*/
-/*            padding-left: 20px*/
+    /*        .test*/
+    /*            padding-top: 20px*/
+    /*            padding-left: 20px*/
 
-/*        .page-bar*/
-/*            background-color: #ffffff*/
+    /*        .page-bar*/
+    /*            background-color: #ffffff*/
 
-/*        .title*/
-/*            font-size: 1.15rem !important*/
-/*            margin: auto*/
+    /*        .title*/
+    /*            font-size: 1.15rem !important*/
+    /*            margin: auto*/
 
-/*            &:focus*/
-/*                outline: none*/
+    /*            &:focus*/
+    /*                outline: none*/
 
-/*        .full-width-banner*/
-/*            width: 100%*/
-/*            padding-bottom: 20px*/
+    /*        .full-width-banner*/
+    /*            width: 100%*/
+    /*            padding-bottom: 20px*/
 
-/*        .text-white*/
-/*            min-height: 320px*/
+    /*        .text-white*/
+    /*            min-height: 320px*/
 
-/*        .banner-margin*/
-/*            margin-left: 15px*/
+    /*        .banner-margin*/
+    /*            margin-left: 15px*/
     /*.my-card*/
-        /*width: 48%*/
+    /*width: 48%*/
 </style>

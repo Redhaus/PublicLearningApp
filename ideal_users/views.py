@@ -24,6 +24,8 @@ from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 
+from teacher_profile.models import TeacherProfile
+
 
 
 # Custom RestAuth Return to get Token and user data in response.data
@@ -40,7 +42,12 @@ class LoginCustomView(ObtainAuthToken, LoginView):
         response = super(LoginCustomView, self).post(request, *args, **kwargs)
         token = Token.objects.get(key=response.data['token'])
         user = User.objects.get(id=token.user_id)
-        return Response({'token': token.key, 'id': token.user_id, 'user': user.username})
+        instructor = TeacherProfile.objects.get(user_id=token.user_id)
+
+        print('instructor', instructor)
+        print('instructorID', instructor.id)
+        # return Response({'token': token.key, 'instructor': instructor, 'id': token.user_id, 'user': user.username})
+        return Response({'token': token.key, 'instructor_id': instructor.id,  'id': token.user_id, 'user': user.username})
 
 
 # this view overwrites invite view that allows link to be clicked twice

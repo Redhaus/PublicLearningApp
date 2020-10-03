@@ -4,30 +4,8 @@
     >
 
         <div class="col-12">
-            <q-banner elevated rounded inline-actions class="page-bar shadow-3">
-                <div class="row">
-                    <div class="col-8 title" tabindex="0">
-                        <div>Goals</div>
-                    </div>
+            <SearchHeader name="Goals" @searchTerm="search = $event"/>
 
-                    <div class="col-4" tabindex="0">
-
-
-                        <q-input v-model="search" label="Search Goals" class="q-ml-md">
-                            <template v-slot:append>
-                                <q-icon v-if="search === ''" name="search"/>
-                                <q-icon
-                                        v-else
-                                        name="clear"
-                                        class="cursor-pointer"
-                                        @click="clearSearch"
-                                />
-                            </template>
-                        </q-input>
-
-                    </div>
-                </div>
-            </q-banner>
         </div>
 
         <!--create a card for every category-->
@@ -76,10 +54,10 @@
 
             </masonry>
 
-            <q-dialog v-model="icon" >
+            <q-dialog v-model="icon">
                 <q-card style="width: 60%">
                     <q-card-section class="row items-center q-pb-none">
-                        <div class="text-h6">{{dialog.goal}} </div>
+                        <div class="text-h6">{{dialog.goal}}</div>
                         <q-space/>
                         <q-btn icon="close" flat round dense v-close-popup/>
                     </q-card-section>
@@ -87,17 +65,17 @@
 
                     <q-card-section>
                         <p>Explanation:</p>
-                         <div v-html="dialog.explanation"></div>
+                        <div v-html="dialog.explanation"></div>
                     </q-card-section>
                     <q-card-section>
                         <p>Video:</p>
 
-                    <q-video
-                            v-if="dialog.video"
-                            :ratio="16/9"
-                            :src="dialog.video"
-                    />
-                                            </q-card-section>
+                        <q-video
+                                v-if="dialog.video"
+                                :ratio="16/9"
+                                :src="dialog.video"
+                        />
+                    </q-card-section>
 
 
                 </q-card>
@@ -123,7 +101,12 @@
     </div>
 </template>
 <script>
+    import SearchHeader from "../components/SearchHeader";
+
     export default {
+        components: {
+            SearchHeader,
+        },
         data() {
             return {
                 // goal_id_list: [],
@@ -212,7 +195,7 @@
 
         computed: {
 
-            selected_list(){
+            selected_list() {
                 return this.$store.getters["getSelectedGoals"];
             },
 
@@ -283,7 +266,6 @@
     /*        margin-left: 15px*/
 
 </style>
-
 
 
 <!--<iframe width="560" height="315" src="" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>-->
