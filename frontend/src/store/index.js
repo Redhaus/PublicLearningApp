@@ -72,7 +72,7 @@ export default new Vuex.Store({
 
         // saves new lesson to lesson list in vuex store
         saveLesson(state, payload) {
-            console.log('SAVE LESSON PAYLOAD', payload);
+            // console.log('SAVE LESSON PAYLOAD', payload);
 
             var title = payload.lesson_title;
 
@@ -119,7 +119,7 @@ export default new Vuex.Store({
         // sets all lessons on initial load
         setLessons(state, payload) {
 
-            console.log("LESSONPAYLOAD ", payload);
+            // console.log("LESSONPAYLOAD ", payload);
 
             // state.lessons = payload;
 
@@ -128,7 +128,7 @@ export default new Vuex.Store({
             // foreach(payload)
             payload.forEach(element => {
 
-                console.log("PAYLOADELEMENT ", element);
+                // console.log("PAYLOADELEMENT ", element);
                 var title = element.lesson_title;
                 var description = element.lesson_description;
                 var class_link = element.class_link;
@@ -136,7 +136,7 @@ export default new Vuex.Store({
 
                 var lesson = JSON.parse(element.lesson_selections);
 
-                console.log("LESSON", lesson);
+                // console.log("LESSON", lesson);
 
                 var lexis = lesson.selected_lexis;
                 var event = lesson.selected_event;
@@ -179,17 +179,70 @@ export default new Vuex.Store({
             state.user_classes.push(payload)
         },
 
+        updateClass(state, payload) {
+
+            const index = state.user_classes.findIndex(x => x.id === payload.id);
+            state.user_classes.splice(index, 1, payload);
+            // state.user_classes.findIndex((el) => el === 1) !== -1;
+            // state.user_classes.push(payload)
+        },
+
         setClasses(state, payload) {
             state.user_classes = payload;
         },
 
         deleteUserClass(state, payload) {
-            console.log('MUTATION DELETE', payload);
+            // console.log('MUTATION DELETE', payload);
             state.user_classes = state.user_classes.filter(function (item) {
-                console.log('MUTATION DELEYE ID', item);
+                // console.log('MUTATION DELEYE ID', item);
 
                 return item.id !== payload;
             });
+        },
+
+        deleteUserLesson(state, payload) {
+            // console.log('MUTATION DELETE', payload);
+            state.lessons = state.lessons.filter(function (item) {
+                // console.log('MUTATION DELEYE ID', item);
+                return item.id !== payload;
+            });
+        },
+
+        clearLessonSelections(state) {
+
+
+            state.lesson_store.lesson.selected_event = '';
+            state.lesson_store.lesson.selected_reading = '';
+            state.lesson_store.lesson.selected_related_events = [];
+            state.lesson_store.lesson.selected_exploration = [];
+            state.lesson_store.lesson.selected_lexis = [];
+            state.lesson_store.lesson.selected_questions = [];
+            state.lesson_store.lesson.selected_performances = [];
+            state.lesson_store.lesson.selected_extensions = [];
+            state.lesson_store.lesson.selected_goals = [];
+            state.lesson_store.lesson.user_questions = []
+
+
+        },
+
+        setEditLesson(state, payload) {
+
+            state.new_lesson_description = payload.new_lesson_description,
+            state.new_lesson_class_id = payload.new_lesson_class_id,
+            state.new_lesson_title = payload.new_lesson_title,
+
+            state.lesson_store.lesson = {
+                selected_event: payload.event,
+                selected_reading: payload.readings,
+                selected_related_events: [],
+                selected_exploration: payload.explorations,
+                selected_lexis: payload.lexis,
+                selected_questions: payload.questions,
+                selected_performances: payload.performances,
+                selected_extensions: payload.extensions,
+                selected_goals: payload.goals,
+                user_questions: payload.user_questions,
+            }
         }
 
 
@@ -207,7 +260,7 @@ export default new Vuex.Store({
 
             // fetchEvents({commit}, {endpoint}) {
             // relative pass because fetch populates base url  automatically
-            console.log('FETCH CALLED: ');
+            // console.log('FETCH CALLED: ');
             apiService(endpoint)
                 .then(data => {
                     // console.log('results: ', data.results);
@@ -300,7 +353,7 @@ export default new Vuex.Store({
 
         fetchExtensions({commit, state}) {
             let event_filter = state.lesson_store.lesson.selected_event;
-            console.log('EVENT FILTER: ', event_filter);
+            // console.log('EVENT FILTER: ', event_filter);
 
             // console.log('EVENT FILTER: ', event_filter);
             // let endpoint = 'http://127.0.0.1:8000/api/questions/';
@@ -324,7 +377,7 @@ export default new Vuex.Store({
 
 
             let endpoint = "http://127.0.0.1:8000/api/goals/";
-            console.log('FETCH GOAL ENDPOINT : ', endpoint);
+            // console.log('FETCH GOAL ENDPOINT : ', endpoint);
 
             // if (event_filter) {
 
@@ -384,7 +437,7 @@ export default new Vuex.Store({
 
         fetchLessons({commit}, id) {
 
-             // let class_endpoint = `http://127.0.0.1:8000/api/class_name/?instructor=${id}`;
+            // let class_endpoint = `http://127.0.0.1:8000/api/class_name/?instructor=${id}`;
             // let lesson_endpoint = "http://127.0.0.1:8000/api/user_lessons/";
             let lesson_endpoint = `http://127.0.0.1:8000/api/user_lessons/?instructor=${id}`;
 
@@ -405,30 +458,60 @@ export default new Vuex.Store({
             commit('setLessonTitle', payload);
         },
 
+
         postNewClass({commit, state}, payload) {
 
-                        // instructor is being added via serializer from user logged in
+            // instructor is being added via serializer from user logged in
 
             let class_endpoint = "http://127.0.0.1:8000/api/class_name/";
 
-                        console.log('DATAPAYLOAD: ', payload);
+            // console.log('DATAPAYLOAD: ', payload);
 
             let classData = {
-                    "class_name": payload.class_name,
-                    "grade_level": payload.grade_level,
-                    "class_description": payload.class_description
-                };
+                "class_name": payload.class_name,
+                "grade_level": payload.grade_level,
+                "class_description": payload.class_description
+            };
 
-            console.log('DATAPAYLOAD: ', classData);
-
+            // console.log('DATAPAYLOAD: ', classData);
 
 
             apiService(class_endpoint, "POST", classData)
                 .then(data => {
                     // console.log('results: ', data.results);
-                    console.log('DATA: ', data);
+                    // console.log('DATA: ', data);
                     // commit('postLesson', data);
                     commit('saveClass', data);
+                })
+                .catch((err) => {
+                    console.log(err)
+                });
+        },
+
+        updateClass({commit, state}, payload) {
+
+            // instructor is being added via serializer from user logged in
+
+            // let class_endpoint = "http://127.0.0.1:8000/api/class_name/";
+            let class_endpoint = `http://127.0.0.1:8000/api/class_name/${payload.id}/`;
+
+            // console.log('DATAPAYLOAD: ', payload);
+
+            let classData = {
+                "class_name": payload.class_name,
+                "grade_level": payload.grade_level,
+                "class_description": payload.class_description
+            };
+
+            // console.log('DATAPAYLOAD: ', classData);
+
+
+            apiService(class_endpoint, "PUT", classData)
+                .then(data => {
+                    // console.log('results: ', data.results);
+                    // console.log('DATA: ', data);
+                    // commit('postLesson', data);
+                    commit('updateClass', data);
                 })
                 .catch((err) => {
                     console.log(err)
@@ -443,7 +526,7 @@ export default new Vuex.Store({
 
             let lesson_endpoint = "http://127.0.0.1:8000/api/user_lessons/";
 
-            console.log('POST PAYLOAD', state.lesson_store.lesson);
+            // console.log('POST PAYLOAD', state.lesson_store.lesson);
             // var myJSON = JSON.stringify(obj);
             let lessonData = {
                 "instructor": {},
@@ -453,7 +536,7 @@ export default new Vuex.Store({
                 "lesson_description": state.new_lesson_description
             };
 
-            console.log('POST STRING', lessonData.lesson_selections);
+            // console.log('POST STRING', lessonData.lesson_selections);
 
             // const apiService = function (endpoint, method, data) {
             apiService(lesson_endpoint, "POST", lessonData)
@@ -462,6 +545,9 @@ export default new Vuex.Store({
                     console.log('DATA: ', data);
                     // commit('postLesson', data);
                     commit('saveLesson', data);
+                })
+                .then(data => {
+                    commit('clearLessonSelections')
                 })
                 .catch((err) => {
                     console.log(err)
@@ -474,9 +560,9 @@ export default new Vuex.Store({
 
             let signin_endpoint = "http://127.0.0.1:8000/rest-auth/login/";
 
-            console.log('context', context);
-            console.log('USERNAME PAYLOAD', username);
-            console.log('PASSWORD DATA', password);
+            // console.log('context', context);
+            // console.log('USERNAME PAYLOAD', username);
+            // console.log('PASSWORD DATA', password);
 
             // var myJSON = JSON.stringify(obj);
             let loginData = {
@@ -491,7 +577,7 @@ export default new Vuex.Store({
                 .then(data => {
 
                     // console.log('results: ', data.results);
-                    console.log('DATA: ', data);
+                    // console.log('DATA: ', data);
 
                     window.localStorage.setItem('access_token', data.token);
                     window.localStorage.setItem('user', data.user);
@@ -542,7 +628,7 @@ export default new Vuex.Store({
                 .then(data => {
 
                     // console.log('results: ', data.results);
-                    console.log('DATA: ', data);
+                    // console.log('DATA: ', data);
 
                     // commit('postLesson', data);
                 })
@@ -551,6 +637,38 @@ export default new Vuex.Store({
                 });
 
             commit('deleteUserClass', payload);
+        },
+
+
+        deleteUserLesson({state, dispatch}, payload) {
+
+            let class_endpoint = `http://127.0.0.1:8000/api/user_lessons/${payload}/`;
+
+            apiService(class_endpoint, "DELETE")
+                .then(data => {
+
+                    // console.log('results: ', data.results);
+                    // console.log('DATA: ', data);
+                    // commit('postLesson', data);
+
+
+                    let id = window.localStorage.getItem('instructor_id');
+                    console.log('ID', id);
+
+                    console.log('DATA', data);
+
+                    dispatch('fetchLessons', id);
+                    // dispatch('deleteUserClass', id)
+                })
+                .catch((err) => {
+                    console.log(err)
+                });
+
+            // commit('deleteUserLesson', payload);
+        },
+
+        editLesson({commit}, payload) {
+            commit('setEditLesson', payload);
         }
 
 
@@ -587,12 +705,12 @@ export default new Vuex.Store({
         },
 
         getExtensionCategories(state) {
-            console.log('GET Extensions CALLED');
+            // console.log('GET Extensions CALLED');
             return state.extension_categories
         },
 
         getReadingCategories(state) {
-            console.log('GET READINGS CALLED');
+            // console.log('GET READINGS CALLED');
             return state.reading_categories
         },
 

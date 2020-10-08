@@ -88,11 +88,23 @@
             console.log('ID', id);
 
             this.fabYoutube = fabYoutube;
-            this.$store.dispatch("fetchCategories");
-            this.$store.dispatch("fetchLexis");
-
             this.$store.dispatch("fetchLessons", id);
             this.$store.dispatch("fetchClasses", id);
+            this.$store.dispatch("fetchEvents");
+            this.$store.dispatch("fetchCategories");
+            this.$store.dispatch("fetchLexis");
+            this.$store.dispatch("fetchReadings");
+            this.$store.dispatch("fetchExplorations");
+            this.$store.dispatch("fetchQuestions");
+            this.$store.dispatch("fetchPerformances");
+            this.$store.dispatch("fetchExtensions");
+            this.$store.dispatch("fetchGoals");
+
+
+
+
+
+
 
 
         },

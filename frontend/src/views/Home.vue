@@ -26,17 +26,64 @@
 
                     <!-- Lesson Cards-->
                     <div v-for="lesson in lesson_list" :key="lesson.id" class="bottom-padding">
+
+
                         <q-card
                                 class="cardHandle addLesson"
                                 :class="{ active: lesson_id_list === lesson.id }"
                                 bordered
-                                @click="eventAction(lesson.id)">
-                            <q-card-section>
-                                <strong>{{lesson.lesson_title}}</strong>
-                                <div v-for="(lex, index) in lesson.lexis" :key="index">
-                                    {{getLexis(lex)}}
-                                </div>
-                            </q-card-section>
+                                >
+
+
+                            <q-item>
+                                <q-item-section avatar>
+                                    <q-avatar>
+                                        <q-icon color="gray" name="o_description" size="40px"/>
+                                    </q-avatar>
+                                </q-item-section>
+                                <q-item-section class="grade-class">
+                                    <q-item-label caption>Grade {{class_card_grade(lesson.class_link)}}</q-item-label>
+
+                                </q-item-section>
+                            </q-item>
+
+                            <q-item>
+
+                                <q-item-section>
+
+                                    <q-item-label caption>Lesson Title</q-item-label>
+                                    <q-item-label>{{lesson.lesson_title}}</q-item-label>
+                                </q-item-section>
+                            </q-item>
+
+                            <q-item>
+
+                                <q-item-section>
+                                    <q-item-label caption>Class</q-item-label>
+                                    <q-item-label>{{class_card_name(lesson.class_link)}}</q-item-label>
+                                </q-item-section>
+                            </q-item>
+
+<!--                            <q-item>-->
+
+<!--                                <q-item-section>-->
+<!--                                    <q-item-label caption>Description</q-item-label>-->
+<!--                                    <q-item-label>{{lesson.lesson_description}}</q-item-label>-->
+<!--                                </q-item-section>-->
+<!--                            </q-item>-->
+
+
+                            <q-separator class="separator-bottom"  />
+
+
+                            <q-card-actions class="items-bottom" align="right">
+                                <q-btn @click="previewLessonDialogPopup(lesson)" flat round color="gray" icon="o_open_in_new"/>
+                                <q-btn flat round color="gray" icon="o_file_copy"/>
+                                <q-btn flat round color="gray" icon="o_edit"/>
+                                <q-btn @click="deleteConfirmation(lesson)" flat round color="gray" icon="o_delete"/>
+                            </q-card-actions>
+
+
                         </q-card>
                     </div>
 
@@ -50,32 +97,18 @@
 
 
                 <!-- CREATE NEW LESSON DIALOG -->
-
-                <CreateLessonDialog ref="newLessonDialog"
-                                   :class_options=class_options
-                                   @lessonTitleEvent="new_lesson_title = $event"
-                                   @classSelectionEvent="class_selection = $event"
-                                   @lessonDescriptionEvent="lesson_description = $event"
-                                   :createNewLessonHandler="createNewLesson"/>
-
+                <CreateLessonDialog :class_options=class_options ref="newLessonDialog" />
 
                 <!-- CREATE NEW CLASS DIALOG -->
-                <CreateClassDialog ref="newClassDialog"
-                                   :grade_options=grade_options
-                                   @classNameEvent="class_name = $event"
-                                   @classDescriptionEvent="class_description = $event"
-                                   @gradeLevelEvent="grade_level = $event"
-                                   :createClassHandler="createClass"/>
+                <CreateClassDialog ref="newClassDialog"/>
+
+                <PreviewLessonDialog ref="previewLessonDialog" />
 
             </div>
 
 
             <div v-else>No Lesson Available</div>
 
-        </div>
-
-        <div>
-            <q-btn color="primary" @click="saveLesson" label="Save"/>
         </div>
 
 
@@ -85,13 +118,16 @@
     import LessonSearchHeader from "../components/lessons/LessonSearchHeader";
     import CreateClassDialog from "../components/lessons/CreateClassDialog";
     import CreateLessonDialog from "../components/lessons/CreateLessonDialog";
+    import PreviewLessonDialog from "../components/lessons/PreviewLessonDialog";
+
 
     export default {
 
         components: {
             LessonSearchHeader,
             CreateClassDialog,
-            CreateLessonDialog
+            CreateLessonDialog,
+            PreviewLessonDialog
         },
         data() {
             return {
@@ -105,17 +141,9 @@
                 filter: '',
 
                 // LESSON CONTENT
-                new_lesson_title: '',
-                class_selection: null,
-                lesson_description: '',
-
-                // CLASS CONTENT
-                class_name: '',
-                grade_level: null,
-                class_description: '',
-                grade_options: [
-                    6, 7, 8, 9, 10, 11, 12
-                ],
+                // new_lesson_title: '',
+                // class_selection: null,
+                // lesson_description: '',
 
                 // CONTENT DISPLAY
                 lesson_id_list: '',
@@ -127,51 +155,94 @@
 
         methods: {
 
-            newLessonDialogPopup(){
+
+             // CONFIRMATION DELETE DIALOG
+            deleteConfirmation(lesson) {
+
+                this.$q.dialog({
+                    title: 'Confirm Delete',
+                    message: lesson.lesson_title,
+                    cancel: true,
+                    persistent: true,
+                    ok: {
+                        label: 'Delete',
+                        flat: true,
+                        textColor: 'red'
+                    }
+                }).onOk(() => {
+                    console.log('CLASSED', lesson.id);
+                    this.deleteLesson(lesson.id)
+                }).onCancel(() => {
+                })
+            },
+
+            deleteLesson(id) {
+                this.$store.dispatch('deleteUserLesson', id)
+            },
+
+
+
+            class_card_grade(id) {
+                // console.log('IDIDID', id);
+                let classes = this.$store.getters['getUserClasses'];
+                // console.log('CLASSES', classes);
+                let classObj = classes.find(element => element.id === id);
+                // console.log('CLASSOBJ', classObj);
+                if (classObj) {
+                    return classObj.grade_level
+                } else {
+                    return
+                }
+            },
+
+            class_card_name(id) {
+                // console.log('IDIDID', id);
+                let classes = this.$store.getters['getUserClasses'];
+                // console.log('CLASSES', classes);
+                let classObj = classes.find(element => element.id === id);
+                // console.log('CLASSOBJ', classObj);
+                if (classObj) {
+                    return classObj.class_name
+                } else {
+                    return
+                }
+            },
+
+
+            newLessonDialogPopup() {
                 this.$refs.newLessonDialog.popupContent();
             },
 
             // calls popup for create class
             newClassDialogPopup() {
-                this.$refs.newClassDialog.popupContent();
+                this.$refs.newClassDialog.popupAdd();
             },
 
-            createClass() {
-
-                let data = {
-                    "class_name": this.class_name,
-                    "grade_level": this.grade_level,
-                    "class_description": this.class_description
-                };
-
-                this.$store.dispatch('postNewClass', data);
-
-                // CLEAR FIELDS AFTER CREATE
-                this.class_name = '';
-                this.grade_level = null;
-                this.class_description = '';
-
+            // calls popup for create class
+            previewLessonDialogPopup(lesson) {
+                this.$refs.previewLessonDialog.popupContent(lesson);
             },
 
-            createNewLesson() {
-
-                let lessonData = {
-                    title: this.new_lesson_title,
-                    description: this.lesson_description,
-                    class_id: this.class_selection.value
-                };
-
-                this.$store.dispatch("postLessonTitle", lessonData);
-
-                // FORWARD TO EVENTS SECTION
-                this.$router.push({name: 'Events'});
-
-
-            },
+            //
+            // createNewLesson() {
+            //
+            //     let lessonData = {
+            //         title: this.new_lesson_title,
+            //         description: this.lesson_description,
+            //         class_id: this.class_selection.value
+            //     };
+            //
+            //     this.$store.dispatch("postLessonTitle", lessonData);
+            //
+            //     // FORWARD TO EVENTS SECTION
+            //     this.$router.push({name: 'Events'});
+            //
+            //
+            // },
 
 
             addLesson() {
-                console.log('Add Lesson');
+                // console.log('Add Lesson');
                 this.create_new_lesson = true;
             },
 
@@ -194,11 +265,11 @@
 
             saveLesson() {
 
-                console.log('SAVE LESSON CALLED');
-                console.log('GET RETURN OF SELECTIONS', this.$store.getters["getSelections"]);
+                // console.log('SAVE LESSON CALLED');
+                // console.log('GET RETURN OF SELECTIONS', this.$store.getters["getSelections"]);
 
                 // bypass getters
-                console.log('DATA SELECTIONS', this.$store.state.lesson_store.lesson);
+                // console.log('DATA SELECTIONS', this.$store.state.lesson_store.lesson);
 
 
                 // let payload = ;
@@ -209,16 +280,17 @@
             // this fetches the words based on id passed
             getLexis(id) {
 
-                console.log('GETLEXIS', id);
+                // console.log('GETLEXIS', id);
 
                 // console.log('ID', id);
                 // loop through items and return the item with the matching id
-                let lex = this.$store.state.lexis_store.lexis.find(item => item.id === id);
+                // let lex = this.$store.state.lexis_store.lexis.find(item => item.id === id);
+                let lex = this.$store.getters['getLexis'].find(item => item.id === id);
                 // console.log('LEX', lex.term);
 
                 // return lex.term;
                 if (lex) {
-                    console.log('LEX', lex.term);
+                    // console.log('LEX', lex.term);
                     return lex.term
                 }
 
@@ -266,6 +338,12 @@
 
         created() {
 
+            // console.log('CREATED CALLED');
+            // fetchLessons from server once created
+            let id = window.localStorage.getItem('instructor_id');
+            this.$store.dispatch("fetchLessons", id);
+
+
             // fetchClasses(){
             //
             // },
@@ -277,7 +355,7 @@
             // this.$store.dispatch("fetchLexis");
             this.lexis = this.$store.getters["getLexis"];
 
-            console.log('LEXIS CREATED', this.lexis);
+            // console.log('LEXIS CREATED', this.lexis);
 
             // console.log('SELECTIONS', this.selections);
 
@@ -286,7 +364,7 @@
 
             //
             //
-            console.log('CREATED LESSON CALLED LESSONS DASHBOARD');
+            // console.log('CREATED LESSON CALLED LESSONS DASHBOARD');
             this.selections = this.$store.getters["getSelections"];
             //             console.log('AFTER GET SELECTIONS', this.selections);
 
@@ -371,13 +449,16 @@
 
                 if (this.class_selection_filter.value !== 'all') {
 
+
+                    // console.log('FILTER VALUE', this.class_selection_filter.value);
+
                     // create empty array to hold filtered values
                     let filteredList = [];
 
 
                     lessons.forEach((item) => {
 
-                        console.log('ITEM', item);
+                        // console.log('ITEM', item.class_link);
 
 
                         // if (this.class_selection_filter.value === 'all') {
@@ -456,6 +537,27 @@
     .plusIcon {
         font-size: 34px !important;
         color: #cccccc;
+    }
+
+    .items-bottom {
+
+        position: absolute;
+        bottom: 0;
+        right: 0;
+
+    }
+
+      .separator-bottom {
+
+        position: absolute;
+        bottom: 60px;
+
+
+    }
+
+
+    .grade-class{
+        text-align: right;
     }
 
 

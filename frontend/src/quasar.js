@@ -21,6 +21,6 @@ Vue.use(Quasar, {
   plugins: {
     Loading,
     Dialog
-
   }
+
 });

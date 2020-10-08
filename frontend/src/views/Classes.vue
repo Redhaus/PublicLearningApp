@@ -4,18 +4,20 @@
 
        <!-- TOP BANNER-->
         <div class="col-12">
-            <q-banner elevated rounded inline-actions class="page-bar shadow-3">
-                <div class="row">
+                     <SearchHeader name="Classes" @searchTerm="search = $event"/>
 
-                    <div class="col-8 title" tabindex="0">
-                        <div>Classes</div>
-                    </div>
+<!--            <q-banner elevated rounded inline-actions class="page-bar shadow-3">-->
+<!--                <div class="row">-->
 
-                    <div class="col-4" tabindex="0">
+<!--                    <div class="col-8 title" tabindex="0">-->
+<!--                        <div>Classes</div>-->
+<!--                    </div>-->
 
-                    </div>
-                </div>
-            </q-banner>
+<!--                    <div class="col-4" tabindex="0">-->
+
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </q-banner>-->
         </div>
 
 
@@ -50,6 +52,7 @@
 
                             <q-card-actions>
                                 <q-btn @click="deleteConfirmation(classed)" color="primary" label="Delete"/>
+                                <q-btn @click="editClass(classed)" color="primary" label="Edit"/>
                             </q-card-actions>
 
                         </q-card>
@@ -58,12 +61,8 @@
                 </masonry>
 
                 <!-- CREATE NEW CLASS DIALOG -->
-                <CreateClassDialog ref="newClassDialog"
-                                   :grade_options=grade_options
-                                   @classNameEvent="class_name = $event"
-                                   @classDescriptionEvent="class_description = $event"
-                                   @gradeLevelEvent="grade_level = $event"
-                                   :createClassHandler="createClass"/>
+                <CreateClassDialog ref="newClassDialog"/>
+
 
             </div>
 
@@ -73,32 +72,33 @@
 </template>
 
 <script>
+    import SearchHeader from "../components/SearchHeader";
     import CreateClassDialog from "../components/lessons/CreateClassDialog";
 
 
     export default {
 
         components: {
-            CreateClassDialog
+            CreateClassDialog,
+            SearchHeader
         },
         data() {
             return {
                 create_class_dialog: false,
-                class_name: '',
-                grade_level: null,
-                class_description: '',
-                grade_options: [
-                    6, 7, 8, 9, 10, 11, 12
-                ],
-                class_selection: null
+                class_selection: null,
+                search: ''
             };
         },
 
         methods: {
 
+            editClass(classData){
+                this.$refs.newClassDialog.popupEdit(classData);
+            },
+
             // calls popup for create class
             newClassDialogPopup() {
-                this.$refs.newClassDialog.popupContent();
+                this.$refs.newClassDialog.popupAdd();
             },
 
             // CONFIRMATION DELETE DIALOG
@@ -124,34 +124,26 @@
             deleteClass(id) {
                 this.$store.dispatch('deleteUserClass', id)
             },
-
-            createClass() {
-
-                let data = {
-                    "class_name": this.class_name,
-                    "grade_level": this.grade_level,
-                    "class_description": this.class_description
-                };
-
-                // POST TO DB
-                this.$store.dispatch('postNewClass', data);
-
-                // CLEAR CLASS LIST
-                this.class_name = '';
-                this.grade_level = null;
-                this.class_description = '';
-
-            },
-
         },
 
         created() {
 
         },
-
         computed: {
             class_list() {
-                return this.$store.getters['getUserClasses'];
+                let classes =  this.$store.getters['getUserClasses'];
+
+                if (this.search.length > 0) {
+                    // return filter array looking for matches
+                    var result = classes.filter(obj => {
+                        // return matching results for classname and search term
+                        return obj.class_name.toLowerCase().includes(this.search.toLowerCase());
+                    });
+                    return result;
+                }
+
+                return classes
+
             }
         }
     };

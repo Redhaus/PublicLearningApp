@@ -59,9 +59,24 @@
             }
         },
         methods:{
-            createNewLesson(){
-                this.createNewLessonHandler();
+
+            createNewLesson() {
+
+                let lessonData = {
+                    title: this.new_lesson_title,
+                    description: this.lesson_description,
+                    class_id: this.class_selection.value
+                };
+
+                this.$store.dispatch("postLessonTitle", lessonData);
+
+                // FORWARD TO EVENTS SECTION
+                this.$router.push({name: 'Events'});
+
             },
+            // createNewLesson(){
+            //     this.createNewLessonHandler();
+            // },
 
             lessonTitleEvent() {
                 // pass emit event to parent component and pass data changed

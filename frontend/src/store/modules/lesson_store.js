@@ -41,7 +41,7 @@ const mutations = {
     },
 
     setSelectedLexis(state, payload) {
-    // setSelectedLexis() {
+        // setSelectedLexis() {
 
         // if event is already in array, then remove it with filter
         // otherwise push it to the array
@@ -129,18 +129,19 @@ const mutations = {
 
     },
 
-    setUserQuestions(state, payload){
+    setUserQuestions(state, payload) {
         state.lesson.user_questions.push(payload);
     },
 
-    deleteUserQuestion(state, payload){
+    deleteUserQuestion(state, payload) {
         console.log('MUTATION DELEYE', payload);
         state.lesson.user_questions = state.lesson.user_questions.filter(function (item) {
-                    console.log('MUTATION DELEYE ID', item);
+            console.log('MUTATION DELEYE ID', item);
 
-                return item.id !== payload;
-            });
-    }
+            return item.id !== payload;
+        });
+    },
+
 
 
 };
@@ -184,7 +185,8 @@ const actions = {
     },
     deleteUserQuestion({commit}, payload) {
         commit('deleteUserQuestion', payload);
-    }
+    },
+
 
 
 };
