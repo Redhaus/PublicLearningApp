@@ -100,13 +100,6 @@
             this.$store.dispatch("fetchExtensions");
             this.$store.dispatch("fetchGoals");
 
-
-
-
-
-
-
-
         },
 
         methods: {
@@ -225,6 +218,7 @@
 
     .q-tab--active {
         color: #000000 !important;
+            border-top: 1px solid #666;
     }
 
     .bottom-padding {
@@ -293,7 +287,7 @@
     }
 
     .lex-card {
-        max-width: 70% !important;
+        min-width: 70% !important;
         padding: 20px;
     }
 

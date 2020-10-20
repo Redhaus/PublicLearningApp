@@ -23,7 +23,7 @@
 
                 </div>
                 <q-space/>
-                 <span> <q-btn flat round color="gray" icon="o_file_copy"/>
+                <span> <q-btn @click="duplicateLesson(lesson)" flat round color="gray" icon="o_file_copy"/>
                            <q-btn @click="editLesson(lesson)" flat round color="gray" icon="o_edit"/>
                     </span>
                 <q-btn icon="close" flat round dense v-close-popup/>
@@ -43,17 +43,16 @@
                     <div class="subtitle dialog-top subtitle-line">Grade:</div>
                     <div>{{class_card_grade(lesson.class_link)}}</div>
 
-                     <div >
-                            <div class="subtitle dialog-top subtitle-line">Goals:</div>
-                            <ol class="ol_padding">
-                                <li v-for="goal in lesson.goals" :key="goal+'goal'">
-                                    {{getGoals(goal)}}
-                                </li>
-                            </ol>
-                        </div>
+                    <div>
+                        <div class="subtitle dialog-top subtitle-line">Goals:</div>
+                        <ol class="ol_padding">
+                            <li v-for="goal in lesson.goals" :key="goal+'goal'">
+                                {{getGoals(goal)}}
+                            </li>
+                        </ol>
+                    </div>
 
-                                        <q-separator />
-
+                    <q-separator/>
 
 
                     <q-separator vertical/>
@@ -64,22 +63,18 @@
 
                         <div class="col-6">
 
-                             <div class="subtitle subtitle-line">Event:</div>
-                    <div class="dialog-top">{{eventFetch(lesson.event)}}</div>
+                            <div class="subtitle subtitle-line">Event:</div>
+                            <div class="dialog-top">{{eventFetch(lesson.event)}}</div>
                         </div>
 
-                         <div class="col-6">
+                        <div class="col-6">
 
-                             <div class="subtitle subtitle-line-full">Reading:</div>
-                    <div class="text-italic dialog-top">{{readingFetch(lesson.event)}}</div>
+                            <div class="subtitle subtitle-line-full">Reading:</div>
+                            <div class="text-italic dialog-top">{{readingFetch(lesson.event)}}</div>
                         </div>
-
-
 
 
                     </div>
-
-
 
 
                     <!-- sets selected_lexis for lex computations-->
@@ -136,8 +131,6 @@
                         </div>
 
 
-
-
                     </div>
 
 
@@ -185,7 +178,9 @@
                 preview_lesson_dialog: false,
                 lesson: {},
                 cols: 5,
-                selected_lexis: []
+                selected_lexis: [],
+
+                lesson_description: ''
             }
         },
 
@@ -211,10 +206,25 @@
 
         methods: {
 
-            editLesson(lesson){
+            editLesson(lesson) {
+
+                // console.log('LESSON', lesson);
+                // this.$store.dispatch('editLesson', lesson);
+                // this.$router.push({name: 'Lesson'});
+
+                this.$store.dispatch('editLesson', lesson);
+                this.$router.push({name: 'Lesson'});
+
+            },
+
+            duplicateLesson(lesson){
 
                 console.log('LESSON', lesson);
-                this.$store.dispatch('editLesson', lesson)
+
+                lesson.lesson_title = lesson.lesson_title + " NEW";
+                this.$store.dispatch('duplicateLesson', lesson);
+                this.$router.push({name: 'Lesson'});
+
 
             },
 
@@ -413,7 +423,7 @@
         /*margin-right: 20px;*/
     }
 
-    .text-italic{
+    .text-italic {
         font-style: italic;
     }
 

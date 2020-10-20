@@ -22,19 +22,26 @@
             </div>
             <q-separator/>
 
-            <div class="subtitleEtymology">Etymology:</div>
-            <div v-html="short_overview(lex.etymology)"></div>
+            <div class="subtitle padTop">Etymology:</div>
+            <div class="shortOverview" v-html="short_overview(lex.etymology)"></div>
         </q-card-section>
 
-        <q-separator/>
 
-        <div class="q-pa-md q-gutter-sm">
-            <q-btn-group spread>
-                <q-btn color="purple" label="Preview" icon="visibility"
-                       @click.stop="dialogPopup(lex)"/>
-            </q-btn-group>
 
-        </div>
+        <div class="btnContainer">
+                    <q-separator/>
+
+        <q-card-actions class="items-bottom" align="right">
+                          <q-btn @click.stop="dialogPopup(lex)" dense flat round color="grey" icon="o_open_in_new"/>
+        </q-card-actions>
+            </div>
+
+
+
+<!--        <div class="q-pa-md q-gutter-sm">-->
+<!--             <q-btn @click.stop="dialogPopup(lex)" dense flat round color="gray" icon="o_open_in_new"/>-->
+
+<!--        </div>-->
     </q-card>
 
 
@@ -69,6 +76,33 @@
     }
 </script>
 
-<style scoped>
+<style >
+
+
+    .btnContainer{
+        display: block;
+        height: 50px;
+        width: 100%;
+    }
+
+
+     .items-bottom {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+    }
+
+    div.shortOverview > p{
+        margin: 0;
+    }
+
+    .padTop {
+                padding-top: 10px;
+
+    }
+
+
+
+
 
 </style>

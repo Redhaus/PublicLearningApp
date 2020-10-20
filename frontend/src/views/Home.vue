@@ -31,9 +31,7 @@
                         <q-card
                                 class="cardHandle addLesson"
                                 :class="{ active: lesson_id_list === lesson.id }"
-                                bordered
-                                >
-
+                                bordered>
 
                             <q-item>
                                 <q-item-section avatar>
@@ -64,23 +62,13 @@
                                 </q-item-section>
                             </q-item>
 
-<!--                            <q-item>-->
-
-<!--                                <q-item-section>-->
-<!--                                    <q-item-label caption>Description</q-item-label>-->
-<!--                                    <q-item-label>{{lesson.lesson_description}}</q-item-label>-->
-<!--                                </q-item-section>-->
-<!--                            </q-item>-->
-
-
                             <q-separator class="separator-bottom"  />
 
-
                             <q-card-actions class="items-bottom" align="right">
-                                <q-btn @click="previewLessonDialogPopup(lesson)" flat round color="gray" icon="o_open_in_new"/>
-                                <q-btn flat round color="gray" icon="o_file_copy"/>
-                                <q-btn flat round color="gray" icon="o_edit"/>
-                                <q-btn @click="deleteConfirmation(lesson)" flat round color="gray" icon="o_delete"/>
+                                <q-btn @click="previewLessonDialogPopup(lesson)" dense flat round color="gray" icon="o_open_in_new"/>
+                                <q-btn @click="duplicateLessonDialogPopup(lesson)" dense flat round color="gray" icon="o_file_copy"/>
+                                <q-btn @click="editLessonDialogPopup(lesson)" dense flat round color="gray" icon="o_edit"/>
+                                <q-btn @click="deleteConfirmation(lesson)" dense flat round color="gray" icon="o_delete"/>
                             </q-card-actions>
 
 
@@ -96,6 +84,9 @@
                 </div>
 
 
+                <!-- DUPLICATE LESSON DIALOG -->
+                <DuplicateLessonInfo :class_options=class_options ref="duplicateLessonDialog" />
+
                 <!-- CREATE NEW LESSON DIALOG -->
                 <CreateLessonDialog :class_options=class_options ref="newLessonDialog" />
 
@@ -105,7 +96,6 @@
                 <PreviewLessonDialog ref="previewLessonDialog" />
 
             </div>
-
 
             <div v-else>No Lesson Available</div>
 
@@ -119,7 +109,7 @@
     import CreateClassDialog from "../components/lessons/CreateClassDialog";
     import CreateLessonDialog from "../components/lessons/CreateLessonDialog";
     import PreviewLessonDialog from "../components/lessons/PreviewLessonDialog";
-
+    import DuplicateLessonInfo from "../components/lessons/DuplicateLessonInfo";
 
     export default {
 
@@ -127,8 +117,10 @@
             LessonSearchHeader,
             CreateClassDialog,
             CreateLessonDialog,
-            PreviewLessonDialog
+            PreviewLessonDialog,
+            DuplicateLessonInfo
         },
+
         data() {
             return {
 
@@ -150,13 +142,14 @@
                 lexis: [],
                 selections: {},
 
+                 // edit_lesson: false
+
             };
         },
 
         methods: {
 
-
-             // CONFIRMATION DELETE DIALOG
+            // CONFIRMATION DELETE DIALOG
             deleteConfirmation(lesson) {
 
                 this.$q.dialog({
@@ -179,7 +172,6 @@
             deleteLesson(id) {
                 this.$store.dispatch('deleteUserLesson', id)
             },
-
 
 
             class_card_grade(id) {
@@ -211,17 +203,27 @@
 
             newLessonDialogPopup() {
                 this.$refs.newLessonDialog.popupContent();
+                this.$store.dispatch('clearOldLesson')
             },
 
-            // calls popup for create class
-            newClassDialogPopup() {
-                this.$refs.newClassDialog.popupAdd();
+            duplicateLessonDialogPopup(lesson) {
+                this.$refs.duplicateLessonDialog.popupEdit(lesson);
+            },
+
+            editLessonDialogPopup(lesson) {
+                this.$refs.newLessonDialog.popupEdit(lesson);
             },
 
             // calls popup for create class
             previewLessonDialogPopup(lesson) {
                 this.$refs.previewLessonDialog.popupContent(lesson);
             },
+
+               // calls popup for create class
+            newClassDialogPopup() {
+                this.$refs.newClassDialog.popupAdd();
+            },
+
 
             //
             // createNewLesson() {
@@ -390,7 +392,7 @@
         computed: {
 
 
-            // class options for filtered lessons by class with added 'all'
+            // filteres lessons by class selection  for filtered lessons by class with added 'all'
             class_options_filter() {
 
                 let class_list = [];
@@ -520,6 +522,8 @@
 
 <style lang="scss">
 
+
+
     .dialog_container {
         width: 70% !important;
     }
@@ -552,13 +556,13 @@
         position: absolute;
         bottom: 60px;
 
-
     }
 
 
     .grade-class{
         text-align: right;
     }
+
 
 
 </style>

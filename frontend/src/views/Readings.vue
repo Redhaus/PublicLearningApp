@@ -1,16 +1,13 @@
 <template>
     <!--<q-scroll-area >-->
 
-    <div
-            class="test fit row wrap justify-start items-start content-start q-col-gutter-md "
-    >
+    <div class="test fit row wrap justify-start items-start content-start q-col-gutter-md ">
         <div class="col-12">
-
             <SearchHeader name="Readings" @searchTerm="search = $event"/>
-
-
         </div>
+
         <div style="width: 100%">
+
 
             <div v-if="selected_event">
 
@@ -39,9 +36,38 @@
                                     <!--                                <p>Type: {{book.reading_category.category_name}} | Pages: {{book.page_count}}</p>-->
 
                                 </q-card-section>
+
+
+                                <div class="btnContainer">
+                                    <q-separator/>
+                                    <q-card-actions class="items-bottom" align="right">
+                                        <q-btn @click.stop="dialogPopup(book)" dense flat round
+                                               color="grey" icon="o_open_in_new"/>
+                                    </q-card-actions>
+                                </div>
+
+
+
+                                <!--                                <q-separator class="separator-bottom"/>-->
+                                <!--                                <q-card-actions align="right">-->
+                                <!--                                    <q-btn @click="eventDetail(event)" dense flat round color="gray"-->
+                                <!--                                           icon="o_open_in_new"/>-->
+                                <!--                                </q-card-actions>-->
+
+                                <!--                                <q-separator/>-->
+                                <!--                                <q-card-actions class="items-bottom" align="right">-->
+                                <!--                                    <q-btn @click.stop="dialogPopup(lex)" dense flat round color="gray"-->
+                                <!--                                           icon="o_open_in_new"/>-->
+                                <!--                                </q-card-actions>-->
+
+
                             </q-card>
                         </div>
                     </masonry>
+
+                       <!-- DIALOG -->
+                    <PrimaryReadingDialog ref="dialogComponent" />
+
                 </div>
                 <div v-else>No Readings Available</div>
 
@@ -61,10 +87,12 @@
     import clip from "text-clipper";
 
     import SearchHeader from "../components/SearchHeader";
+    import PrimaryReadingDialog from "../components/readings/primaryReadingDialog"
 
     export default {
         components: {
             SearchHeader,
+            PrimaryReadingDialog
         },
         data() {
             return {
@@ -118,6 +146,12 @@
         },
 
         methods: {
+
+              dialogPopup(reading) {
+                // call child popup function
+                this.$refs.dialogComponent.popupContent(reading);
+            },
+
 
             short_overview(html) {
 

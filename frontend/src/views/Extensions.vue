@@ -32,9 +32,21 @@
 
                                     <div v-html="short_overview(ex.explanation)"></div>
                                 </q-card-section>
+
+                                <div class="btnContainer">
+                                    <q-separator/>
+                                    <q-card-actions class="items-bottom" align="right">
+                                        <q-btn @click.stop="dialogPopup(ex)" dense flat round
+                                               color="grey" icon="o_open_in_new"/>
+                                    </q-card-actions>
+                                </div>
+
+
                             </q-card>
                         </div>
                     </masonry>
+
+                    <ExtensionsDialog ref="dialogComponent" style="min-width: 70%"/>
                 </div>
                 <div v-else>No Extensions Available</div>
 
@@ -67,10 +79,12 @@
     import clip from "text-clipper";
 
     import SearchHeader from "../components/SearchHeader";
+    import ExtensionsDialog from "../components/extensions/ExtensionsDialog";
 
     export default {
         components: {
             SearchHeader,
+            ExtensionsDialog
         },
         data() {
             return {
@@ -133,6 +147,11 @@
         },
 
         methods: {
+
+              dialogPopup(ext) {
+                // call child popup function
+                this.$refs.dialogComponent.popupContent(ext);
+            },
 
             short_overview(html) {
 

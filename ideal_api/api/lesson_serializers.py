@@ -31,10 +31,10 @@ class ClassNameSerializer(serializers.ModelSerializer):
 
 
 
+
     def create(self, validated_data):
 
         print('VALIDATED DATA', validated_data)
-
         # get the user object of the teacher logged in creating the lesson
 
         # for api
@@ -222,6 +222,22 @@ class UserLessonSerializer(serializers.HyperlinkedModelSerializer):
     # class_link = ClassLinkSerializer(many=False)
 
     # class_link = ClassLinkField(many=False, read_only=True)
+
+    def update(self, instance, validated_data):
+        # instance.name = validated_data.get('name', instance.name)
+
+        print('VALIDATED DATA', validated_data)
+        print('INSTANCE DATA', instance)
+
+        instance.lesson_selections = validated_data["lesson_selections"]
+        instance.lesson_title = validated_data["lesson_title"]
+        instance.lesson_description = validated_data["lesson_description"]
+        instance.class_link = validated_data["class_link"]
+
+        instance.save()
+        return instance
+
+
 
     def create(self, validated_data):
 

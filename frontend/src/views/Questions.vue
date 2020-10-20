@@ -1,14 +1,9 @@
 <template>
     <!--<q-scroll-area >-->
 
-    <div
-            class="test fit row wrap justify-start items-start content-start q-col-gutter-md "
-    >
+    <div class="test fit row wrap justify-start items-start content-start q-col-gutter-md ">
         <div class="col-12">
-
             <SearchHeader name="Questions" @searchTerm="search = $event"/>
-
-
         </div>
 
         <div style="width: 100%">
@@ -50,32 +45,6 @@
                                     <q-card-section class="bottom-padding row items-center">
                                         <div class="col-10">{{user_question.user_question}}
 
-<!--                                             <q-popup-edit v-model="label">-->
-<!--        <q-input v-model="label" dense autofocus counter />-->
-<!--      </q-popup-edit>-->
-
-
-<!--                                            <q-popup-edit  >-->
-<!--                                                <template-->
-<!--                                                        v-slot="{  emitValue, set }">-->
-<!--                                                    <q-input-->
-<!--                                                            autofocus-->
-<!--                                                            dense-->
-<!--                                                            :value="user_question.user_question"-->
-<!--                                                            hint="Edit your question"-->
-<!--                                                            @input="emitValue"-->
-<!--                                                    >-->
-<!--                                                        <template v-slot:after>-->
-<!--&lt;!&ndash;                                                            <q-btn flat dense color="negative" icon="cancel"&ndash;&gt;-->
-<!--&lt;!&ndash;                                                                   @click.stop="cancel"/>&ndash;&gt;-->
-<!--                                                            <q-btn flat dense color="positive" icon="check_circle"-->
-<!--                                                                   @click.stop="set(this.user_question)"-->
-<!--                                                                  />-->
-<!--                                                        </template>-->
-<!--                                                    </q-input>-->
-<!--                                                </template>-->
-<!--                                            </q-popup-edit>-->
-
 
                                         </div>
                                         <div class="col-2">
@@ -95,47 +64,51 @@
                         <!--                        </masonry>-->
 
 
+                        <div style="height: 100px"></div>
                     </div>
 
 
-                    <q-page-container>
-                        <q-page padding>
+                    <!--                    <q-page-container>-->
+                    <!--                        <q-page padding>-->
 
-                            <q-page-sticky expand position="bottom">
-                                <div class="col-12">
-                                    <q-banner elevated rounded inline-actions class="page-bar shadow-3">
+<!--                    <div class="qfoot">-->
 
-                                        <q-input v-on:keyup.enter="save_user_question" bottom-slots
-                                                 v-model="user_question_input" label="Additional Question">
-                                            <!--        <template v-slot:before>-->
-                                            <!--          <q-icon name="event" />-->
-                                            <!--        </template>-->
+                                                    <q-page-sticky class="slideUp" expand position="bottom">
+                        <div class="col-12">
+                            <q-banner elevated rounded inline-actions class="page-bar shadow-3">
 
-                                            <template v-slot:hint>
-                                                Add any additional question you would like associated with this lesson.
-                                            </template>
+                                <q-input v-on:keyup.enter="save_user_question" bottom-slots
+                                         v-model="user_question_input" label="Add Additional Question">
+                                    <!--        <template v-slot:before>-->
+                                    <!--          <q-icon name="event" />-->
+                                    <!--        </template>-->
 
-                                            <template v-slot:append>
-                                                <q-btn @click="save_user_question" round dense flat icon="add"/>
-                                            </template>
-                                        </q-input>
+                                    <template v-slot:hint>
+                                        Add any additional question you would like associated with this lesson.
+                                    </template>
 
-
-                                        <!--                                <q-toolbar class="">-->
-                                        <!--&lt;!&ndash;                                    <q-avatar>&ndash;&gt;-->
-                                        <!--&lt;!&ndash;                                    </q-avatar>&ndash;&gt;-->
-                                        <!--                                    <q-toolbar-title>-->
-                                        <!--                                        <q-input v-model="user_question_input" label="Additional Question"/>-->
-
-                                        <!--                                    </q-toolbar-title>-->
-                                        <!--                                </q-toolbar>-->
-                                    </q-banner>
-                                </div>
-                            </q-page-sticky>
-                        </q-page>
+                                    <template v-slot:append>
+                                        <q-btn @click="save_user_question" round dense flat icon="add"/>
+                                    </template>
+                                </q-input>
 
 
-                    </q-page-container>
+                                <!--                                <q-toolbar class="">-->
+                                <!--&lt;!&ndash;                                    <q-avatar>&ndash;&gt;-->
+                                <!--&lt;!&ndash;                                    </q-avatar>&ndash;&gt;-->
+                                <!--                                    <q-toolbar-title>-->
+                                <!--                                        <q-input v-model="user_question_input" label="Additional Question"/>-->
+
+                                <!--                                    </q-toolbar-title>-->
+                                <!--                                </q-toolbar>-->
+                            </q-banner>
+                        </div>
+<!--                    </div>-->
+                                                </q-page-sticky>
+                    <!--                        </q-page>-->
+
+
+                    <!--                    </q-page-container>-->
 
 
                     <!--                         <q-footer reveal elevated>-->
@@ -239,7 +212,7 @@
 
         methods: {
 
-            set(question){
+            set(question) {
                 console.log('QUESTOPM', question)
             },
 
@@ -333,39 +306,62 @@
         background-color: #cccccc
     }
 
-    /*    .bottom-padding*/
-    /*        padding-bottom: 20px*/
+    /*.qfoot {*/
+    /*    position: fixed;*/
+    /*    width: 100%;*/
+    /*    bottom: 0;*/
+    /*}*/
 
-    /*    .flex-break*/
-    /*        flex: 1 0 100% !important*/
-    /*        width: 0 !important*/
 
-    /*    .active*/
-    /*        background-color: #cccccc*/
+    .slideUp {
 
-    /*    .test*/
-    /*        padding-top: 20px*/
-    /*        padding-left: 20px*/
+          -webkit-animation: slideUp 1s ease-in-out 1s forwards;
 
-    /*    .page-bar*/
-    /*        background-color: #ffffff*/
+            animation: slideUp 1s ease-in-out 1s forwards;
 
-    /*    .title*/
-    /*        font-size: 1.15rem !important*/
-    /*        margin: auto*/
+        /*animation-name: slideUp;*/
+        /*-webkit-animation-name: slideUp;*/
 
-    /*        &:focus*/
-    /*            outline: none*/
+        /*animation-duration: 1s;*/
+        /*-webkit-animation-duration: 1s;*/
 
-    /*    .full-width-banner*/
-    /*        width: 100%*/
-    /*        padding-bottom: 20px*/
+        /*animation-timing-function: ease-in-out;*/
+        /*-webkit-animation-timing-function: ease-in-out;*/
 
-    /*    .text-white*/
-    /*        min-height: 320px*/
+        /*animation-delay: 1s;*/
+        opacity: 0;
 
-    /*    .banner-margin*/
-    /*        margin-left: 15px*/
-    /*.my-card*/
-    /*width: 48%*/
+        /*visibility: hidden !important;*/
+    }
+
+    @keyframes slideUp {
+        0% {
+            transform: translateY(100%);
+            opacity: 0;
+            /*visibility: visible !important;*/
+
+        }
+
+        100% {
+            transform: translateX(0%);
+            opacity: 1;
+                        /*visibility: visible !important;*/
+
+        }
+    }
+
+    @-webkit-keyframes slideUp {
+        0% {
+            -webkit-transform: translateX(100%);
+            opacity: 0;
+
+        }
+
+        100% {
+            -webkit-transform: translateX(0%);
+            opacity: 1;
+        }
+    }
+
+
 </style>

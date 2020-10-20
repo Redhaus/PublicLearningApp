@@ -31,9 +31,22 @@
                                 </q-card-section>
 
 
+                                <div class="btnContainer">
+                                    <q-separator/>
+                                    <q-card-actions class="items-bottom" align="right">
+                                        <q-btn @click.stop="dialogPopup(performance)" dense flat round
+                                               color="grey" icon="o_open_in_new"/>
+                                    </q-card-actions>
+                                </div>
+
+
                             </q-card>
                         </div>
                     </masonry>
+
+
+                                        <PerformanceDialog ref="dialogComponent"/>
+
 
                 </div>
                 <div v-else>No Performances Available</div>
@@ -70,10 +83,12 @@
     import clip from "text-clipper";
 
     import SearchHeader from "../components/SearchHeader";
+    import PerformanceDialog from "../components/performances/performanceDialog"
 
     export default {
         components: {
             SearchHeader,
+            PerformanceDialog
         },
         data() {
             return {
@@ -134,6 +149,12 @@
         },
 
         methods: {
+
+            dialogPopup(lex) {
+                // call child popup function
+                this.$refs.dialogComponent.popupContent(lex);
+            },
+
 
             short_overview(html) {
 

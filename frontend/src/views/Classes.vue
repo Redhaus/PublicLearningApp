@@ -42,20 +42,68 @@
 
                    <!-- CLASS CARDS-->
                     <div v-for="classed in class_list" :key="classed.id" class="bottom-padding">
+
+
                         <q-card
-                                class="cardHandle addLesson"
-                                bordered>
-                            <q-card-section>
-                                <div>Class Name: {{classed.class_name}}</div>
-                                <div>Class Grade: {{classed.grade_level}}</div>
-                            </q-card-section>
+                            class="cardHandle addLesson"
+                            bordered>
 
-                            <q-card-actions>
-                                <q-btn @click="deleteConfirmation(classed)" color="primary" label="Delete"/>
-                                <q-btn @click="editClass(classed)" color="primary" label="Edit"/>
+                            <q-item>
+                                <q-item-section avatar>
+                                    <q-avatar>
+                                        <q-icon color="gray" name="o_groups" size="40px"/>
+                                    </q-avatar>
+                                </q-item-section>
+<!--                                <q-item-section class="grade-class">-->
+<!--                                    <q-item-label caption>Grade {{class_card_grade(lesson.class_link)}}</q-item-label>-->
+<!--                                </q-item-section>-->
+                            </q-item>
+
+                            <q-item>
+                                <q-item-section>
+                                    <q-item-label caption>Class Name</q-item-label>
+                                    <q-item-label>{{classed.class_name}}</q-item-label>
+                                </q-item-section>
+                            </q-item>
+
+                            <q-item>
+
+                                <q-item-section>
+                                    <q-item-label caption>Class Grade</q-item-label>
+                                    <q-item-label>{{classed.grade_level}}</q-item-label>
+                                </q-item-section>
+                            </q-item>
+
+                            <q-separator class="separator-bottom"  />
+
+                            <q-card-actions class="items-bottom" align="right">
+
+                                <q-btn @click="deleteConfirmation(classed)" dense flat round color="gray" icon="o_delete"/>
+                                <q-btn @click="editClass(classed)" dense flat round color="gray" icon="o_edit"/>
+
+
                             </q-card-actions>
-
                         </q-card>
+
+
+
+
+
+
+<!--                        <q-card-->
+<!--                                class="cardHandle addLesson"-->
+<!--                                bordered>-->
+<!--                            <q-card-section>-->
+<!--                                <div>Class Name: {{classed.class_name}}</div>-->
+<!--                                <div>Class Grade: {{classed.grade_level}}</div>-->
+<!--                            </q-card-section>-->
+
+<!--                            <q-card-actions>-->
+<!--                                <q-btn @click="deleteConfirmation(classed)" color="primary" label="Delete"/>-->
+<!--                                <q-btn @click="editClass(classed)" color="primary" label="Edit"/>-->
+<!--                            </q-card-actions>-->
+
+<!--                        </q-card>-->
                     </div>
 
                 </masonry>

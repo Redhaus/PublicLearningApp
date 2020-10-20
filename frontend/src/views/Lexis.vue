@@ -7,7 +7,9 @@
             <SearchHeader name="Lexis" @searchTerm="search = $event"/>
 
             <!-- FILTER TABS-->
+            <div v-if="selected_event">
             <LexisFilter @filterTerm="filter = $event"/>
+                 </div>
 
         </div>
 

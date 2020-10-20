@@ -1,12 +1,12 @@
 <template>
     <!--<q-scroll-area >-->
 
-    <div
-            class="test fit row wrap justify-start items-start content-start q-col-gutter-md "
-    >
+    <div class="test fit row wrap justify-start items-start content-start q-col-gutter-md">
         <div class="col-12">
             <SearchHeader name="Explorations" @searchTerm="search = $event"/>
+        </div>
 
+        <div style="width: 100%">
 
             <div v-if="selected_event">
 
@@ -65,9 +65,31 @@
                                                         <q-card-section>
                                                             <div v-html="short_overview(ex.excerpt)"></div>
                                                         </q-card-section>
+
+
+                                                        <!--                                                        <q-separator class="separator-bottom"/>-->
+                                                        <!--                                                        <q-card-actions align="right">-->
+                                                        <!--                                                            <q-btn @click="eventDetail(event)" dense flat round-->
+                                                        <!--                                                                   color="gray"-->
+                                                        <!--                                                                   icon="o_open_in_new"/>-->
+                                                        <!--                                                        </q-card-actions>-->
+
+                                                        <div class="btnContainer">
+                                                            <q-separator/>
+                                                            <q-card-actions class="items-bottom" align="right">
+                                                                <q-btn @click.stop="dialogPopup(ex)" dense flat round
+                                                                       color="grey" icon="o_open_in_new"/>
+                                                            </q-card-actions>
+                                                        </div>
+
+
                                                     </q-card>
                                                 </div>
                                             </masonry>
+
+                                            <!-- DIALOG -->
+
+
                                         </div>
 
                                         <div v-else>No {{filter}} Explorations Available</div>
@@ -87,7 +109,10 @@
 
             </div>
 
+
             <div v-else>Please select an Event</div>
+            <ExplorationsDialog ref="dialogExplorationComponent"/>
+
 
         </div>
 
@@ -98,13 +123,13 @@
 <script>
 
     import clip from "text-clipper";
-
-
     import SearchHeader from "../components/SearchHeader";
+    import ExplorationsDialog from "../components/readings/furtherExplorationDialog";
 
     export default {
         components: {
             SearchHeader,
+            ExplorationsDialog
         },
         data() {
             return {
@@ -126,6 +151,7 @@
             // this.exploration_id_list = this.$store.getters["getSelectedExplorations"];
 
             this.reading_categories = this.$store.getters["getReadingCategories"];
+            this.filter = "Poem"
 
 
         },
@@ -217,6 +243,12 @@
         },
 
         methods: {
+
+            dialogPopup(exploration) {
+                // call child popup function
+                this.$refs.dialogExplorationComponent.popupEx(exploration);
+            },
+
 
             short_overview(html) {
 

@@ -115,6 +115,7 @@ class PrimaryFocusSerializer(serializers.HyperlinkedModelSerializer):
                   'keywords',
                   'purchase_link',
                   'source',
+                  'translator_name'
                   ]
 
 
@@ -146,5 +147,9 @@ class FurtherExplorationsSerializer(serializers.HyperlinkedModelSerializer):
                   'author_last_name',
                   'author_dob',
                   'keywords',
+                  'source',
+                  'translator_name'
                   ]
+
+        # fields = '__all__'
 

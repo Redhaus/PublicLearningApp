@@ -1,6 +1,9 @@
 <template>
 
     <q-dialog v-model="create_class_dialog" persistent>
+
+
+
         <q-card style="min-width: 350px">
             <q-card-section>
                 <div class="text-h6">Create Class</div>
@@ -139,6 +142,7 @@
                 this.clearData();
 
             },
+
 
             popupAdd() {
                 this.create_class_dialog = true;
