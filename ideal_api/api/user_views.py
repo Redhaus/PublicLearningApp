@@ -5,8 +5,13 @@ from django.shortcuts import render
 from rest_framework import viewsets
 from rest_framework import permissions
 
-from events.models import CategoryEventCollection
-from .events_serializers import EventOverviewSerializer
+# from events.models import CategoryEventCollection
+from teacher_profile.models import TeacherProfile
+
+
+# from .events_serializers import EventOverviewSerializer
+from .user_serializers import TeacherSerializer
+
 
 from django.db import connection
 
@@ -15,9 +20,11 @@ from django_filters import rest_framework as filters
 
 
 # AssignmentType Filter
-class EventsFilter(filters.FilterSet):
+class UserFilter(filters.FilterSet):
     # single filter
-    event_title = filters.CharFilter(lookup_expr='icontains')
+    user__username = filters.CharFilter(lookup_expr='icontains')
+    # user__username = filters.CharFilter(lookup_expr='icontains')
+
 
     # multiple choice filter
     # TOPIC_LIST = (
@@ -42,12 +49,12 @@ class EventsFilter(filters.FilterSet):
 
     # assign model and field terms
     class Meta:
-        model = CategoryEventCollection
-        fields = ('collection_name', 'event_title')
+        model = TeacherProfile
+        fields = ('id', 'school_name', 'user', 'user__groups')
 
 
 
-class EventOverviewViewSet(viewsets.ModelViewSet):
+class TeacherViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows users to be viewed or edited.
     """
@@ -60,19 +67,20 @@ class EventOverviewViewSet(viewsets.ModelViewSet):
 
 
     # fetch all lexis items to setup queryset
-    queryset = CategoryEventCollection.objects.all()
+    queryset = TeacherProfile.objects.all()
 
     # set serializer class
-    serializer_class = EventOverviewSerializer
-    filterset_class = EventsFilter
+    serializer_class = TeacherSerializer
+    filter_fields = ('id', 'school_name', 'user')
+    # filterset_class = UserFilter
 
 
     # filter api in viewset in this case 10 = aswl1_e1
     # select_related fetches indivdual FK
     # prefetch_related fetches multiple FK items
     def get_queryset(self):
-        return (CategoryEventCollection.objects
+        return (TeacherProfile.objects
                 # .select_related('event_collection',)
-                .select_related('author_image')
+                .select_related('profile_image')
                 )
 
