@@ -6,6 +6,8 @@
             <q-card-section class="row items-center q-pb-none">
                 <div class="text-h6">{{dialog.action}}</div>
                 <q-space/>
+
+                <q-btn :label="selected_list.includes(dialog.id) ? 'remove' : 'add' "  @click="eventAction(dialog.id)" flat  dense v-close-popup/>
                 <q-btn icon="close" flat round dense v-close-popup/>
             </q-card-section>
 
@@ -54,7 +56,8 @@
 
 <script>
     export default {
-        // props: ['dialog', 'iconState'],
+                 props: ['eventActionHandler', 'selected_list'],
+
         name: "EventDialog.vue",
 
         data() {
@@ -89,6 +92,12 @@
                 this.extModel = true;
                 this.dialog = event
             },
+
+             eventAction(id){
+                console.log('ID', id);
+                // this.selectedState = !this.selectedState;
+                this.eventActionHandler(id)
+            }
 
 
         },

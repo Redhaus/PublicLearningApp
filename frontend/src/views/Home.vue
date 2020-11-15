@@ -3,6 +3,8 @@
 
         <div class="col-12">
             <LessonSearchHeader
+                     pageName="Lessons"
+                    filterName="Select Class"
                     :class_options_filter=class_options_filter
                     @searchTerm="search = $event"
                     @classFilter="class_selection_filter = $event"/>
@@ -15,12 +17,29 @@
                     <!--  Add Card Button-->
                     <div class="bottom-padding">
                         <q-card
+
                                 class="cardHandle addLesson row justify-center items-center"
                                 bordered
-                                @click="newLessonDialogPopup">
-                            <q-card-section>
+                                @click="newLessonDialogPopup"
+
+                                 v-tooltip.center="{
+                                  content: 'Create New Lesson',
+                                  classes: ['info'],
+                                  targetClasses: ['it-has-a-tooltip'],
+                                  offset: 5,
+                                  delay: {
+                                    show: 500,
+                                    hide: 300,
+                                  },
+                                }"
+
+
+                        >
+                            <q-card-section >
                                 <q-icon class="plusIcon" name="fas fa-plus"></q-icon>
                             </q-card-section>
+
+
                         </q-card>
                     </div>
 
@@ -79,9 +98,9 @@
 
                 <q-separator/>
 
-                <div>
-                    <q-btn @click="newClassDialogPopup" color="primary" label="Create Class"/>
-                </div>
+<!--                <div>-->
+<!--                    <q-btn @click="newClassDialogPopup" color="primary" label="Create Class"/>-->
+<!--                </div>-->
 
 
                 <!-- DUPLICATE LESSON DIALOG -->
@@ -90,6 +109,10 @@
                 <!-- CREATE NEW LESSON DIALOG -->
                 <CreateLessonDialog :class_options=class_options ref="newLessonDialog" />
 
+                 <!-- CREATE NEW LESSON DIALOG -->
+                <CreateLessonDialog :class_options=class_options ref="editLessonDialog" />
+
+
                 <!-- CREATE NEW CLASS DIALOG -->
                 <CreateClassDialog ref="newClassDialog"/>
 
@@ -97,7 +120,7 @@
 
             </div>
 
-            <div v-else>No Lesson Available</div>
+            <div class="selectEventNotification" v-else>No Lesson Available</div>
 
         </div>
 
@@ -147,7 +170,21 @@
             };
         },
 
+
+
+
         methods: {
+
+              editingLesson(id){
+                let lesson_id = this.$store.getters['getLessonID'];
+                console.log('LESSON ID', lesson_id);
+
+                if(lesson_id === id){
+                    return true
+                }else{
+                    return false
+                }
+            },
 
             // CONFIRMATION DELETE DIALOG
             deleteConfirmation(lesson) {
@@ -211,7 +248,7 @@
             },
 
             editLessonDialogPopup(lesson) {
-                this.$refs.newLessonDialog.popupEdit(lesson);
+                this.$refs.editLessonDialog.popupEdit(lesson);
             },
 
             // calls popup for create class
@@ -342,6 +379,8 @@
 
             // console.log('CREATED CALLED');
             // fetchLessons from server once created
+            this.lesson_id_list = this.$store.getters['getLessonID'];
+
             let id = window.localStorage.getItem('instructor_id');
             this.$store.dispatch("fetchLessons", id);
 
@@ -390,6 +429,8 @@
 
 
         computed: {
+
+
 
 
             // filteres lessons by class selection  for filtered lessons by class with added 'all'
@@ -522,6 +563,17 @@
 
 <style lang="scss">
 
+    #wrapper .text {
+position:relative;
+bottom:30px;
+left:0px;
+visibility:hidden;
+}
+
+#wrapper:hover .text {
+visibility:visible;
+}
+
 
 
     .dialog_container {
@@ -562,6 +614,15 @@
     .grade-class{
         text-align: right;
     }
+
+    .blue{
+        background-color: #9C27B0;
+    }
+
+.q-item__label--caption{
+    color: inherit !important
+
+}
 
 
 

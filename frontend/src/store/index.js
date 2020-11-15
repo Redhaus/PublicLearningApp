@@ -2,11 +2,13 @@ import Vue from "vue";
 import Vuex from "vuex";
 
 import {apiService} from "./api_service";
+import {signInService} from "./signin_service";
+
 import lesson_store from "./modules/lesson_store";
 import lexis_store from "./modules/lexis_store";
 import question_store from "./modules/question_store";
 import user_class_store from "./modules/user_class_store";
-
+import router from "../router";
 
 Vue.use(Vuex);
 
@@ -22,6 +24,7 @@ export default new Vuex.Store({
         goal_categories: [],
         extension_categories: [],
         reading_categories: [],
+        instructorInfo: {}
         // lessons: [],
         // user_classes: [],
         // new_lesson_description: '',
@@ -69,6 +72,14 @@ export default new Vuex.Store({
 
         setReadingCategories(state, payload) {
             state.reading_categories = payload
+        },
+
+        setInstructor(state, payload){
+            console.log('USER', payload);
+
+             state.instructorInfo = payload
+
+
         },
 
         // // saves new lesson to lesson list in vuex store
@@ -559,6 +570,31 @@ export default new Vuex.Store({
         // },
 
 
+        signoutFunction() {
+
+            let signout_endpoint = "http://127.0.0.1:8000/rest-auth/logout/";
+
+            signInService(signout_endpoint, "GET")
+                .then(data => {
+
+                    window.localStorage.removeItem('access_token');
+                    window.localStorage.removeItem('user');
+                    window.localStorage.removeItem('user_id');
+                    window.localStorage.removeItem('instructor_id');
+
+                    router.push("/signin");
+
+                    console.log('SIGNOUT', data);
+                })
+
+                .catch((err) => {
+                    console.log(err)
+                });
+
+        },
+
+
+
         signinFunction(context, {username, password}) {
 
             let signin_endpoint = "http://127.0.0.1:8000/rest-auth/login/";
@@ -576,7 +612,7 @@ export default new Vuex.Store({
             // console.log('POST STRING', lessonData.lesson_selections);
 
             // const apiService = function (endpoint, method, data) {
-            apiService(signin_endpoint, "POST", loginData)
+            signInService(signin_endpoint, "POST", loginData)
                 .then(data => {
 
                     // console.log('results: ', data.results);
@@ -586,10 +622,12 @@ export default new Vuex.Store({
                     window.localStorage.setItem('user', data.user);
                     window.localStorage.setItem('user_id', data.id);
                     window.localStorage.setItem('instructor_id', data.instructor_id);
-
+                    // self.router.push('/');
+                    router.push("/dashboard");
 
                     // commit('postLesson', data);
                 })
+
                 .catch((err) => {
                     console.log(err)
                 });
@@ -675,6 +713,26 @@ export default new Vuex.Store({
         // }
 
 
+        fetchInstructor({commit}) {
+
+            let teacherID = window.localStorage.getItem('instructor_id');
+             console.log('TEACHER ID', teacherID);
+
+
+            let endpoint = `http://127.0.0.1:8000/api/teacher_profile/${teacherID}/`;
+
+              console.log('TEACHER ENDPOINT', endpoint);
+
+            apiService(endpoint)
+                .then(data => {
+                    commit('setInstructor', data);
+                })
+                .catch((err) => {
+                    console.log(err)
+                })
+        },
+
+
     },
 
     getters: {
@@ -717,9 +775,9 @@ export default new Vuex.Store({
             return state.reading_categories
         },
 
-        // getLessons(state) {
-        //     return state.lessons
-        // },
+        getInstructor(state) {
+            return state.instructorInfo
+        },
 
 
     },

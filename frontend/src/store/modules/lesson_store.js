@@ -11,6 +11,7 @@ const state = {
     is_editing: false,
     is_duplicate: false,
     is_new: false,
+    seamlessSave: false,
 
     lesson: {
         selected_event: '',
@@ -323,10 +324,16 @@ const mutations = {
         // state.is_editing = false;
     },
 
+    seamlessSave(state){
+        state.seamlessSave = true;
+    },
+
+    seamlessSaveOff(state){
+        state.seamlessSave = false;
+    },
+
     setLessonID(state,payload){
-
         state.lesson_id = payload.id;
-
     },
 
 
@@ -495,14 +502,27 @@ const actions = {
                 // commit('postLesson', data);
                 commit('saveLesson', data);
                 commit('setLessonID', data);
+                commit('seamlessSave')
+                                      console.log('SEAMLESSS CALLED1');
+
+
             })
             .then(data => {
                 commit('setIsEditing');
+                commit('clearIsDuplicate');
                 commit('clearIsNew');
+                  setTimeout(()=>{
+                      console.log('SEAMLESSS CALLED2');
+                     commit('seamlessSaveOff')
+                 }, 3000)
+
+
             })
             .catch((err) => {
                 console.log(err)
             });
+
+
     },
 
     // PUT action to update lesson in DB after updated
@@ -529,10 +549,15 @@ const actions = {
                 console.log('DATA: ', data);
                 // commit('postLesson', data);
                 commit('updateLesson', data);
+                 commit('seamlessSave')
             })
-            //  .then(data => {
-            //     commit('clearLessonSelections')
-            // })
+             .then(data => {
+
+                 setTimeout(()=>{
+                     commit('seamlessSaveOff')
+                 }, 3000)
+
+            })
             .catch((err) => {
                 console.log(err)
             });
@@ -642,6 +667,10 @@ const getters = {
 
     getIsNew(state){
         return state.is_new
+    },
+
+    getSeamlessSave(state){
+         return state.seamlessSave
     }
 
 

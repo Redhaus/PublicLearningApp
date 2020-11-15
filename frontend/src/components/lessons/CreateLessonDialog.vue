@@ -14,6 +14,7 @@
                         <!-- ADD TITLE WITH VALIDATION -->
                         <q-card-section class="q-pt-none">
                             <q-input
+                                    dense
                                     ref="class_title"
                                     v-model="new_lesson_title"
                                     label="Lesson Title"
@@ -21,21 +22,28 @@
                                     :rules="[ val => !!val || '* Required',
                                               val => val.length >= 3 || 'Please use minimum 3 characters']"
                                     lazy-rules/>
+
+
                         </q-card-section>
 
                           <!-- SELECT CLASS -->
                         <q-card-section class="q-pt-none">
-                            <q-select ref="class_name" v-model="class_selection"
+                            <q-select  ref="class_name" v-model="class_selection"
                                       @input="classSelectionEvent"
+                                       dense
                                       :options="class_options" label="Select Class"/>
+
+
+
                         </q-card-section>
 
                         <!-- DESCRIPTION -->
                         <q-card-section class="q-pt-none">
                             <q-input ref="class_description"
-                                     dense type="textarea"
+                                        autogrow
+                                     dense
                                      @input="lessonDescriptionEvent"
-                                     label="lesson Description"
+                                     label="Lesson Description"
                                      v-model="lesson_description"/>
                         </q-card-section>
                         <!-- CONDITIONAL BUTTONS-->
@@ -62,6 +70,10 @@
 </template>
 
 <script>
+
+        import DOMPurify from 'dompurify';
+
+
     export default {
         props: ['class_options', 'createNewLessonHandler'],
         name: "CreateLessonDialog.vue",
@@ -140,8 +152,14 @@
             updateLesson(){
 
             // checks if class, description or title change and loads lesson for edit
+
+
+
+
                 if (this.lesson_description){
-                   this.edit_lesson_data.lesson_description = this.lesson_description;
+                    var cleanDescription = DOMPurify.sanitize(this.lesson_description);
+
+                   this.edit_lesson_data.lesson_description = cleanDescription;
                 }
 
                 if(this.class_selection.value){
@@ -149,7 +167,9 @@
                 }
 
                 if(this.new_lesson_title){
-                    this.edit_lesson_data.lesson_title = this.new_lesson_title;
+
+                    var cleanTitle = DOMPurify.sanitize(this.new_lesson_title);
+                    this.edit_lesson_data.lesson_title = cleanTitle;
                 }
 
                 this.$store.dispatch('editLesson', this.edit_lesson_data);
@@ -161,9 +181,14 @@
 
             createNewLesson() {
 
+                var cleanTitle = DOMPurify.sanitize(this.new_lesson_title);
+                var cleanDescription = DOMPurify.sanitize(this.lesson_description);
+
+
+
                 let lessonData = {
-                    title: this.new_lesson_title,
-                    description: this.lesson_description,
+                    title: cleanTitle,
+                    description: cleanDescription,
                     class_id: this.class_selection.value
                 };
 

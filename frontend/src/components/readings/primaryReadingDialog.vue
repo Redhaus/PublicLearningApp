@@ -7,6 +7,7 @@
             <q-card-section class="row items-center q-pb-none">
                 <div class="text-h6">{{dialog.title_major}}</div>
                 <q-space/>
+                <q-btn label="add"  @click="eventAction(dialog.id)" flat round dense v-close-popup/>
                 <q-btn icon="close" flat round dense v-close-popup/>
             </q-card-section>
 
@@ -59,8 +60,17 @@
 
                     <div class="subtitle dialog-top">Keywords & Concepts:</div>
                     <div class="keyPadding">
+
+
+
+
+
                         <q-chip v-for="concept in dialog.keywords" dense
                                 :key="concept.id"
+                                 color="black" text-color="white"
+                                outline
+                                clickable
+                                 @click="conceptSelect(concept.value)"
                                 :label="concept.value"/>
                     </div>
 
@@ -95,7 +105,7 @@
 
 <script>
     export default {
-        // props: ['dialog', 'iconState'],
+        props: ['eventActionHandler', 'conceptSelectHandler'],
         name: "PrimaryReadingDialog.vue",
 
         data() {
@@ -117,10 +127,22 @@
         },
 
         methods: {
+
+               conceptSelect(id){
+                // this.primaryReadingModel = false;
+                this.conceptSelectHandler(id)
+            },
+
             popupContent(event) {
                 this.primaryReadingModel = true;
                 this.dialog = event
             },
+
+             eventAction(id){
+                console.log('ID', id);
+                // this.selectedState = !this.selectedState;
+                this.eventActionHandler(id)
+            }
 
 
         },

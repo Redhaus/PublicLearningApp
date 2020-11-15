@@ -4,10 +4,19 @@
     <div
             class="test fit row wrap justify-start items-start content-start q-col-gutter-md "
     >
+
+          <div style="width: 100%">
+            <NextBtn class="float-right" section_name="Extensions" :selected_item="selected_item"/>
+        </div>
+
+
         <div class="col-12">
             <SearchHeader name="Performances" @searchTerm="search = $event"/>
-
         </div>
+
+
+
+
         <div style="width: 100%">
 
             <div v-if="selected_event">
@@ -19,8 +28,8 @@
                                     class="cardHandle"
                                     :class="{ active: selected_list.includes(performance.id) }"
                                     bordered
-                                    @click="eventAction(performance.id)"
-                            >
+                                    @click="eventAction(performance.id)">
+
                                 <q-card-section>
                                     <div class="text-title">{{ performance.performance_title }}</div>
                                 </q-card-section>
@@ -29,7 +38,6 @@
                                 <q-card-section>
                                     <div v-html="short_overview(performance.performance_overview)"></div>
                                 </q-card-section>
-
 
                                 <div class="btnContainer">
                                     <q-separator/>
@@ -45,16 +53,18 @@
                     </masonry>
 
 
-                                        <PerformanceDialog ref="dialogComponent"/>
+                    <PerformanceDialog ref="dialogComponent"
+                                         :selected_list="selected_list"
+                                :eventActionHandler="eventAction" />
 
 
                 </div>
-                <div v-else>No Performances Available</div>
+                <div class="selectEventNotification" v-else>No Performances Available</div>
 
 
             </div>
 
-            <div v-else>Please select an Event</div>
+            <div class="selectEventNotification" v-else>Please select an Event</div>
 
         </div>
 
@@ -84,11 +94,13 @@
 
     import SearchHeader from "../components/SearchHeader";
     import PerformanceDialog from "../components/performances/performanceDialog"
+    import NextBtn from "../components/NextBtn";
 
     export default {
         components: {
             SearchHeader,
-            PerformanceDialog
+            PerformanceDialog,
+            NextBtn
         },
         data() {
             return {
@@ -108,6 +120,15 @@
         },
 
         computed: {
+
+            selected_item() {
+                if (this.selected_list.length > 0) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+
 
             selected_list() {
                 return this.$store.getters["getSelectedPerformances"];

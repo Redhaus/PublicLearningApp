@@ -32,12 +32,26 @@
                         <q-card
                                 class="cardHandle addLesson row justify-center items-center"
                                 bordered
-                                @click="newClassDialogPopup">
+                                @click="newClassDialogPopup"
+
+                                  v-tooltip.center="{
+                                  content: 'Create New Class',
+                                  classes: ['info'],
+                                  targetClasses: ['it-has-a-tooltip'],
+                                  offset: 5,
+                                  delay: {
+                                    show: 500,
+                                    hide: 300,
+                                  },
+                                }"
+
+
+                        >
                             <q-card-section>
                                 <q-icon class="plusIcon" name="fas fa-plus"></q-icon>
                             </q-card-section>
                         </q-card>
-                        <q-tooltip anchor="top middle" self="center middle">Create Class</q-tooltip>
+<!--                        <q-tooltip anchor="top middle" self="center middle">Create Class</q-tooltip>-->
                     </div>
 
                    <!-- CLASS CARDS-->

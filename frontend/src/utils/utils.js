@@ -9,6 +9,13 @@ export const MyFunctions = {
     filterSearchFunction: function (data, filter, search, filterItem, searchItem) {
 
 
+        console.log('DATA', data);
+                console.log('FILTER', filter);
+        console.log('SEARCH', search);
+        console.log('FILTERITEM', filterItem);
+        console.log('SEARCHITEM', searchItem);
+
+
         // if (filter) {
 
         // create empty array to hold filtered values
@@ -16,13 +23,20 @@ export const MyFunctions = {
 
         // loop through each lex item to get to their icon_list
         data.forEach((item) => {
+   console.log('ITEM', item);
 
             // loop through each icon list to see if icon matches filter
             item.icon_list.forEach(obj => {
+   console.log('OBJ', obj.icons);
+
+                // check if there is a filterItem value
+                if(obj[filterItem]){
 
                 // if matches add original item to filterList Array
                 if (obj[filterItem].toLowerCase() === filter.toLowerCase()) {
                     filteredList.push(item)
+                }
+
                 }
             })
         });

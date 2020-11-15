@@ -2,9 +2,12 @@ import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
+
 // import clip from "text-clipper";
 
+
 import VueMasonry from 'vue-masonry-css'
+import VTooltip from 'v-tooltip'
 
 import "./quasar";
 import {
@@ -14,6 +17,7 @@ import {
 
 Vue.config.productionTip = false;
 Vue.use(VueMasonry);
+Vue.use(VTooltip);
 
 
 Vue.use(Quasar, {

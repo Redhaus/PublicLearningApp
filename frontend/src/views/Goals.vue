@@ -1,14 +1,17 @@
 <template>
-    <div
-            class="test fit row wrap justify-start items-start content-start q-col-gutter-md "
-    >
+    <div class="test fit row wrap justify-start items-start content-start q-col-gutter-md ">
+
+        <div style="width: 100%">
+            <NextBtn class="float-right" section_name="Lesson" :selected_item="selected_item"/>
+        </div>
 
         <div class="col-12">
             <SearchHeader name="Goals" @searchTerm="search = $event"/>
-
         </div>
 
-<!-- <div v-if="is_new && !is_editing" style="width: 100%">-->
+
+
+        <!-- <div v-if="is_new && !is_editing" style="width: 100%">-->
 
 
         <!--create a card for every category-->
@@ -16,33 +19,31 @@
             <masonry :cols="3" :gutter="20">
 
                 <q-expansion-item v-for="cat in goal_categories" :key="cat.id"
-                                  class="accordion-header shadow-3"
+                                  class="accordion-header"
                                   :label="cat.standard_type">
-<!--                    <q-card>-->
+                    <!--                    <q-card>-->
 
-<!--                        <q-card-section>-->
-<!--                            <div class="text-h6">{{ cat.standard_type }}</div>-->
-<!--                        </q-card-section>-->
-<!--                    </q-card>-->
+                    <!--                        <q-card-section>-->
+                    <!--                            <div class="text-h6">{{ cat.standard_type }}</div>-->
+                    <!--                        </q-card-section>-->
+                    <!--                    </q-card>-->
 
                     <div class="col-4" v-for="goal in goal_list" :key="goal.id">
 
                         <q-card
 
-                                class="cardHandle shadow-1"
+                                class="cardHandle"
                                 :class="{ active: selected_list.includes(goal.id) }"
                                 bordered
                                 @click="eventAction(goal.id)"
                                 v-if="cat.standard_type === goal.standard_type.standard_type"
                         >
 
-                            <q-card-section class="row">
-                                <div class="col-10"><p class="goal-text"> {{ goal.goal }}</p></div>
+                            <q-card-section class="row items-center">
+                                <div class="col-10 "><p class="goal-text"> {{ goal.goal }}</p></div>
                                 <q-btn class="col-2 full-screen-btn" @click.stop="popupContent(goal)" flat
                                        color="grey" icon="o_open_in_new"/>
                             </q-card-section>
-
-
 
 
                         </q-card>
@@ -57,6 +58,8 @@
                     <q-card-section class="row items-center q-pb-none">
                         <div class="text-h6">{{dialog.goal}}</div>
                         <q-space/>
+
+                       <q-btn :label="selected_list.includes(dialog.id) ? 'remove' : 'add' "  @click="eventAction(dialog.id)" flat  dense v-close-popup/>
                         <q-btn icon="close" flat round dense v-close-popup/>
                     </q-card-section>
 
@@ -77,19 +80,24 @@
             </q-dialog>
         </div>
 
-<!--                </div>-->
+        <!--                </div>-->
 
-<!--         <div v-else>Please create a new lesson on dashboard</div>-->
+        <!--         <div v-else>Please create a new lesson on dashboard</div>-->
 
 
     </div>
 </template>
 <script>
     import SearchHeader from "../components/SearchHeader";
+    import NextBtn from "../components/NextBtn";
 
     export default {
+
+         // props: [ 'eventActionHandler', 'selected_list'],
+
         components: {
             SearchHeader,
+            NextBtn
         },
         data() {
             return {
@@ -101,11 +109,15 @@
                     goal: '',
                     explanation: '',
                     video: '',
+                    id: ''
                 }
             };
         },
 
         methods: {
+
+
+
 
             // this is the dialog for lexis preview
             popupContent(goal) {
@@ -114,7 +126,9 @@
                 this.dialog = {
                     goal: goal.goal,
                     explanation: goal.explanation,
-                    video: goal.video_link
+                    video: goal.video_link,
+                    id: goal.id,
+
                 }
             },
 
@@ -122,7 +136,10 @@
             clearSearch() {
                 this.search = "";
             },
+
             eventAction(event) {
+
+                console.log('ID', event);
 
                 // this.$store.dispatch("setSelectedEvent", event);
                 // this.goal_id_list = event;
@@ -177,6 +194,14 @@
 
         computed: {
 
+            selected_item() {
+                if (this.selected_list.length > 0) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+
             selected_list() {
                 return this.$store.getters["getSelectedGoals"];
             },
@@ -207,26 +232,45 @@
     };
 </script>
 
-<style lang="scss" >
+<style lang="scss">
 
-    .accordion-header:hover{
-        background-color: #eee;
+    /*.q-hoverable:hover{*/
+    /*    opacity: 0 !important;*/
+    /*}*/
+
+    .accordion-header > .q-expansion-item__container > .q-hoverable:hover > .q-focus-helper {
+        background: transparent !important;
+        opacity: 0 !important;
     }
 
 
-    .accordion-header > .q-hoverable:hover{
-        /*border-radius: 10px !important;*/
-        background-color: #eee;
-                /*padding: 10px 0 10px 0;*/
-
-    }
+    /*.accordion-header:hover{*/
+    /*    background-color: #eee;*/
+    /*}*/
 
 
-    .accordion-header{
+    /*.accordion-header > .q-hoverable:hover{*/
+    /*    !*border-radius: 10px !important;*!*/
+    /*    background-color: #eee;*/
+    /*            !*padding: 10px 0 10px 0;*!*/
+
+    /*}*/
+
+
+    .accordion-header {
         background-color: white;
-        border-radius: 10px;
+        border-radius: 4px;
         margin-top: 10px;
         padding: 10px 0 10px 0;
+        font-size: 16px;
+        border: 1px solid rgba(0, 0, 0, 0.12);
+
+        /*font-weight: bold;*/
+
+    }
+
+    .goal-text {
+        font-size: 14px;
 
     }
 
@@ -273,26 +317,7 @@
 <!--<iframe width="560" height="315" src="" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>-->
 
 
-
-
-
-
-
-
 <!--WORKING-->
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 <!--<template>-->
@@ -335,8 +360,6 @@
 <!--                                <q-btn class="col-2 full-screen-btn" @click.stop="popupContent(goal)" flat-->
 <!--                                       color="grey" icon="o_open_in_new"/>-->
 <!--                            </q-card-section>-->
-
-
 
 
 <!--                        </q-card>-->

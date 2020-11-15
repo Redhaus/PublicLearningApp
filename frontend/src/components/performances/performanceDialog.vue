@@ -7,6 +7,8 @@
             <q-card-section class="row items-center q-pb-none">
                 <div class="text-h6">{{dialog.performance_title}}</div>
                 <q-space/>
+
+                <q-btn :label="selected_list.includes(dialog.id) ? 'remove' : 'add' "  @click="eventAction(dialog.id)" flat  dense v-close-popup/>
                 <q-btn icon="close" flat round dense v-close-popup/>
             </q-card-section>
 
@@ -56,11 +58,26 @@
 
                     <div class="subtitle dialog-top">Performance Feats:</div>
                     <div>
-                        <q-list bordered separator dense>
-                            <q-item v-for="feat in dialog.performance_feat_link" :key="feat.id" >
-                                <q-item-section>{{feat.performance_feats}}</q-item-section>
-                                </q-item>
-                        </q-list>
+
+<!--                        <div >-->
+<!--                            <div  class="feat-li"-->
+<!--                                  v-for="(feat, index) in dialog.performance_feat_link"-->
+<!--                                  :key="feat.id" @click="featID(feat.id)">-->
+<!--                                {{index+1}}.   {{feat.performance_feats}}-->
+<!--                            </div>-->
+<!--                        </div>-->
+
+                         <ol class="feat-ol">
+                            <li  class="feat-li" v-for="feat in dialog.performance_feat_link" :key="feat.id" @click="featID(feat.id)" >
+                                {{feat.performance_feats}}
+                            </li>
+                        </ol>
+
+<!--                        <q-list bordered separator dense>-->
+<!--                            <q-item v-for="feat in dialog.performance_feat_link" :key="feat.id" >-->
+<!--                                <q-item-section>{{feat.performance_feats}}</q-item-section>-->
+<!--                                </q-item>-->
+<!--                        </q-list>-->
                     </div>
 
 
@@ -94,7 +111,7 @@
 
 <script>
     export default {
-        // props: ['dialog', 'iconState'],
+        props: ['eventActionHandler', 'selected_list'],
         name: "PrimaryReadingDialog.vue",
 
         data() {
@@ -127,10 +144,21 @@
         },
 
         methods: {
+
+            featID(id){
+                console.log('FEATID', id);
+            },
             popupContent(event) {
                 this.primaryReadingModel = true;
                 this.dialog = event
             },
+
+             eventAction(id){
+                console.log('ID', id);
+                // this.selectedState = !this.selectedState;
+                this.eventActionHandler(id)
+            }
+
 
 
         },
@@ -156,6 +184,20 @@
     .author_source {
         padding-top: 10px;
         font-size: 10px;
+    }
+
+    .feat-ol{
+        margin: 0;
+        padding-left: 15px;
+    }
+
+    .feat-li{
+        cursor: pointer;
+        text-transform: capitalize;
+    }
+
+    .feat-li:hover{
+        background-color: #f7f7f7;
     }
 
 </style>

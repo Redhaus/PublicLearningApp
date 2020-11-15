@@ -1,14 +1,16 @@
 <template>
     <!--<q-scroll-area >-->
 
-    <div
-            class="test fit row wrap justify-start items-start content-start q-col-gutter-md "
-    >
+    <div class="test fit row wrap justify-start items-start content-start q-col-gutter-md">
+
+          <div style="width: 100%">
+            <NextBtn class="float-right" section_name="Goals" :selected_item="selected_item"/>
+        </div>
+
         <div class="col-12">
             <SearchHeader name="Extensions" @searchTerm="search = $event"/>
-
-
         </div>
+
 
         <div style="width: 100%">
 
@@ -46,13 +48,16 @@
                         </div>
                     </masonry>
 
-                    <ExtensionsDialog ref="dialogComponent" style="min-width: 70%"/>
+                    <ExtensionsDialog ref="dialogComponent" style="min-width: 70%"
+                     :eventActionHandler="eventAction"
+                                 :selected_list="selected_list"
+                    />
                 </div>
-                <div v-else>No Extensions Available</div>
+                <div class="selectEventNotification" v-else>No Extensions Available</div>
 
             </div>
 
-            <div v-else>Please select an Event</div>
+            <div class="selectEventNotification" v-else>Please select an Event</div>
         </div>
 
         <!--        <div class="col-4" v-for="lex in lexis_list" :key="lex.id">-->
@@ -80,11 +85,15 @@
 
     import SearchHeader from "../components/SearchHeader";
     import ExtensionsDialog from "../components/extensions/ExtensionsDialog";
+    import NextBtn from "../components/NextBtn";
 
     export default {
+
+
         components: {
             SearchHeader,
-            ExtensionsDialog
+            ExtensionsDialog,
+            NextBtn
         },
         data() {
             return {
@@ -104,6 +113,14 @@
         },
 
         computed: {
+
+             selected_item() {
+                if (this.selected_list.length > 0) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
 
             // this tracks the selected items from the store and highlights accordingly
             selected_list() {

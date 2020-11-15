@@ -2,9 +2,17 @@
     <!--<q-scroll-area >-->
 
     <div class="test fit row wrap justify-start items-start content-start q-col-gutter-md ">
+
+          <div style="width: 100%">
+            <NextBtn class="float-right" section_name="Performances" :selected_item="selected_item"/>
+        </div>
+
+
         <div class="col-12">
             <SearchHeader name="Questions" @searchTerm="search = $event"/>
         </div>
+
+
 
         <div style="width: 100%">
 
@@ -40,7 +48,7 @@
                                 <q-card
 
                                         bordered
-                                        class="cardHandle active-user-question col-12"
+                                        class="cardHandle active-user-question col-12 "
                                 >
                                     <q-card-section class="bottom-padding row items-center">
                                         <div class="col-10">{{user_question.user_question}}
@@ -64,24 +72,29 @@
                         <!--                        </masonry>-->
 
 
-                        <div style="height: 100px"></div>
                     </div>
 
 
-                    <!--                    <q-page-container>-->
-                    <!--                        <q-page padding>-->
+                    <!--           <q-footer elevated class="bg-grey-8 text-white">-->
+                    <!--      <q-toolbar>-->
+                    <!--        <q-toolbar-title>-->
+                    <!--          <q-avatar>-->
+                    <!--            <img src="https://cdn.quasar.dev/logo/svg/quasar-logo.svg">-->
+                    <!--          </q-avatar>-->
+                    <!--          Title-->
+                    <!--        </q-toolbar-title>-->
+                    <!--      </q-toolbar>-->
+                    <!--    </q-footer>-->
 
-<!--                    <div class="qfoot">-->
 
-                                                    <q-page-sticky class="slideUp" expand position="bottom">
+                    <!--<q-page-sticky class="slideUp footerstuck" expand position="bottom">-->
+
+                    <div class="slideUp footerstuck">
                         <div class="col-12">
-                            <q-banner elevated rounded inline-actions class="page-bar shadow-3">
+                            <q-banner elevated rounded inline-actions class="page-bar">
 
                                 <q-input v-on:keyup.enter="save_user_question" bottom-slots
                                          v-model="user_question_input" label="Add Additional Question">
-                                    <!--        <template v-slot:before>-->
-                                    <!--          <q-icon name="event" />-->
-                                    <!--        </template>-->
 
                                     <template v-slot:hint>
                                         Add any additional question you would like associated with this lesson.
@@ -92,19 +105,15 @@
                                     </template>
                                 </q-input>
 
-
-                                <!--                                <q-toolbar class="">-->
-                                <!--&lt;!&ndash;                                    <q-avatar>&ndash;&gt;-->
-                                <!--&lt;!&ndash;                                    </q-avatar>&ndash;&gt;-->
-                                <!--                                    <q-toolbar-title>-->
-                                <!--                                        <q-input v-model="user_question_input" label="Additional Question"/>-->
-
-                                <!--                                    </q-toolbar-title>-->
-                                <!--                                </q-toolbar>-->
                             </q-banner>
                         </div>
-<!--                    </div>-->
-                                                </q-page-sticky>
+
+                        <div style="height: 100px"></div>
+
+                    </div>
+                    <!--                    -->
+
+
                     <!--                        </q-page>-->
 
 
@@ -125,12 +134,12 @@
 
 
                 </div>
-                <div v-else>No Questions Available</div>
+                <div class="selectEventNotification" v-else>No Questions Available</div>
 
 
             </div>
 
-            <div v-else>Please select an Event</div>
+            <div class="selectEventNotification" v-else>Please select an Event</div>
 
         </div>
 
@@ -141,10 +150,14 @@
 <script>
     import {v4 as uuidv4} from 'uuid';
     import SearchHeader from "../components/SearchHeader";
+    import NextBtn from "../components/NextBtn";
+    import DOMPurify from 'dompurify';
+
 
     export default {
         components: {
             SearchHeader,
+            NextBtn
         },
         data() {
             return {
@@ -165,6 +178,18 @@
         },
 
         computed: {
+
+             selected_item(){
+
+                if(this.selected_list.length > 0){
+                    console.log('OFF');
+                    return true;
+                }else{
+                    console.log('ON');
+                    return false;
+                }
+
+            },
 
             selected_list() {
                 return this.$store.getters["getSelectedQuestions"];
@@ -217,7 +242,8 @@
             },
 
             editQuestion(question) {
-                this.user_question_input = question.user_question;
+
+                this.user_question_input = DOMPurify.sanitize(question.user_question);
                 this.deleteQuestion(question.id)
             },
 
@@ -256,9 +282,11 @@
             save_user_question() {
 
 
+                var cleanQuestion = DOMPurify.sanitize(this.user_question_input);
+
                 let data = {
                     'id': uuidv4(),
-                    'user_question': this.user_question_input
+                    'user_question': cleanQuestion
                 };
                 this.$store.dispatch('setUserQuestions', data);
                 this.user_question_input = '';
@@ -293,6 +321,15 @@
 
 <style lang="scss" scoped>
 
+
+
+
+    .footerstuck {
+        position: sticky;
+        bottom: 0;
+    }
+
+
     .deleteBtn {
         float: right;
     }
@@ -303,7 +340,9 @@
 
     .active-user-question {
 
-        background-color: #cccccc
+        background-color: #000 !important;
+        color: white;
+
     }
 
     /*.qfoot {*/
@@ -315,9 +354,10 @@
 
     .slideUp {
 
-          -webkit-animation: slideUp 1s ease-in-out 1s forwards;
 
-            animation: slideUp 1s ease-in-out 1s forwards;
+        -webkit-animation: slideUp .6s ease-in-out .6s forwards;
+
+        animation: slideUp .6s ease-in-out .6s forwards;
 
         /*animation-name: slideUp;*/
         /*-webkit-animation-name: slideUp;*/
@@ -345,7 +385,7 @@
         100% {
             transform: translateX(0%);
             opacity: 1;
-                        /*visibility: visible !important;*/
+            /*visibility: visible !important;*/
 
         }
     }

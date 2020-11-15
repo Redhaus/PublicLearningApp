@@ -55,6 +55,10 @@
 </template>
 
 <script>
+
+        import DOMPurify from 'dompurify';
+
+
     export default {
         props: ['class_options'],
         name: "UpdateLessonInfo.vue",
@@ -124,9 +128,13 @@
             // this edit update icon card
             updateLesson() {
 
+
+
+
                 // checks if class, description or title change and loads lesson for edit
                 if (this.lesson_description) {
-                    this.edit_lesson_data.lesson_description = this.lesson_description;
+                    var cleanDescription = DOMPurify.sanitize(this.lesson_description);
+                    this.edit_lesson_data.lesson_description = cleanDescription;
                 }
 
                 if (this.class_selection.value) {
@@ -134,7 +142,8 @@
                 }
 
                 if (this.new_lesson_title) {
-                    this.edit_lesson_data.lesson_title = this.new_lesson_title;
+                    var cleanTitle = DOMPurify.sanitize(this.new_lesson_title);
+                    this.edit_lesson_data.lesson_title = cleanTitle;
                 }
 
                 this.$store.dispatch('editLessonData', this.edit_lesson_data);

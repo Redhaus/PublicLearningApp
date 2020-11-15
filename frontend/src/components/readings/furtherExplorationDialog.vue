@@ -7,6 +7,9 @@
             <q-card-section class="row items-center q-pb-none">
                 <div class="text-h6">{{dialog.title_minor}}</div>
                 <q-space/>
+
+<!--                check if selected item and display add or remove-->
+                <q-btn :label="selected_list.includes(dialog.id) ? 'remove' : 'add' "  @click="eventAction(dialog.id)" flat  dense v-close-popup/>
                 <q-btn icon="close" flat round dense v-close-popup/>
             </q-card-section>
 
@@ -50,7 +53,11 @@
                     <div class="subtitle dialog-top">Keywords & Concepts:</div>
                     <div class="keyPadding">
                         <q-chip v-for="concept in dialog.keywords" dense
+                                color="black" text-color="white"
                                 :key="concept.id"
+                                  outline
+                                clickable
+                                @click="conceptSelect(concept.value)"
                                 :label="concept.value"/>
                     </div>
 
@@ -85,7 +92,7 @@
 
 <script>
     export default {
-        // props: ['dialog', 'iconState'],
+        props: ['conceptSelectHandler', 'eventActionHandler', 'selected_list'],
         name: "ExplorationsDialog.vue",
 
         data() {
@@ -97,10 +104,21 @@
 
         methods: {
 
+            conceptSelect(id){
+                // this.explorationModel = false;
+                this.conceptSelectHandler(id)
+            },
+
             popupEx(exploration) {
                 this.explorationModel = true;
                 this.dialog = exploration
             },
+
+              eventAction(id){
+                console.log('ID', id);
+                // this.selectedState = !this.selectedState;
+                this.eventActionHandler(id)
+            }
 
         },
 
@@ -141,5 +159,10 @@
     .keyPadding{
         margin-left: -5px;
     }
+
+    body.desktop .q-chip--clickable:focus {
+    background-color: black !important;
+    color: white !important;
+}
 
 </style>

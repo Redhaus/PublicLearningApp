@@ -12,100 +12,207 @@ import Goals from "../views/Goals";
 import Lessons from "../views/Lesson";
 import Signin from "../views/Signin";
 import Classes from "../views/Classes";
-
-
+import MainLayout from "../views/MainLayout";
+import Home_Page from "../views/Home_Page";
+import Registration from "../views/Registration";
+import InstructorProfile from "../views/InstructorProfile";
 
 
 Vue.use(VueRouter);
 
 const routes = [
-    {
-    path: "/",
-    name: "Dashboard",
-    component: Home
-  },
 
     {
-    path: "/classes",
-    name: "Classes",
-    component: Classes
-  },
+        path: "/dashboard",
+        // name: "Dashboard",
+        component: MainLayout,
+        children: [
+            {
+                // UserProfile will be rendered inside User's <router-view>
+                // when /user/:id/profile is matched
+                path: '/dashboard',
+                name: "Dashboard",
+                component: Home
+            },
+            {
+                // UserPosts will be rendered inside User's <router-view>
+                // when /user/:id/posts is matched
+                path: "/events",
+                name: "Events",
+                component: Events,
+            },
+
+            {
+                path: "/classes",
+                name: "Classes",
+                component: Classes
+            },
+
+            {
+                path: "/readings",
+                name: "Readings",
+                component: Readings
+            },
+
+            {
+                path: "/explorations",
+                name: "Explorations",
+                component: Explorations
+            },
+            {
+                path: "/lexis",
+                name: "Lexis",
+                component: Lexis
+            },
+
+            {
+                path: "/questions",
+                name: "Questions",
+                component: Questions
+            },
+
+            {
+                path: "/performances",
+                name: "Performances",
+                component: Performances
+            },
+
+            {
+                path: "/extensions",
+                name: "Extensions",
+                component: Extensions
+            },
+
+            {
+                path: "/goals",
+                name: "Goals",
+                component: Goals
+            },
+
+            {
+                path: "/review",
+                name: "Lesson",
+                component: Lessons
+            },
+
+                        {
+                path: "/profile",
+                name: "Profile",
+                component: InstructorProfile
+            },
+
+        ]
+    },
+
+    //   {
+    //   path: "/",
+    //   name: "Dashboard",
+    //   component: Home,
+    //     meta: {
+    //       layout: true,
+    //     },
+    // },
+
+    // {
+    //     path: "/classes",
+    //     name: "Classes",
+    //     component: Classes
+    // },
 
 
+    // {
+    //   path: "/events",
+    //   name: "Events",
+    //   component: Events,
+    //     meta: {
+    //       MainLayout: true,
+    //     },
+    // },
+    // {
+    //   path: "/events",
+    //   name: "Events",
+    //   // route level code-splitting
+    //   // this generates a separate chunk (about.[hash].js) for this route
+    //   // which is lazy-loaded when the route is visited.
+    //   component: () =>
+    //     import(/* webpackChunkName: "about" */ "../views/Events.vue")
+    // },
+    // {
+    //     path: "/readings",
+    //     name: "Readings",
+    //     component: Readings
+    // },
+    //
+    // {
+    //     path: "/explorations",
+    //     name: "Explorations",
+    //     component: Explorations
+    // },
+    // {
+    //     path: "/lexis",
+    //     name: "Lexis",
+    //     component: Lexis
+    // },
+    //
+    // {
+    //     path: "/questions",
+    //     name: "Questions",
+    //     component: Questions
+    // },
+    //
+    // {
+    //     path: "/performances",
+    //     name: "Performances",
+    //     component: Performances
+    // },
+    //
+    // {
+    //     path: "/extensions",
+    //     name: "Extensions",
+    //     component: Extensions
+    // },
+    //
+    // {
+    //     path: "/goals",
+    //     name: "Goals",
+    //     component: Goals
+    // },
+    //
+    // {
+    //     path: "/review",
+    //     name: "Lesson",
+    //     component: Lessons
+    // },
 
-  {
-    path: "/events",
-    name: "Events",
-    component: Events
-  },
-  // {
-  //   path: "/events",
-  //   name: "Events",
-  //   // route level code-splitting
-  //   // this generates a separate chunk (about.[hash].js) for this route
-  //   // which is lazy-loaded when the route is visited.
-  //   component: () =>
-  //     import(/* webpackChunkName: "about" */ "../views/Events.vue")
-  // },
-  {
-    path: "/readings",
-    name: "Readings",
-    component: Readings
-  },
+    {
+        path: "/register",
+        name: "Register",
+        component: Registration
+    },
 
-  {
-    path: "/explorations",
-    name: "Explorations",
-    component: Explorations
-  },
-  {
-    path: "/lexis",
-    name: "Lexis",
-    component: Lexis
-  },
+    //  {
+    //     path: "/pricing",
+    //     name: "Pricing",
+    //     component: Price_Page
+    // },
 
-  {
-    path: "/questions",
-    name: "Questions",
-    component: Questions
-  },
+    {
+        path: "/",
+        name: "Home",
+        component: Home_Page
+    },
 
-  {
-    path: "/performances",
-    name: "Performances",
-    component: Performances
-  },
-
-  {
-    path: "/extensions",
-    name: "Extensions",
-    component: Extensions
-  },
-
-  {
-    path: "/goals",
-    name: "Goals",
-    component: Goals
-  },
-
-      {
-    path: "/review",
-    name: "Lesson",
-    component: Lessons
-  },
-
-
-      {
-    path: "/signin",
-    name: "Signin",
-    component: Signin
-  }
+    {
+        path: "/signin",
+        name: "Signin",
+        component: Signin
+    }
 ];
 
 const router = new VueRouter({
-  mode: "history",
-  // base: process.env.BASE_URL,
-  routes
+    mode: "history",
+    // base: process.env.BASE_URL,
+    routes
 });
 
 export default router;

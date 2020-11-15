@@ -48,6 +48,9 @@
 </template>
 
 <script>
+
+    import DOMPurify from 'dompurify';
+
     export default {
         // createClassHandler is function passed
         // options are grades array being passed
@@ -110,10 +113,16 @@
 
             createClass() {
 
+                  // Run npm install -g npm
+
+                var cleanName = DOMPurify.sanitize(this.class_name);
+                var cleanDescription = DOMPurify.sanitize(this.class_description);
+
+
                 let data = {
-                    "class_name": this.class_name,
+                    "class_name": cleanName,
                     "grade_level": this.grade_level,
-                    "class_description": this.class_description
+                    "class_description": cleanDescription
                 };
 
                 // POST TO DB
@@ -128,11 +137,14 @@
 
             updateClass() {
 
+                var cleanName = DOMPurify.sanitize(this.class_name);
+                var cleanDescription = DOMPurify.sanitize(this.class_description);
+
                 let data = {
                     "id": this.edit_id,
-                    "class_name": this.class_name,
+                    "class_name": cleanName,
                     "grade_level": this.grade_level,
-                    "class_description": this.class_description
+                    "class_description": cleanDescription
                 };
 
                 // POST TO DB

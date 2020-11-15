@@ -2,9 +2,17 @@
     <!--<q-scroll-area >-->
 
     <div class="test fit row wrap justify-start items-start content-start q-col-gutter-md ">
+
+
+        <div style="width: 100%">
+            <NextBtn class="float-right" section_name="Explorations" :selected_item="selected_item"/>
+        </div>
+
+
         <div class="col-12">
             <SearchHeader name="Readings" @searchTerm="search = $event"/>
         </div>
+
 
         <div style="width: 100%">
 
@@ -13,7 +21,7 @@
 
                 <div v-if="reading_list.length > 0">
 
-                    <masonry :cols="3" :gutter="20">
+                    <masonry :cols="4" :gutter="20">
                         <div v-for="book in reading_list" :key="book.id" class="bottom-padding">
                             <q-card
                                     class="cardHandle"
@@ -40,12 +48,35 @@
 
                                 <div class="btnContainer">
                                     <q-separator/>
-                                    <q-card-actions class="items-bottom" align="right">
-                                        <q-btn @click.stop="dialogPopup(book)" dense flat round
+                                    <q-card-actions >
+
+<!--                                    <q-card-actions class="items-bottom" align="right">-->
+
+<!--                                        -->
+<!--                                                .items-exploration {-->
+<!--    position: absolute;-->
+<!--    bottom: 9px;-->
+<!--    right: 0;-->
+<!--        padding-right: 3px;-->
+<!--}-->
+
+
+
+                                         <div  v-if="conceptChecker(book.id)">
+                                                                    <q-chip dense
+                                                                            color="black" text-color="white"
+                                                                            :label="selectedConceptTerm"/>
+                                                                </div>
+
+
+                                                                <div class="items-exploration">
+                                                                             <q-btn @click.stop="dialogPopup(book)" dense flat round
                                                color="grey" icon="o_open_in_new"/>
+                                                                    </div>
+
+
                                     </q-card-actions>
                                 </div>
-
 
 
                                 <!--                                <q-separator class="separator-bottom"/>-->
@@ -65,15 +96,18 @@
                         </div>
                     </masonry>
 
-                       <!-- DIALOG -->
-                    <PrimaryReadingDialog ref="dialogComponent" />
+                    <!-- DIALOG -->
+                    <PrimaryReadingDialog
+                              :conceptSelectHandler="conceptSelect"
+                            :eventActionHandler="eventAction"
+                            ref="dialogComponent"/>
 
                 </div>
-                <div v-else>No Readings Available</div>
+                <div class="selectEventNotification" v-else>No Readings Available</div>
 
             </div>
 
-            <div v-else>Please select an Event</div>
+            <div class="selectEventNotification" v-else>Please select an Event</div>
 
 
         </div>
@@ -88,18 +122,22 @@
 
     import SearchHeader from "../components/SearchHeader";
     import PrimaryReadingDialog from "../components/readings/primaryReadingDialog"
+    import NextBtn from "../components/NextBtn";
 
     export default {
         components: {
             SearchHeader,
-            PrimaryReadingDialog
+            PrimaryReadingDialog,
+            NextBtn
         },
         data() {
             return {
                 lorem:
                     "Lorem ipsum dolor sit amet, sale audiam viderer ei cum, munere labitur expetenda sed ad, mea albucius prodesset no. Ne interesset referrentur qui, simul nusquam ne eam, id est appetere legendos. Cu usu cibo legere ullamcorper, ut decore assueverit qui, his iusto lucilius singulis id. Mazim noster usu ei. Sonet voluptua eu mea.",
                 book_id_list: [],
-                search: ""
+                search: "",
+                selectedConceptTerm: '',
+                selectedConceptList: []
             };
         },
 
@@ -147,7 +185,42 @@
 
         methods: {
 
-              dialogPopup(reading) {
+            // function to check if key concept is part of exploration
+            conceptChecker(id){
+
+                console.log('ID', id);
+
+                if (this.selectedConceptList.find( item => item.id === id )){
+                    return true
+                } else {
+                    return false
+                }
+            },
+
+            // processes the key concept term and adds words list to data for checker processing
+            conceptSelect(term) {
+
+                this.selectedConceptTerm = term;
+                let list = [];
+                 let readings = this.$store.getters["getReadings"];
+
+                readings.forEach((item) => {
+                    // loop through each icon list to see if icon matches filter
+                    item.keywords.find((concept) => {
+                        if (concept.value.toLowerCase() === term.toLowerCase()) {
+                            list.push(item)
+                        }
+                    })
+                });
+
+                console.log('LIST', list);
+
+                this.selectedConceptList = list;
+
+            },
+
+
+            dialogPopup(reading) {
                 // call child popup function
                 this.$refs.dialogComponent.popupContent(reading);
             },

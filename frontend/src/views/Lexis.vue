@@ -2,16 +2,28 @@
     <div class="test fit row wrap justify-start items-start content-start q-col-gutter-md ">
 
 
+               <div style="width: 100%">
+            <NextBtn class="float-right" section_name="Questions" :selected_item="selected_item"/>
+        </div>
+
         <div class="col-12">
             <!-- SEARCHBAR-->
-            <SearchHeader name="Lexis" @searchTerm="search = $event"/>
+<!--            <SearchHeader name="Lexis" @searchTerm="search = $event"/>-->
+            <LessonSearchHeader
+                    pageName="Lexis"
+                    filterName="Filter Categories"
+                    :class_options_filter=options_filter
+                    @searchTerm="search = $event"
+                    @classFilter="filter = $event.value"/>
 
             <!-- FILTER TABS-->
             <div v-if="selected_event">
-            <LexisFilter @filterTerm="filter = $event"/>
+<!--            <LexisFilter @filterTerm="filter = $event"/>-->
                  </div>
 
         </div>
+
+
 
         <!-- LEXIS CARDS-->
         <div style="width: 100%">
@@ -29,14 +41,26 @@
                     </masonry>
 
                     <!-- DIALOG -->
-                    <LexisDialog ref="dialogComponent"/>
+                    <LexisDialog ref="dialogComponent"
+                                 :eventActionHandler="eventAction"
+                                 :selected_list="selected_list"
+                                 :lexisLinkHandler="dialogPopup2"
+                    />
+
+                    <LexisDialog2 ref="dialogComponent2"
+                                 :eventActionHandler="eventAction"
+                                 :selected_list="selected_list"
+
+                    />
+
+
 
                 </div>
                 <!-- if not items available-->
-                <div v-else>No Lexis Available</div>
+                <div class="selectEventNotification" v-else>No Lexis Available</div>
             </div>
             <!--  if no event separate-->
-            <div v-else>Please select an Event</div>
+            <div class="selectEventNotification" v-else>Please select an Event</div>
         </div>
 
         <div style="height: 50px"/>
@@ -47,19 +71,30 @@
 
 <!--SCRIPTS-->
 <script>
-    import SearchHeader from "../components/SearchHeader";
-    import LexisFilter from "../components/lexis/LexisFilter";
+    // import SearchHeader from "../components/SearchHeader";
+    // import LexisFilter from "../components/lexis/LexisFilter";
     import LexisDialog from "../components/lexis/LexisDialog";
     import LexisCard from "../components/lexis/LexisCard";
     import {MyFunctions} from "../utils/utils";
+    import NextBtn from "../components/NextBtn";
+    import LessonSearchHeader from "../components/lessons/LessonSearchHeader";
+    import LexisDialog2 from "../components/lexis/LexisDialog2";
+
+
+
+
 
     export default {
 
         components: {
-            SearchHeader,
-            LexisFilter,
+            // SearchHeader,
+            // LexisFilter,
             LexisDialog,
-            LexisCard
+            LexisCard,
+            NextBtn,
+            LessonSearchHeader,
+            LexisDialog2
+
         },
         data() {
             return {
@@ -67,8 +102,35 @@
                 showSimulatedReturnData: false,
                 search: '',
                 filter: '',
-            };
+                options_filter: [
+                    {
+                        label: 'All',
+                        value: ''
+                    },
+                    {
+                        label: 'Device',
+                        value: 'Device'
+                    },
+                    {
+                        label: 'Essential',
+                        value: 'Essential'
+                    },
+                    {
+                        label: 'Common',
+                        value: 'Common'
+                    },
+                    {
+                        label: 'Concept',
+                        value: 'Concept'
+                    },
+                    {
+                        label: 'Person',
+                        value: 'Person'
+                    }]
+
+            }
         },
+
 
         created() {
             // console.log('LEXISLIST', this.lexis_list);
@@ -77,6 +139,21 @@
         },
 
         computed: {
+
+
+
+              selected_item(){
+
+                if(this.selected_list.length > 0){
+                    console.log('OFF');
+                    return true;
+                }else{
+                    console.log('ON');
+                    return false;
+                }
+
+            },
+
             // used for highlight selected checks list and highlights accordingly
             selected_list() {
                 return this.$store.getters["getSelectedLexis"];
@@ -114,6 +191,19 @@
                 this.$refs.dialogComponent.popupContent(lex);
             },
 
+            dialogPopup2(id) {
+                // call child popup function
+
+                let lexis = this.$store.getters["getLexis"];
+
+
+  // let newLex = lexis.find(x => x.term === this.search);
+
+                let lex = lexis.find(x => x.id === id);
+                console.log(lex);
+                this.$refs.dialogComponent2.popupContent(lex);
+            },
+
             // this sets active class on selected items
             eventAction(event) {
                 this.$store.dispatch("setSelectedLexis", event);
@@ -126,6 +216,10 @@
 <!--STYLES-->
 
 <style lang="scss">
+
+    .highlight-content{
+        padding-bottom: 5px;
+    }
 
 
 </style>

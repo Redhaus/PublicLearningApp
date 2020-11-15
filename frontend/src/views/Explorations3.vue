@@ -9,16 +9,7 @@
 
 
         <div class="col-12">
-            <!--            <SearchHeader name="Explorations" @searchTerm="search = $event"/>-->
-
-            <LessonSearchHeader
-                    pageName="Explorations"
-                    filterName="Filter Categories"
-                    :class_options_filter=options_filter
-                    @searchTerm="search = $event"
-                    @classFilter="filter = $event.value"/>
-
-
+            <SearchHeader name="Explorations" @searchTerm="search = $event"/>
         </div>
 
 
@@ -27,104 +18,104 @@
             <div v-if="selected_event">
 
 
-                <!--                <div class="exploration page-bar rounded-borders">-->
+                <div class="exploration page-bar rounded-borders">
+                    <q-splitter
+                            v-model="splitterModel"
+                    >
+
+                        <template v-slot:before>
+                            <q-tabs
+                                    v-model="tab"
+                                    vertical
+                                    no-caps
+                            >
+                                <q-tab content-class="content-right" v-for="cat in reading_categories" :key="cat.id"
+                                       :name="cat.category_name" :label="cat.category_name"
+                                       @click="filterLexis(cat.category_name)"/>
+
+                            </q-tabs>
+                        </template>
+
+                        <template v-slot:after>
 
 
-                <!--                        <template v-slot:before>-->
-                <!--                            <q-tabs-->
-                <!--                                    v-model="tab"-->
-                <!--                                    vertical-->
-                <!--                                    no-caps-->
-                <!--                            >-->
-                <!--                                <q-tab content-class="content-right" v-for="cat in reading_categories" :key="cat.id"-->
-                <!--                                       :name="cat.category_name" :label="cat.category_name"-->
-                <!--                                       @click="filterLexis(cat.category_name)"/>-->
+                            <q-tab-panels
+                                    v-model="tab"
+                                    animated
+                                    swipeable
+                                    vertical
+                                    transition-prev="jump-up"
+                                    transition-next="jump-up"
+                            >
+                                <q-tab-panel v-for="cat in reading_categories" :key="cat.id" :name="cat.category_name">
+                                    <div class="text-h4 q-mb-md">{{cat.category_name}}</div>
 
-                <!--                            </q-tabs>-->
-                <!--                        </template>-->
+                                    <div style="width: 100%">
 
-                <!--                        <template v-slot:after>-->
+                                        <!--                                    <div v-if="selected_event">-->
 
+                                        <div v-if="exploration_list.length > 0">
 
-                <!--                            <q-tab-panels-->
-                <!--                                    v-model="tab"-->
-                <!--                                    animated-->
-                <!--                                    swipeable-->
-                <!--                                    vertical-->
-                <!--                                    transition-prev="jump-up"-->
-                <!--                                    transition-next="jump-up"-->
-                <!--                            >-->
-                <!--                                <q-tab-panel v-for="cat in reading_categories" :key="cat.id" :name="cat.category_name">-->
-                <!--                                    <div class="text-h4 q-mb-md">{{cat.category_name}}</div>-->
+                                            <masonry :cols="3" :gutter="20">
+                                                <div v-for="ex in exploration_list" :key="ex.id" class="bottom-padding">
+                                                    <q-card
+                                                            class="cardHandle"
+                                                            :class="{ active: selected_list.includes(ex.id) }"
+                                                            bordered
+                                                            @click="eventAction(ex.id)"
+                                                    >
+                                                        <q-card-section>
+                                                            <div class="text-title">{{ ex.title_minor }}</div>
+                                                              <div class="ability">{{ex.reading_category.category_name}}</div>
+                                                        </q-card-section>
+                                                        <q-separator/>
 
+                                                        <q-card-section>
+                                                            <div v-html="short_overview(ex.excerpt)"></div>
+                                                        </q-card-section>
 
-                <!--                                    EXPLORATIONS-->
-                <div style="width: 100%">
+                                                        <div class="btnContainer">
+                                                            <q-separator/>
+                                                            <q-card-actions >
 
-                    <!--                                    <div v-if="selected_event">-->
-
-                    <div v-if="exploration_list.length > 0">
-
-                        <masonry :cols="4" :gutter="20">
-                            <div v-for="ex in exploration_list" :key="ex.id" class="bottom-padding">
-                                <q-card
-                                        class="cardHandle"
-                                        :class="{ active: selected_list.includes(ex.id) }"
-                                        bordered
-                                        @click="eventAction(ex.id)"
-                                >
-                                    <q-card-section>
-                                        <div class="text-title">{{ ex.title_minor }}</div>
-                                        <div class="ability">{{ex.reading_category.category_name}}</div>
-                                    </q-card-section>
-                                    <q-separator/>
-
-                                    <q-card-section>
-                                        <div v-html="short_overview(ex.excerpt)"></div>
-                                    </q-card-section>
-
-                                    <div class="btnContainer">
-                                        <q-separator/>
-                                        <q-card-actions>
-
-                                            <div v-if="conceptChecker(ex.id)">
-                                                <q-chip dense
-                                                        color="black" text-color="white"
-                                                        :label="selectedConceptTerm"/>
-                                            </div>
+                                                                <div  v-if="conceptChecker(ex.id)">
+                                                                    <q-chip dense
+                                                                            color="black" text-color="white"
+                                                                            :label="selectedConceptTerm"/>
+                                                                </div>
 
 
-                                            <div class="items-exploration">
-                                                <q-btn @click.stop="dialogPopup(ex)" dense flat round
-                                                       color="grey" icon="o_open_in_new"/>
-                                            </div>
-                                        </q-card-actions>
+                                                                <div class="items-exploration">
+                                                                <q-btn  @click.stop="dialogPopup(ex)" dense flat round
+                                                                       color="grey" icon="o_open_in_new"/>
+                                                                    </div>
+                                                            </q-card-actions>
+                                                        </div>
+
+
+                                                    </q-card>
+                                                </div>
+                                            </masonry>
+
+                                            <!-- DIALOG -->
+
+
+                                        </div>
+
+                                        <div class="selectEventNotification" v-else>No {{filter}} Explorations Available</div>
+
+
                                     </div>
+                                </q-tab-panel>
 
 
-                                </q-card>
-                            </div>
-                        </masonry>
-
-                        <!-- DIALOG -->
+                            </q-tab-panels>
 
 
-                    </div>
+                        </template>
 
-                    <div class="selectEventNotification" v-else>No {{filter}} Explorations Available</div>
-
-
+                    </q-splitter>
                 </div>
-                <!--                                </q-tab-panel>-->
-
-
-                <!--                            </q-tab-panels>-->
-
-
-                <!--                        </template>-->
-
-
-                <!--                </div>-->
 
             </div>
 
@@ -142,17 +133,15 @@
 <script>
 
     import clip from "text-clipper";
-    // import SearchHeader from "../components/SearchHeader";
+    import SearchHeader from "../components/SearchHeader";
     import ExplorationsDialog from "../components/readings/furtherExplorationDialog";
     import NextBtn from "../components/NextBtn";
-    import LessonSearchHeader from "../components/lessons/LessonSearchHeader";
-
 
     export default {
 
 
         components: {
-            LessonSearchHeader,
+            SearchHeader,
             ExplorationsDialog,
             NextBtn
         },
@@ -164,7 +153,7 @@
                 search: "",
                 filter: '',
                 reading_categories: [],
-                // tab: 'Poem',
+                tab: 'Poem',
                 splitterModel: 20,
                 selectedConceptTerm: '',
                 selectedConceptList: []
@@ -178,33 +167,12 @@
             // this.exploration_id_list = this.$store.getters["getSelectedExplorations"];
 
             this.reading_categories = this.$store.getters["getReadingCategories"];
-            // this.filter = "Poem"
+            this.filter = "Poem"
 
 
         },
 
         computed: {
-
-            options_filter() {
-
-                let options = [ {
-                        label: 'All',
-                        value: ''
-                    }];
-
-                this.reading_categories.forEach((item) => {
-                    let filterOption = {
-                        label: item.category_name,
-                        value: item.category_name
-                    };
-
-                    options.push(filterOption)
-                });
-
-                return options;
-
-
-            },
 
 
             selected_item() {
@@ -307,9 +275,9 @@
 
 
             // function to check if key concept is part of exploration
-            conceptChecker(id) {
+            conceptChecker(id){
 
-                if (this.selectedConceptList.find(item => item.id === id)) {
+                if (this.selectedConceptList.find( item => item.id === id )){
                     return true
                 } else {
                     return false
@@ -387,11 +355,11 @@
 <style lang="scss">
 
     .items-exploration {
-        position: absolute;
-        bottom: 9px;
-        right: 0;
+    position: absolute;
+    bottom: 9px;
+    right: 0;
         padding-right: 3px;
-    }
+}
 
     .q-tab--active {
         /*background-color: #cccccc;*/

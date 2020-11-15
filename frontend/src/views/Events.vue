@@ -1,57 +1,141 @@
 <template>
-    <div
-            class="test fit row wrap justify-start items-start content-start q-col-gutter-md "
-    >
+    <div class="test event fit row wrap justify-start items-start content-start q-col-gutter-md ">
 
+            <div style="width: 100%">
+        <NextBtn class="float-right" section_name="Readings" :selected_item="selected_item"/>
+            </div>
 
         <div class="col-12">
-            <SearchHeader name="Events" @searchTerm="search = $event"/>
+
+              <LessonSearchHeader
+                    pageName="Events"
+                    filterName="Filter Collection"
+                    :class_options_filter=options_filter
+                    @searchTerm="search = $event"
+                    @classFilter="filter = $event.value"/>
 
 
-            <q-tabs
-                    v-if="is_new && !is_editing"
-                    v-model="tab"
-                    dense
-                    inline-label
-                    class="text-grey"
-                    no-caps
-            >
-                <q-tab @click="filterEvent('')" name="all" label="All"/>
+<!--            <SearchHeader name="Events" @searchTerm="search = $event"/>-->
 
-                <q-tab @click="filterEvent('A Survey in Western Literature I')" name="aswl1"
-                       label="Western Literature I"/>
-                <q-tab @click="filterEvent('A Survey in Western Literature II')" name="aswl2"
-                       label="Western Literature II"/>
-                <q-tab @click="filterEvent('A Survey in European Literature I')" name="asel1"
-                       label="European Literature I"/>
-                <q-tab @click="filterEvent('A Survey in American Literature I')" name="asal1"
-                       label="American Literature I"/>
+            <!--  v-if="is_new && !is_editing"-->
+<!--            <q-tabs v-if="!is_editing"-->
+<!--                    v-model="tab"-->
+<!--                    dense-->
+<!--                    inline-label-->
+<!--                    class="text-grey paddingFive"-->
+<!--                    no-caps>-->
+<!--                -->
+<!--                <q-tab @click="filterEvent('')" name="all" label="All"/>-->
 
-            </q-tabs>
+<!--                <q-tab @click="filterEvent('A Survey in Western Literature I')" name="aswl1"-->
+<!--                       label="Western Literature I"/>-->
+<!--                <q-tab @click="filterEvent('A Survey in Western Literature II')" name="aswl2"-->
+<!--                       label="Western Literature II"/>-->
+<!--                <q-tab @click="filterEvent('A Survey in European Literature I')" name="asel1"-->
+<!--                       label="European Literature I"/>-->
+<!--                <q-tab @click="filterEvent('A Survey in American Literature I')" name="asal1"-->
+<!--                       label="American Literature I"/>-->
+
+
+<!--            </q-tabs>-->
+
+<!--            <q-btn class="float-right marginNegThirty" @click.stop="nextSection('Readings')" dense flat round-->
+<!--                   :color="btnColor" icon="arrow_right_alt"/>-->
+
+            <!--            -->
+            <!--     <q-icon-->
+            <!--             size="20px"-->
+            <!--      name="arrow_right_alt"-->
+            <!--      class="float-right"-->
+            <!--    />-->
+
 
         </div>
 
+<!--SINGLE EVENTS FOR EDIT LESSON-->
 
         <div v-if="is_editing" style="width: 100%">
 
             <!--EVENTS-->
             <div class="col-12">
                 <!--          <div class="q-pa-md col-xs-12 col-sm-6 col-md-6 col-lg-6">-->
-                <q-card>
-                    <q-card-section>
-                        <div class="subtitle ">Current Event:</div>
-                        <div class="dialog-top">
-                            <div class="event_title">{{current_event.event_title}}</div>
-                        </div>
-                    </q-card-section>
-                </q-card>
+
+<!--                 <masonry :cols="1" :gutter="20">-->
+
+<!--                    <div v-for="event in events_list[1]" :key="event.id">-->
+                        <q-card
+                                class="cardHandle"
+                                :class="{ active: selected_item === current_event.id }"
+                                bordered
+                             >
+
+
+
+                             <q-card-section class="row items-center q-pb-none">
+                <div class="text-h6">{{current_event.event_title}}</div>
+                <q-space/>
+<!--                <q-btn icon="close" flat round dense v-close-popup/>-->
+            </q-card-section>
+
+
+            <q-separator/>
+            <div class="row">
+
+                <q-card-section class="col-4">
+                    <div class="subtitle">Collection Name:</div>
+                    <div>{{current_event.collection_name}}</div>
+
+                    <div class="subtitle dialog-top">Event Description:</div>
+                    <div v-html="current_event.event_descriptor"></div>
+                </q-card-section>
+
+                <q-card-section class="col-4">
+                    <div class="quote">"{{current_event.quotation}}"</div>
+                    <div class="author">–{{current_event.quotation_author}}</div>
+                    <div class="author_source" v-html="current_event.quote_source"></div>
+
+                </q-card-section>
+                <q-card-section class="col-4">
+                    <q-item-label>
+                        <q-skeleton animation="none" height="200px" square/>
+                    </q-item-label>
+                </q-card-section>
+
+            </div>
+
+                 </q-card>
+
+
+
+<!--                            <div class="btnContainer">-->
+<!--                                <q-separator/>-->
+<!--                                <q-card-actions class="items-bottom" align="right">-->
+<!--                                    <q-btn @click.stop="dialogPopup(current_event)" dense flat round-->
+<!--                                           color="grey" icon="o_open_in_new"/>-->
+<!--                                </q-card-actions>-->
+<!--                            </div>-->
+
+
+<!--                    </div>-->
+
+<!--                </masonry>-->
+
+<!--                -->
+<!--                <q-card>-->
+<!--                    <q-card-section>-->
+<!--                        <div class="subtitle ">Current Event:</div>-->
+<!--                        <div class="dialog-top">-->
+<!--                            <div class="event_title">{{current_event.event_title}}</div>-->
+<!--                        </div>-->
+<!--                    </q-card-section>-->
+<!--                </q-card>-->
                 <!--          </div>-->
             </div>
 
 
         </div>
 
-
+<!--LIST OF EVENTS FOR NEW LESSON-->
         <div v-if="!is_editing" style="width: 100%">
             <!--                    <div v-if="!is_editing" style="width: 100%">-->
 
@@ -87,9 +171,9 @@
 
                 </masonry>
 
-                 <!-- DIALOG -->
-                    <EventDialog ref="dialogComponent" />
-
+                <!-- DIALOG -->
+                <EventDialog ref="dialogComponent" :eventActionHandler="eventAction"/>
+<!-- @gradeLevelEvent="grade_level = $event"-->
 
             </div>
 
@@ -104,13 +188,18 @@
 </template>
 <script>
     import {MyFunctions} from "../utils/utils";
-    import SearchHeader from "../components/SearchHeader";
+    // import SearchHeader from "../components/SearchHeader";
     import EventDialog from "../components/events/EventDialog";
+    import NextBtn from "../components/NextBtn";
+    import LessonSearchHeader from "../components/lessons/LessonSearchHeader";
+
 
     export default {
         components: {
-            SearchHeader,
-            EventDialog
+            // SearchHeader,
+            EventDialog,
+            NextBtn,
+            LessonSearchHeader
         },
 
         data() {
@@ -119,16 +208,49 @@
                 search: '',
                 tab: 'all',
                 filter: '',
-                is_editing: ''
+                is_editing: '',
+
+                options_filter: [
+                    {
+                        label: 'All',
+                        value: ''
+                    },
+                    {
+                        label: 'A Survey in Western Literature I',
+                        value: 'A Survey in Western Literature I'
+                    },
+                    {
+                        label: 'A Survey in Western Literature II',
+                        value: 'A Survey in Western Literature II'
+                    },
+                    {
+                        label: 'A Survey in European Literature I',
+                        value: 'A Survey in European Literature I'
+                    },
+                    {
+                        label: 'A Survey in American Literature I',
+                        value: 'A Survey in American Literature I'
+                    }
+                   ]
+
+
+
+
+
+
                 // selected_event: ''
             };
         },
 
         methods: {
 
-            eventDetail() {
 
-            },
+
+
+
+            // nextSection(section) {
+            //      this.$router.push({name: section});
+            // },
 
             dialogPopup(events) {
                 // call child popup function
@@ -177,6 +299,8 @@
         },
 
         created() {
+
+
             // this.$store.dispatch('fetchEvents', {endpoint: this.slug});
             this.$store.dispatch("fetchEvents");
             this.event_id_list = this.$store.getters["getSelectedEvent"];
@@ -187,6 +311,14 @@
         },
 
         computed: {
+
+            // btnColor(){
+            //     if (this.selected_item){
+            //         return 'secondary'
+            //     }else{
+            //         return 'grey'
+            //     }
+            // },
 
             selected_item() {
                 return this.$store.getters["getSelectedEvent"];
@@ -296,6 +428,31 @@
         min-height: 50px;
         display: block;
     }
+
+    .paddingFive {
+        padding-top: 5px;
+    }
+
+
+
+    .quote {
+        font-size: 1rem;
+        line-height: 1.2rem;
+        font-family: "Times New Roman", serif;
+    }
+
+    .author {
+        text-align: right;
+        font-size: .8rem;
+        padding-top: 10px;
+    }
+
+    .author_source {
+        padding-top: 10px;
+        font-size: 10px;
+    }
+
+
 
 
 </style>

@@ -18,7 +18,7 @@
         <q-card-section>
             <div class="subtitle">Highlight:</div>
             <div v-for="highlight in lex.highlight.slice(0, 1)" :key="highlight.id">
-                <div>{{highlight.value}}</div>
+                <div class="highlight-content">{{highlight.value}}</div>
             </div>
             <q-separator/>
 
