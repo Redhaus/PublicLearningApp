@@ -66,7 +66,7 @@
                 bordered
                 :mini="!drawer || miniState"
                 content-class="bg-grey-2"
-                :width="240">
+                :width="280">
             <q-scroll-area class="fill-window">
                 <SideNav @miniToggle="miniState = $event"/>
             </q-scroll-area>

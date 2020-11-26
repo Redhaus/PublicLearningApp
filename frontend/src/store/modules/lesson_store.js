@@ -360,6 +360,26 @@ const mutations = {
         state.new_lesson_title = '';
     },
 
+    // clear all selections from lesson
+    clearLessonEventSelections(state) {
+        state.lesson.selected_event = '';
+        state.lesson.selected_reading = '';
+        state.lesson.selected_related_events = [];
+        state.lesson.selected_exploration = [];
+        state.lesson.selected_lexis = [];
+        state.lesson.selected_questions = [];
+        state.lesson.selected_performances = [];
+        state.lesson.selected_extensions = [];
+        state.lesson.selected_goals = [];
+        state.lesson.user_questions = [];
+        state.lesson_id = '';
+
+        state.is_duplicate = false;
+        state.is_editing = false;
+
+    },
+
+
     // clears editing mode
     clearIsEditing(state) {
         state.is_editing = false;
@@ -576,6 +596,13 @@ const actions = {
     clearOldLesson({commit}) {
         commit('clearLessonSelections')
     },
+
+    // Clears lesson for event only and not the title description class etc
+    clearOldEventLesson({commit}) {
+        commit('clearLessonEventSelections')
+    },
+
+
 
     // like edit lesson but for duplicate sets store values from dashboard duplicate btn
     duplicateLesson({commit}, payload) {

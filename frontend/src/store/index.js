@@ -10,6 +10,13 @@ import question_store from "./modules/question_store";
 import user_class_store from "./modules/user_class_store";
 import router from "../router";
 
+import {
+    Loading,
+    // optional!, for example below
+    // with custom spinner
+    QSpinnerOval
+} from 'quasar'
+
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -24,13 +31,13 @@ export default new Vuex.Store({
         goal_categories: [],
         extension_categories: [],
         reading_categories: [],
-        instructorInfo: {}
+        instructorInfo: {},
         // lessons: [],
         // user_classes: [],
         // new_lesson_description: '',
         // new_lesson_class_id: '',
         // new_lesson_title: '',
-
+        validation_message: ''
 
     },
 
@@ -74,12 +81,15 @@ export default new Vuex.Store({
             state.reading_categories = payload
         },
 
-        setInstructor(state, payload){
+        setInstructor(state, payload) {
             console.log('USER', payload);
 
-             state.instructorInfo = payload
+            state.instructorInfo = payload
+        },
 
-
+        setValidation(state, payload) {
+            console.log('USER', payload);
+            state.validation_message = payload
         },
 
         // // saves new lesson to lesson list in vuex store
@@ -594,7 +604,6 @@ export default new Vuex.Store({
         },
 
 
-
         signinFunction(context, {username, password}) {
 
             let signin_endpoint = "http://127.0.0.1:8000/rest-auth/login/";
@@ -716,12 +725,12 @@ export default new Vuex.Store({
         fetchInstructor({commit}) {
 
             let teacherID = window.localStorage.getItem('instructor_id');
-             console.log('TEACHER ID', teacherID);
+            console.log('TEACHER ID', teacherID);
 
 
             let endpoint = `http://127.0.0.1:8000/api/teacher_profile/${teacherID}/`;
 
-              console.log('TEACHER ENDPOINT', endpoint);
+            console.log('TEACHER ENDPOINT', endpoint);
 
             apiService(endpoint)
                 .then(data => {
@@ -729,6 +738,65 @@ export default new Vuex.Store({
                 })
                 .catch((err) => {
                     console.log(err)
+                })
+        },
+
+
+        updateInstructor({commit}, payload) {
+
+            let teacherID = window.localStorage.getItem('instructor_id');
+            console.log('TEACHER ID', teacherID);
+
+
+            let endpoint = `http://127.0.0.1:8000/api/teacher_profile/${teacherID}/`;
+            console.log('TEACHER ENDPOINT', endpoint);
+
+            apiService(endpoint, 'PATCH', payload)
+                .then(data => {
+                    commit('setInstructor', data);
+                    commit('seamlessSave');
+
+                })
+                .then(data => {
+                    setTimeout(() => {
+                        console.log('SEAMLESSS CALLED2');
+                        commit('seamlessSaveOff')
+                    }, 3000)
+
+                })
+                .catch((err) => {
+                    console.log(err)
+                })
+        },
+
+        updateUserPassword({commit}, payload) {
+
+            let user = window.localStorage.getItem('user');
+            console.log('USER', user);
+
+
+            let endpoint = `http://127.0.0.1:8000/api/password_update/${user}/`;
+            console.log('USER ENDPOINT', endpoint);
+            console.log('USER ENDPOINT', payload);
+
+            apiService(endpoint, 'PATCH', payload)
+                .then(data => {
+                    // commit('setInstructor', data);
+                    commit('seamlessSave');
+
+                })
+                .then(data => {
+                    setTimeout(() => {
+                        console.log('SEAMLESSS CALLED2');
+                        commit('seamlessSaveOff')
+                    }, 3000)
+
+                })
+                .catch((err) => {
+                    Loading.hide();
+                    console.log('BAD PW');
+                    console.log('THIS IS THE ERR MESSAGE', err);
+                    commit('setValidation', err.response.data[0]);
                 })
         },
 
@@ -777,6 +845,10 @@ export default new Vuex.Store({
 
         getInstructor(state) {
             return state.instructorInfo
+        },
+
+        getValidation(state) {
+            return state.validation_message
         },
 
 

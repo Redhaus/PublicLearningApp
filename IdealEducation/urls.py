@@ -33,6 +33,8 @@ from ideal_api.api.assignment_types_views import AssignmentTypeViewSet
 from ideal_api.api.category_views import ReadingCategoryViewSet, ExCommandTypeViewSet, GoalStandardTypeViewSet
 from ideal_api.api.lesson_views import LessonViewSet, ClassNameViewSet
 from ideal_api.api.user_views import TeacherViewSet
+from ideal_api.api.change_password_views import UserViewSet
+
 
 
 
@@ -56,6 +58,8 @@ router.register(r'goal_categories', GoalStandardTypeViewSet)
 router.register(r'user_lessons', LessonViewSet)
 router.register(r'class_name', ClassNameViewSet)
 router.register(r'teacher_profile', TeacherViewSet)
+router.register(r'password_update', UserViewSet)
+# router.register(r'<user_id>/upassword', ChangePasswordView)
 
 
 
@@ -74,6 +78,7 @@ urlpatterns = [
 
     # API ROUTER ENDPOINTS
     url(r'^api/', include((router.urls, 'ideal_api'))),
+    # url(r'api/<user_id>/upassword', ChangePasswordView.as_view()),
 
     path('django-admin/', admin.site.urls),
     path('admin/', include(wagtailadmin_urls)),

@@ -609,8 +609,12 @@
 </template>
 
 <script>
+    // import CreateLessonDialog from "../components/lessons/CreateLessonDialog";
     import UpdateLessonInfo from "../components/lessons/UpdateLessonInfo";
+    import pdfMake from "pdfmake/build/pdfmake";
+    import pdfFonts from "pdfmake/build/vfs_fonts";
 
+    pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
     export default {
         components: {
@@ -624,7 +628,6 @@
 
                 msg: 'This is a button.',
 
-                // lesson saved popup
                 seamless: true,
 
                 showing: false,
@@ -676,6 +679,10 @@
             },
 
 
+            //   seamlessSave(){
+            //     return this.$store.getters['getSeamlessSave']
+            // },
+
 
             is_duplicate() {
                 return this.$store.getters['getIsDuplicate'];
@@ -723,6 +730,128 @@
         },
 
         methods: {
+
+            strip(html){
+                console.log('HTML', html)
+               let doc = new DOMParser().parseFromString(html, 'text/html');
+               return doc.body.textContent || "";
+            },
+
+            lexisGenerator(lex) {
+
+                //     let lexisItem = {
+                //         text:
+                //         style
+                // :
+                //     'lexisTerm'
+                // }
+
+                let content = []
+
+
+                lex.forEach((item) => {
+
+                    let termTitle = {text: 'Term', style: 'header', margin: [ 0, 5, 0, 5 ]};
+
+                    let lexisItem = {
+                        text: item.term,
+                        style: 'lexisTerm',
+                        margin: [ 0, 5, 0, 5 ]
+                    };
+
+                    let etTitle = {text: 'Etymology', style: 'header', margin: [ 0, 5, 0, 5 ]};
+
+                    let eto = this.strip(item.etymology)
+
+                    console.log('ETOMOLOGYMAN', eto);
+
+                    let lexisEtymology = {
+                        text: eto.trim(),
+                        style: 'lexisEtymology',
+                        margin: [ 0, 5, 0, 5 ]
+                    }
+
+                    let appTitle = {text: 'Application', style: 'header', margin: [ 0, 5, 0, 5 ]};
+
+
+                    let appList = [
+
+                    ]
+
+                    let app = item.application.forEach((item) => {
+                        appList.push(item.value)
+                    })
+
+
+                    // console.log('APPLIST', appList)
+
+                    let lexisApplication = {
+                        ul: appList,
+                        style: 'lexisApplication',
+                        margin: [ 0, 5, 0, 5 ]
+                    };
+
+                    content.push(termTitle, lexisItem, etTitle, lexisEtymology, appTitle, lexisApplication)
+
+
+                })
+
+                return content
+
+
+            },
+
+
+            downloadLesson() {
+
+                let lesson = this.$store.getters["getLesson"];
+
+                let lexisList = []
+
+                lesson.selections.selected_lexis.forEach((element) => {
+                    let item = this.getLexis(element)
+                    lexisList.push(item)
+                })
+
+
+                var lexisContent = this.lexisGenerator(lexisList)
+
+                var containerArray = lexisContent
+
+//                 var arrayA = [1, 2];
+// var arrayB = [3, 4];
+// var newArray = arrayA.concat(arrayB);
+
+                // containerArray.push(lesson)
+
+
+                var dd = {
+                    content: containerArray,
+                    styles: {
+                        lexisTerm: {
+                            fontSize: 12,
+                            bold: true
+                        },
+                        lexisEtymology: {
+                            fontSize: 12,
+                            bold: false
+                        },
+                        lexisApplication: {
+                            fontSize: 12,
+                            bold: false
+                        },
+                    }
+                }
+
+
+                // console.log('LEXISCONTENT', lexisContent)
+                console.log('THIS IS THE FULL LESSON', dd)
+                // console.log('THIS IS THE FULL LESSON', lesson)
+
+                pdfMake.createPdf(dd).open();
+
+
+            },
 
 
             // loading on save

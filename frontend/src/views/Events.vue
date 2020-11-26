@@ -268,6 +268,8 @@
             },
             eventAction(event) {
 
+
+                this.$store.dispatch('clearOldEventLesson');
                 this.$store.dispatch("setSelectedEvent", event);
 
                 // if (this.event_id_list === event) {

@@ -13,16 +13,21 @@ import {
 // empty string, else return reponse.json()
 function handleResponse(response) {
 
+    console.log('HANDLE LOAD HIDE CALLED');
 
+    Loading.hide();
     if (response.status === 204) {
-        Loading.hide();
+        // Loading.hide();
         return '';
     } else if (response.status === 404) {
-        Loading.hide();
+        // Loading.hide();
         return null;
+    } else if (response.status === 400) {
+        // Loading.hide();
+        // return null;
     } else {
         // console.log('RESPONSETIME: ', response.data);
-        Loading.hide();
+        // Loading.hide();
         return response.data;
     }
 
@@ -93,7 +98,17 @@ const apiService = function (endpoint, method, data) {
 
     return axios(config)
         .then(handleResponse)
-        .catch(error => console.log(error))
+        // .catch((error, msg) => {
+        //
+        //     console.log('AXIOS MSG', msg);
+        //     console.log('AXIOS RESPONSE', error.response);
+        //     console.log('DATA', error.response.data[0]);
+        //
+        //     // console.log('AXIOS RESPONSE', error.response.data.message);
+        //     console.log('AXIOS ERROR', error)
+        //
+        // }
+        // )
 
 
 
