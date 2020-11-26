@@ -724,6 +724,10 @@
 
         methods: {
 
+            downloadLesson(){
+                console.log('DOWNLOAD CLICKED')
+            },
+
 
             // loading on save
             showTextLoading() {

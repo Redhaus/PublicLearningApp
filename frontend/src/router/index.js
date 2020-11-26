@@ -9,7 +9,7 @@ import Extensions from "../views/Extensions";
 import Performances from "../views/Performances";
 import Questions from "../views/Questions";
 import Goals from "../views/Goals";
-import Lessons from "../views/Lesson2_pdfMake_working";
+import Lessons from "../views/Lesson";
 import Signin from "../views/Signin";
 import Classes from "../views/Classes";
 import MainLayout from "../views/MainLayout";
