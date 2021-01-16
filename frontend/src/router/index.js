@@ -10,12 +10,14 @@ import Performances from "../views/Performances";
 import Questions from "../views/Questions";
 import Goals from "../views/Goals";
 import Lessons from "../views/Lesson";
+// import Lessons from "../views/Lesson";
 import Signin from "../views/Signin";
 import Classes from "../views/Classes";
 import MainLayout from "../views/MainLayout";
 import Home_Page from "../views/Home_Page";
 import Registration from "../views/Registration";
 import InstructorProfile from "../views/InstructorProfile";
+import PrintableLesson from "../views/PrintableLesson";
 
 
 Vue.use(VueRouter);
@@ -95,11 +97,12 @@ const routes = [
                 component: Lessons
             },
 
-                        {
+            {
                 path: "/profile",
                 name: "Profile",
                 component: InstructorProfile
             },
+
 
         ]
     },
@@ -206,7 +209,15 @@ const routes = [
         path: "/signin",
         name: "Signin",
         component: Signin
-    }
+    },
+
+    {
+        path: "/print",
+        name: "Print",
+        component: PrintableLesson
+    },
+
+
 ];
 
 const router = new VueRouter({

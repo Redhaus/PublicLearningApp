@@ -3,6 +3,7 @@ import Vuex from "vuex";
 
 import {apiService} from "./api_service";
 import {signInService} from "./signin_service";
+import {registerService} from "./register_service";
 
 import lesson_store from "./modules/lesson_store";
 import lexis_store from "./modules/lexis_store";
@@ -37,13 +38,22 @@ export default new Vuex.Store({
         // new_lesson_description: '',
         // new_lesson_class_id: '',
         // new_lesson_title: '',
-        validation_message: ''
+        validation_message: '',
+        error_message: ''
 
     },
 
 
     mutations: {
 
+
+        clear_error_message(state){
+             state.error_message = ''
+        },
+
+        error_message(state, payload){
+            state.error_message = payload
+        },
 
         setEvents(state, payload) {
             state.events = payload
@@ -87,6 +97,8 @@ export default new Vuex.Store({
             state.instructorInfo = payload
         },
 
+
+        // displays validation status of current pw in user profile update
         setValidation(state, payload) {
             console.log('USER', payload);
             state.validation_message = payload
@@ -608,40 +620,56 @@ export default new Vuex.Store({
 
             let signin_endpoint = "http://127.0.0.1:8000/rest-auth/login/";
 
-            // console.log('context', context);
-            // console.log('USERNAME PAYLOAD', username);
-            // console.log('PASSWORD DATA', password);
-
             // var myJSON = JSON.stringify(obj);
             let loginData = {
                 "username": username,
                 "password": password
             };
 
-            // console.log('POST STRING', lessonData.lesson_selections);
-
-            // const apiService = function (endpoint, method, data) {
+            // const signinService = function (endpoint, method, data) {
             signInService(signin_endpoint, "POST", loginData)
                 .then(data => {
-
-                    // console.log('results: ', data.results);
-                    // console.log('DATA: ', data);
-
                     window.localStorage.setItem('access_token', data.token);
                     window.localStorage.setItem('user', data.user);
                     window.localStorage.setItem('user_id', data.id);
                     window.localStorage.setItem('instructor_id', data.instructor_id);
-                    // self.router.push('/');
                     router.push("/dashboard");
-
-                    // commit('postLesson', data);
                 })
 
                 .catch((err) => {
-                    console.log(err)
+                    console.log("ERROR STATUS TEST", err);
+                    // router.push("/signin");
                 });
 
         },
+
+        registerFunction(context, {username, email, password1, password2}) {
+
+            // set up endpoint
+            let register_endpoint = "http://127.0.0.1:8000/rest-auth/registration/teacher/";
+
+            // set up registration data
+            let registerData = {
+                "username": username,
+                "password1": password1,
+                "password2": password2,
+                "email": email,
+                "grade_level": "9-12"
+            };
+
+            // const apiService = function (endpoint, method, data) {
+            registerService(register_endpoint, "POST", registerData)
+                .then(data => {
+                    // router.push("/signin");
+                })
+
+                .catch((err) => {
+
+                });
+
+        },
+
+
         //
         // fetchClasses({commit}, id) {
         //
@@ -782,12 +810,14 @@ export default new Vuex.Store({
             apiService(endpoint, 'PATCH', payload)
                 .then(data => {
                     // commit('setInstructor', data);
+                    // this is loader seamlesssave
                     commit('seamlessSave');
 
                 })
                 .then(data => {
                     setTimeout(() => {
                         console.log('SEAMLESSS CALLED2');
+                        // this is loader seamlesssave turned off
                         commit('seamlessSaveOff')
                     }, 3000)
 
@@ -849,6 +879,10 @@ export default new Vuex.Store({
 
         getValidation(state) {
             return state.validation_message
+        },
+
+        getErrorMessage(state) {
+            return state.error_message
         },
 
 

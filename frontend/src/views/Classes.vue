@@ -23,7 +23,6 @@
 
         <!-- CARDS-->
         <div style="width: 100%">
-            <div v-if="class_list.length > 0">
 
                 <masonry :cols="4" :gutter="20">
 
@@ -53,6 +52,10 @@
                         </q-card>
 <!--                        <q-tooltip anchor="top middle" self="center middle">Create Class</q-tooltip>-->
                     </div>
+
+
+<!--                    <div v-if="class_list.length > 0">-->
+
 
                    <!-- CLASS CARDS-->
                     <div v-for="classed in class_list" :key="classed.id" class="bottom-padding">
@@ -120,15 +123,17 @@
 <!--                        </q-card>-->
                     </div>
 
+<!--                     </div>-->
+
+<!--            <div class="selectEventNotification" v-else>Create A Class</div>-->
+
                 </masonry>
 
                 <!-- CREATE NEW CLASS DIALOG -->
                 <CreateClassDialog ref="newClassDialog"/>
 
 
-            </div>
 
-            <div v-else>No Lesson Available</div>
         </div>
     </div>
 </template>

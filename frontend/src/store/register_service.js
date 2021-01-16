@@ -8,13 +8,14 @@ import {
     // with custom spinner
     QSpinnerOval
 } from 'quasar'
+import router from "../router";
 
 
 // handle the response, if status is 204 meaning no content return
 // empty string, else return reponse.json()
 function handleResponse(response) {
 
-    console.log("HANDLED CALLED", response);
+        console.log("HANDLED CALLED", response);
 
     //
     // if (response.status === 400) {
@@ -30,9 +31,9 @@ function handleResponse(response) {
     //     Loading.hide();
     //     return null;
     // } else {
-    // console.log('RESPONSETIME: ', response.data);
-    Loading.hide();
-    return response.data;
+        // console.log('RESPONSETIME: ', response.data);
+        Loading.hide();
+        return response.data;
     // }
 
 }
@@ -45,7 +46,7 @@ function handleResponse(response) {
 // we are creating a function we can use anywhere
 // when we call the function we will pass the endpoint,
 // the method and the data if any
-const signInService = function (endpoint, method, data) {
+const registerService = function (endpoint, method, data) {
 
 
     // console.log("METHOD", method);
@@ -86,7 +87,10 @@ const signInService = function (endpoint, method, data) {
     };
 
 
-    console.log('CONFIG: ', config);
+
+
+
+        console.log('CONFIG: ', config);
 
 
     // set up fetch functon to user config
@@ -97,13 +101,19 @@ const signInService = function (endpoint, method, data) {
 
     return axios(config)
         .then(handleResponse)
+        .then(() => {
+            router.push("/signin");
+        })
         .catch((error) => {
+
+            console.log("ERROR INSIDE AXIOS");
+            console.log("BIG FAT REGISTRATION ERROR STATUS TEST", error);
 
             if (error.response.status === 400) {
                 // Loading.hide();
-
                 // console.log('NEW NEW NEW Unable to log in with provided credentials.');
-                store.commit('error_message', 'Unable to log in with provided credentials.')
+                // assign response error to error_message to be displayed on page
+                store.commit('error_message', error.response.data)
                 // return ;
             }
 
@@ -115,20 +125,22 @@ const signInService = function (endpoint, method, data) {
             Loading.hide();
 
 
-            //          if (error.response.status === 400) {
-            //     Loading.hide();
-            //     return 'Unable to log in with provided credentials.';
-            // }
+    //          if (error.response.status === 400) {
+    //     Loading.hide();
+    //     return 'Unable to log in with provided credentials.';
+    // }
 
 
-            //         if (error.status === 400) {
-            //     Loading.hide();
-            //     return 'Unable to log in with provided credentials.';
-            // }
-            //         console.log('MY DISPLAY', error)
+
+    //         if (error.status === 400) {
+    //     Loading.hide();
+    //     return 'Unable to log in with provided credentials.';
+    // }
+    //         console.log('MY DISPLAY', error)
         })
+
 
 
 };
 
-export {signInService};
+export {registerService};

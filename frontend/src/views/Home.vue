@@ -11,7 +11,7 @@
         </div>
 
         <div style="width: 100%">
-            <div v-if="lesson_list.length > 0">
+
 
                 <masonry :cols="4" :gutter="20">
                     <!--  Add Card Button-->
@@ -42,6 +42,10 @@
 
                         </q-card>
                     </div>
+
+
+<!--                                <div v-if="lesson_list.length > 0">-->
+
 
                     <!-- Lesson Cards-->
                     <div v-for="lesson in lesson_list" :key="lesson.id" class="bottom-padding">
@@ -94,6 +98,11 @@
                         </q-card>
                     </div>
 
+<!--            </div>-->
+
+<!--            <div class="selectEventNotification" v-else>Create A Lesson</div>-->
+
+
                 </masonry>
 
                 <q-separator/>
@@ -118,9 +127,9 @@
 
                 <PreviewLessonDialog ref="previewLessonDialog" />
 
-            </div>
+<!--            </div>-->
 
-            <div class="selectEventNotification" v-else>No Lesson Available</div>
+<!--            <div class="selectEventNotification" v-else>No Lesson Available</div>-->
 
         </div>
 

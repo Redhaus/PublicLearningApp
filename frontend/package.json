@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@quasar/extras": "^1.0.0",
+    "@vivliostyle/print": "^2.1.4",
     "axios": "^0.20.0",
     "core-js": "^3.6.5",
     "dompurify": "^2.2.2",

@@ -24,6 +24,10 @@
                                 <!--                        </div>-->
                             </q-card-section>
                             <q-card-section>
+
+<!--                                iterate through errors and display them as needed-->
+                                <div class="signin-error"  v-for="(e, index) in error_message" :key="index" >{{e[0]}}</div>
+
                                 <q-form class="q-px-sm q-pt-md">
                                     <q-input square v-model="username" type="username" label="Username">
                                         <template v-slot:prepend>
@@ -31,15 +35,38 @@
                                         </template>
                                     </q-input>
 
-                                    <q-input square v-model="email" type="email" label="Email">
+                                    <q-input square v-model="email"
+                                             type="email"
+                                             label="Email"
+                                             :rules="isValidEmail"
+                                    >
                                         <template v-slot:prepend>
                                             <q-icon name="email"/>
                                         </template>
                                     </q-input>
 
 
-                                    <q-input label="Password" v-model="password1" :type="isPwd ? 'password' : 'text'"
-                                            >
+<!--                                    <q-input-->
+<!--                                        v-model="password_dict.new_password"-->
+<!--                                        dense color="black"-->
+<!--                                        label="New Password"-->
+<!--                                        v-bind:type="isPwd ? 'password' : ''"-->
+<!--                                        lazy-rules-->
+<!--                                        v-bind:rules="Required"-->
+<!--                                        ref="fldPasswordChange">-->
+<!--                                    <template v-slot:append>-->
+<!--                                        <q-icon :name="isPwd ? 'visibility_off' : 'visibility'"-->
+<!--                                                class="cursor-pointer"-->
+<!--                                                v-on:click="isPwd = !isPwd"></q-icon>-->
+<!--                                    </template>-->
+<!--                                </q-input>-->
+
+                                    <q-input label="Password"
+                                             v-model="password1"
+                                             :type="isPwd ? 'password' : 'text'"
+                                            lazy-rules
+                                            v-bind:rules="Required"
+                                            ref="fldPasswordChange">
 
                                         <template v-slot:prepend>
                                             <q-icon name="lock" size="20px"/>
@@ -55,8 +82,12 @@
                                     </q-input>
 
 
-                                    <q-input label="Confirm Password" v-model="password2"
-                                             :type="isPwd ? 'password' : 'text'" >
+                                    <q-input label="Confirm Password"
+                                             v-model="password2"
+                                             :type="isPwd ? 'password' : 'text'"
+                                             lazy-rules
+                                             v-bind:rules="ConfirmPWD"
+                                             ref="fldPasswordChangeConfirm">
 
                                         <template v-slot:prepend>
                                             <q-icon name="lock" size="20px"/>
@@ -70,6 +101,20 @@
                                             />
                                         </template>
                                     </q-input>
+
+<!--                                    <q-input dense color="black"-->
+<!--                                         v-model="password_dict.confirm_new_password"-->
+<!--                                         label="Confirm New Password"-->
+<!--                                         v-bind:type="isPwd ? 'password' : ''"-->
+<!--                                         lazy-rules-->
+<!--                                         v-bind:rules="ConfirmPWD"-->
+<!--                                         ref="fldPasswordChangeConfirm">-->
+<!--                                    <template v-slot:append>-->
+<!--                                        <q-icon :name="isPwd ? 'visibility_off' : 'visibility'"-->
+<!--                                                class="cursor-pointer"-->
+<!--                                                v-on:click="isPwd = !isPwd"></q-icon>-->
+<!--                                    </template>-->
+<!--                                </q-input>-->
 
 
                                     <!--                            <q-input square clearable v-model="password" type="password" label="Password">-->
@@ -93,11 +138,11 @@
                             <!--                        </div>-->
                             <!--                    </q-card-section>-->
                             <q-card-actions class="q-px-lg">
-                                <q-btn @click.prevent="SigninData" unelevated size="lg" color="black"
+                                <q-btn :disable="!testEditBtn" @click.prevent="RegisterData" unelevated size="lg" color="black"
                                        class="full-width text-white" label="Register"/>
                             </q-card-actions>
                             <q-card-section class="text-center q-pa-sm">
-                                <p class="text-grey-6">Already have an account?</p>
+                                <p @click="signinLink" class="text-grey-6">Already have an account?</p>
                             </q-card-section>
                         </q-card>
                     </div>
@@ -155,26 +200,85 @@
 
         data() {
             return {
+
+                username: '',
                 email: '',
                 password1: '',
                 password2: '',
 
                 isPwd: true,
-                username: '',
 
+                // eslint-disable-next-line
+                reg: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/
+                // reg: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/
+                // reg: (?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])
+                // reg: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/
             }
+
         },
+
+        mounted() {
+           this.$store.commit("clear_error_message");
+        },
+
+
         methods: {
 
             // logout(){
             //     this.$store.dispatch("signoutFunction")
             // },
 
-            SigninData() {
+            signinLink(){
+                this.$router.push('/signin');
+            },
+
+            RegisterData() {
                 console.log('SIGNIN DATA', {password: this.password, username: this.username});
-                let data = {password: this.password, username: this.username};
-                this.$store.dispatch("signinFunction", data)
+                let data = {password1: this.password1, password2: this.password2, username: this.username, email: this.email};
+                this.$store.dispatch("registerFunction", data)
             }
+        },
+
+        computed:{
+
+            error_message(){
+                return this.$store.getters["getErrorMessage"]
+            },
+
+            testEditBtn() {
+                if (this.password1.length >= 8 && (this.password1 === this.password2)) {
+                    return true
+                } else {
+                    return false
+                }
+            },
+
+
+            ConfirmPWD() {
+                return [
+                    (v) => !!v || "Required to update password",
+                    (v) => v == this.$refs.fldPasswordChange.value || "These passwords don't match."
+                ]
+            },
+
+             isValidEmail() {
+                return [
+                     (v) =>  this.reg.test(v) || "Please enter valid email."
+                    // (this.email === "")? "" : (this.reg.test(this.email)) ? 'has-success' : 'has-error'
+
+                ]
+            },
+
+            Required() {
+
+
+                return [
+                    (v) => !!v || "Required to update password",
+                    (v) => v.length >= 8 || "Password must be at least 8 Characters long",
+                    // val => val.length <= 3
+                ]
+            },
+
         }
 
 

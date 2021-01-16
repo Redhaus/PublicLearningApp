@@ -2,7 +2,7 @@
     <!--     <q-banner elevated rounded inline-actions class="page-bar shadow-3">-->
     <!--              <q-banner >-->
 
-    <div>
+    <div id="main-lesson-review">
 
         <transition
                 appear
@@ -32,7 +32,7 @@
                                         round
                                         color="gray"
                                         icon="o_save_alt"
-                                        @click="downloadLesson"
+                                        @click="printableLesson"
 
                                         v-tooltip.left="{
                                               content: 'Download Lesson',
@@ -590,6 +590,114 @@
             </q-card>
         </q-dialog>
 
+        <testLesson @styleEvent="style = $event" :lesson="lesson" ref="foo"></testLesson>
+
+
+        <!--        styles-->
+
+        <div id="css" v-show="false">
+
+
+
+            * {
+            margin: 0;
+            padding: 0;
+            }
+
+            html {
+            font-family: AERIAL, Georgia, serif;
+            font-weight: normal;
+            font-size: 14pt;
+            text-align: justify;
+            -moz-hyphens: auto;
+            -ms-hyphens: auto;
+            -webkit-hyphens: auto;
+            hyphens: auto;
+            counter-reset: footnote;
+            }
+
+            h1 {
+            font-weight: bold;
+            font-size: 20pt;
+            text-indent: 0;
+
+            break-after: avoid;
+            }
+
+            h1 + figure {
+            margin-bottom: 8pt;
+            }
+
+            h2 {
+            font-weight: bold;
+            font-size: 12pt;
+            text-indent: 0;
+
+            break-after: avoid;
+            }
+
+            p + p {
+            text-indent: 1.5em;
+            }
+
+            figure {
+            text-align: center;
+            }
+
+            img {
+            max-width: 100%;
+            max-height: 4in;
+            }
+
+            figcaption {
+            font-size: 9pt;
+            }
+
+            .page-top-float {
+            margin-bottom: 8pt;
+            }
+
+            @page {
+            size: A4;
+            @bottom-center {
+            content: counter(page);
+            }
+            @top-center {
+            content: env(doc-title);
+            }
+            }
+            .footnote {
+            float: footnote;
+            font-size: 8pt;
+            counter-increment: footnote;
+            text-indent: 0;
+            }
+
+            .footnote::footnote-marker {
+            content: counter(footnote);
+            font-size: 8pt;
+            vertical-align: super;
+            }
+
+            .footnote::footnote-call {
+            content: counter(footnote);
+            font-size: 8pt;
+            vertical-align: super;
+            display: inline;
+            line-height: 1;
+            }
+
+            .redOne{
+            color: red;
+            }
+            .blueOne{
+            color: blue;
+            font-size: 9px;
+            }
+
+
+        </div>
+
 
     </div>
 
@@ -610,11 +718,14 @@
 
 <script>
     import UpdateLessonInfo from "../components/lessons/UpdateLessonInfo";
+    import testLesson from "./testLesson";
+    import {printHTML} from '@vivliostyle/print'
 
 
     export default {
         components: {
-            UpdateLessonInfo
+            UpdateLessonInfo,
+            testLesson
         },
         // props: ['dialog', 'iconState'],
         name: "LexisDialog.vue",
@@ -622,6 +733,7 @@
         data() {
             return {
 
+                style: null,
                 msg: 'This is a button.',
 
                 // lesson saved popup
@@ -676,7 +788,6 @@
             },
 
 
-
             is_duplicate() {
                 return this.$store.getters['getIsDuplicate'];
             },
@@ -724,7 +835,62 @@
 
         methods: {
 
-            downloadLesson(){
+            printableLesson(){
+                this.$router.push('/print');
+
+            },
+
+            downloadLesson() {
+
+
+                var config = {
+                    title: 'my printed page',
+                    printCallback: iframeWin => iframeWin.print() // optional: only needed if calling something other than window.print() for printing.
+                };
+
+                // const temp = document;
+                // var myobj = temp.getElementsByClassName("q-drawer-container")[0];
+                // myobj.remove();
+
+                // const template = temp.documentElement.outerHTML
+
+                const content = this.$refs.foo.$el.innerHTML;
+
+                // const t = document.getElementById("html").value;
+                const e = document.getElementById("css").innerText;
+
+                console.log('STYLES', e);
+
+                // n = document.getElementById("title").value;
+
+
+                const template = `\n  <!doctype html>\n <html>\n <head>\n <title>${config.title}</title>\n  <style>${e}</style>\n  <head>\n  <body>${content}</body>\n </html>`;
+                // const children = this.$refs.foo.$el.children;
+                //
+                // const styles = this.$refs.foo.$el;
+                // const full = this.$refs.foo;
+                //
+                // console.log('HTML', template);
+                // console.log('children', children);
+                //
+                // console.log('STYLES', styles);
+                //                 console.log('FULL', full);
+
+
+                //
+                //        const t = document.getElementById("html").value,
+                // e = document.getElementById("css").value,
+                // n = document.getElementById("title").value;
+                // `\n  <!doctype html>\n <html>\n <head>\n <title>${n}</title>\n  <style>${e}</style>\n  <head>\n  <body>${t}</body>\n </html>`
+                // const template =  document.documentElement.outerHTML;
+                // const template =  document.getElementById("main-lesson-review");
+                // var myobj = template.getElementsByClassName("q-drawer-container");
+                // myobj.remove();
+//
+//                 var myobj = document.getElementById("demo");
+// myobj.remove();
+                console.log('HTML RENDER', template);
+                printHTML(template, config);
                 console.log('DOWNLOAD CLICKED')
             },
 

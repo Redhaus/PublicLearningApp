@@ -23,9 +23,13 @@
 <!--                            <q-btn fab icon="add" color="purple-4"/>-->
 <!--                        </div>-->
                     </q-card-section>
+
+
+
                     <q-card-section>
+                         <div class="signin-error" v-if="error_message">{{error_message}}</div>
                         <q-form class="q-px-sm q-pt-sm">
-                            <q-input square  v-model="username" type="username" label="Username">
+                            <q-input square  v-model="username" type="username" label="Username or Email">
                                 <template v-slot:prepend>
                                     <q-icon name="person"/>
                                 </template>
@@ -141,6 +145,16 @@
 
             }
         },
+
+        mounted() {
+           this.$store.commit("clear_error_message");
+        },
+
+        computed: {
+            error_message(){
+                return this.$store.getters["getErrorMessage"]
+            }
+        },
         methods: {
 
             // logout(){
@@ -159,6 +173,12 @@
 </script>
 
 <style>
+
+    .signin-error{
+        color: darkred;
+        padding-left: 10px;
+
+    }
 </style>
 
 
